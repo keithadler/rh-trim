@@ -7,6 +7,13 @@ Dirichlet L-functions. He found it working with Claude, and published it only as
 This repository set out to build a **reduced version**: the same proof with everything it never
 uses cut out. It also documents how the proof fits together.
 
+**The goal:**
+
+1. Get the proof into its **smallest exact form**: only the declarations the five theorems
+   really use, measured from Lean's own compiled dependency record.
+2. **Check that reduced form with independent kernels.** Time tenet-hs (Haskell), Tenet (C#) and
+   tenet-jvm against Lean's own kernel on the same proof.
+
 > **Update, 2026-11-20 23:30 UTC: the first reduction was wrong, and we are now building the
 > original to measure the real one.**
 >
