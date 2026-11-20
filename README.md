@@ -27,8 +27,12 @@ commit. It applies the reduction (text edits only), and checks the result byte f
 against a published fingerprint. That takes about 2 minutes plus the 1.7 GB clone. Nothing
 is compiled or run.
 
-**Then build it only inside a sandbox: compiling Lean runs code.** See
-[docs/CHECKING.md](docs/CHECKING.md).
+**To build it,** follow [docs/BUILD.md](docs/BUILD.md). One script does it on a cloud machine:
+about 4 to 6 hours and about $9 to $13 on an AWS spot `c7a.32xlarge`, by estimate. Build only
+inside a sandbox or on a throwaway machine, because compiling Lean runs code.
+
+To help build the *original*, join the distributed replay at
+[rohanarun/alpoge-rh-replay](https://github.com/rohanarun/alpoge-rh-replay).
 
 ## How much smaller, and why
 
@@ -84,6 +88,8 @@ Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md).
 | Path | What it is |
 |---|---|
 | `make-fork.sh` | rebuilds the reduced version from the mirror and checks its fingerprint |
+| `build-linux.sh` | builds it on a Linux cloud machine, network cut off, timestamped log |
+| `tools/progress.sh`, `tools/missing.py` | build rate and time left; missing names mapped to the original |
 | `data/kept-files.txt.gz` | the 137,019 modules the trace keeps |
 | `data/cuts.json.gz` | the byte ranges of the 216,245 declarations cut from those modules |
 | `data/expected-tree.txt` | the fingerprint (sha256 over every path and file) of the result |
@@ -91,7 +97,7 @@ Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md).
 | `tools/prune.py`, `check_fork.py`, `trim_main.py`, `add_docs.py` | the steps `make-fork.sh` runs |
 | `tools/tree_hash.py`, `libstats.py`, `closure.py`, `org_stats.py` | fingerprint, counts, import closures, code statistics |
 | `tools/sandbox-macos.sb` | a macOS sandbox profile for building safely |
-| `docs/` | proof map, literature list, method, checking guide, numbers |
+| `docs/` | build guide, proof map, literature list, method, checking guide, numbers |
 | `.github/ISSUE_TEMPLATE/build-report.yml` | the build-report form |
 
 ## License
