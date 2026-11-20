@@ -1,19 +1,19 @@
 # Build status: the reduced version, compiling on AWS
 
-Updated **2026-11-20 23:17 UTC**, every 10 minutes while the build runs.
+Updated **2026-11-20 23:27 UTC**, every 10 minutes while the build runs.
 
 | | |
 |---|---|
 | Machine | AWS `m6a.48xlarge` Spot, Ohio: 192 vCPUs (96 cores), 739 GB RAM |
 | Sandbox | bubblewrap, no network |
 | Compiling since | 2026-11-20 22:46 UTC |
-| Cost so far | about $0.98 (machine at about $1.56/h) |
+| Cost so far | about $1.24 (machine at about $1.56/h) |
 | Proof files in the reduced version | 137,020 |
-| Error lines | 7295 |
+| Error lines | 9029 |
 
 ```
-5765 proof files built, 7295 error lines
-rate: 248 files/min over the last 10 min; about 8h 50m left at that rate
+8480 proof files built, 9029 error lines
+rate: 270 files/min over the last 10 min; about 7h 55m left at that rate
 ```
 
 First errors:
