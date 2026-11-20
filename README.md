@@ -4,14 +4,33 @@ On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, and of
 Dirichlet L-functions. He found it working with Claude, and published it only as Lean 4 code
 ([announcement](https://alpo.ge/remark.pdf)): 175,188 files and 17.5 million lines.
 
-This repository builds a **reduced version**: the same proof with everything it never uses
-cut out. It is **about a third smaller**, and it documents how the proof fits together.
+This repository set out to build a **reduced version**: the same proof with everything it never
+uses cut out. It also documents how the proof fits together.
 
-> **Live:** the reduced version is compiling on AWS right now. [Build status](BUILD-STATUS.md), updated every 10 minutes.
-
-> **If you are building the original, please build this too and
-> [share your results](../../issues/new?template=build-report.yml).** Machine, time, errors in
-> full, checker verdicts. The reduced version has **not been compiled yet**, so every report helps.
+> **Update, 2026-11-20 23:30 UTC: the first reduction was wrong, and we are now building the
+> original to measure the real one.**
+>
+> The reduction here comes from reading source text. Building it on AWS exposed what that misses:
+>
+> - **The first two traces were missing real dependencies.** 1,087 files failed in the first
+>   7,000. The causes:
+>   - prefixes like `open … in` left dangling;
+>   - instances of Mathlib classes dropped;
+>   - global theorems inside `⟨…⟩` mistaken for local names;
+>   - dot notation (`x.foo`) not resolved.
+> - **With those fixed, the trace keeps far more:** 909,095 of 1,137,512 declarations (80%), in
+>   159,906 of 175,188 files (91%). The "about a third smaller" figure below came from the
+>   buggy traces. **The safe source-level reduction saves only about 9%.**
+>
+> **What's happening now:** the same AWS machine is building the **original** proof
+> ([live status](BUILD-STATUS.md), updated every 10 minutes). When it finishes, Lean's own
+> compiled files record exactly which declarations each proof uses. Tracing the five theorems
+> through that record gives the **exact** reduced version, with no guessing. That version will
+> replace the numbers below. Then Tenet (C#), tenet-hs (Haskell) and tenet-jvm will check the
+> build as independent kernels, with their times compared.
+>
+> `make-fork.sh` still reproduces the earlier reduction byte for byte, but that reduction **does
+> not build**. Don't spend machine time on it.
 
 ## Get it
 
@@ -36,7 +55,7 @@ inside a sandbox or on a throwaway machine, because compiling Lean runs code.
 To help build the *original*, join the distributed replay at
 [rohanarun/alpoge-rh-replay](https://github.com/rohanarun/alpoge-rh-replay).
 
-## How much smaller, and why
+## How much smaller, and why (superseded: see the update above)
 
 | | Original | Reduced | Kept |
 |---|---|---|---|

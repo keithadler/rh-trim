@@ -4,7 +4,7 @@
 # Prints files built, the rate over the last 10 minutes, and a rough time left.
 set -euo pipefail
 LOG="$1"
-TOTAL=137020        # proof files in the reduced version (plus Mathlib's, which come from cache)
+TOTAL="${TOTAL:-137020}"   # proof files to build (137,020 reduced; 175,187 for the original)
 awk -v total="$TOTAL" '
   function secs(t,  a) { split(t, a, ":"); return a[1]*3600 + a[2]*60 + a[3] }
   / (✔|⚠) \[/ && $0 !~ /Mathlib|Batteries|Aesop|Qq|Plausible|ProofWidgets|ImportGraph|LeanSearchClient/ {
