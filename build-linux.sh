@@ -38,6 +38,10 @@ else
 fi
 
 say "3/5  Lean 4.33.1 and Mathlib's official build cache (needs network)"
+# Unpacking the cache on many cores opens thousands of files at once; the default limit is too low.
+ulimit -n "$(ulimit -Hn)" 2>/dev/null || true
+ulimit -n 1048576 2>/dev/null || ulimit -n 65536 2>/dev/null || true
+echo "open-file limit: $(ulimit -n)"
 cd "$FORK"
 lake --version
 lake exe cache get
