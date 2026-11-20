@@ -1,29 +1,19 @@
-# Build status: the reduced version, compiling on AWS
+# Build status: the ORIGINAL proof, compiling on AWS
 
-Updated **2026-11-20 23:27 UTC**, every 10 minutes while the build runs.
+Updated **2026-11-20 23:29 UTC**, every 10 minutes while the build runs.
 
 | | |
 |---|---|
 | Machine | AWS `m6a.48xlarge` Spot, Ohio: 192 vCPUs (96 cores), 739 GB RAM |
 | Sandbox | bubblewrap, no network |
-| Compiling since | 2026-11-20 22:46 UTC |
-| Cost so far | about $1.24 (machine at about $1.56/h) |
-| Proof files in the reduced version | 137,020 |
-| Error lines | 9029 |
+| Building | the original, byte-exact mirror at `8b83d5e7b` (175,187 proof files) |
+| Compiling since | 2026-11-20 23:25 UTC |
+| Cost so far | about $1.29 (machine at about $1.56/h) |
+| Why the original | the source-level reduction kept dropping real dependencies; this build gives the exact dependency record to reduce from |
+| Error lines | ? |
 
 ```
-8480 proof files built, 9029 error lines
-rate: 270 files/min over the last 10 min; about 7h 55m left at that rate
-```
-
-First errors:
-
-```
-22:59:05 error: src/Formalism/SatakeDualWeyl/AdelicIwasawaHecke/HeckeConvolutionMemHolds.lean:53:39: Unknown identifier `conv_finDosetSupp`
-22:59:05 error: Lean exited with code 1
-22:59:05 error: src/Formalism/LocalToGlobal/ProjectiveLattices/IntegrableOnIntegrand.lean:56:68: Invalid field `I`: The environment does not contain `Formalism.L2.Pj.FJ.CuspFD.I`, so it is not possible to project the fie
-22:59:05 error: Lean exited with code 1
-22:59:05 error: src/Formalism/GradedWeylDivisibility/FockSpaceTableaux/SSYTExists.lean:49:6: Unknown identifier `lcssyt_consI_strictMono`
+waiting for the first files
 ```
 
 Estimates come from the last 10 minutes of the timestamped log (`tools/progress.sh`).
