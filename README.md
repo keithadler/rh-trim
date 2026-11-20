@@ -7,6 +7,8 @@ Dirichlet L-functions. He found it working with Claude, and published it only as
 This repository builds a **reduced version**: the same proof with everything it never uses
 cut out. It is **about a third smaller**, and it documents how the proof fits together.
 
+> **Live:** the reduced version is compiling on AWS right now. [Build status](BUILD-STATUS.md), updated every 10 minutes.
+
 > **If you are building the original, please build this too and
 > [share your results](../../issues/new?template=build-report.yml).** Machine, time, errors in
 > full, checker verdicts. The reduced version has **not been compiled yet**, so every report helps.
