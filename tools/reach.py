@@ -23,6 +23,7 @@ declre = re.compile(r'^(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|noncomputable|
 nsre = re.compile(r'^(namespace|end|section|open)\b(.*)$', re.M)
 ident = re.compile(r"[A-Za-z_À-ɏͰ-Ͽᴀ-ᶿ℀-⅏\U0001d400-\U0001d7ff]"
                    r"[A-Za-z0-9_'!?.À-ɏͰ-Ͽᴀ-ᶿ₀-ₜ℀-⅏\U0001d400-\U0001d7ff]*")
+PREFIX_IN = re.compile(r'^(?:open|set_option|variable|omit|include|attribute|local|scoped)\b.*\bin\s*$')
 ctorre = re.compile(r'^\s*\|\s*([^\s:({\[]+)', re.M)
 fieldre = re.compile(r'^\s+([^\s:({\[]+)\s*:', re.M)
 
@@ -63,6 +64,7 @@ file_imports = []
 decl_attr = bytearray()
 decl_cls = bytearray()
 decl_span = []
+inst_header = {}
 for fid, p in enumerate(paths):
     files.append(os.path.relpath(p, src)[:-5].replace('/', '.'))
     t = open(p, encoding='utf-8').read()
@@ -95,8 +97,15 @@ for fid, p in enumerate(paths):
             st0 = ls
             # attribute lines directly above belong to the declaration
             while st0 > 0:
-                prev = t.rfind('\n', 0, st0 - 1) + 1
-                if t.startswith('@[', prev): st0 = prev
+                j = st0
+                while j > 0:                      # look past blank lines
+                    prev = t.rfind('\n', 0, j - 1) + 1
+                    if t[prev:j - 1].strip() == '': j = prev
+                    else: break
+                if j == 0: break
+                prev = t.rfind('\n', 0, j - 1) + 1
+                ln = t[prev:j - 1]
+                if ln.startswith('@[') or PREFIX_IN.match(ln): st0 = prev
                 else: break
             attr = 1 if (st0 < ls or m.group(0).lstrip().startswith('@[')) else 0
             # the declaration runs until the next line that starts in column 0
@@ -104,6 +113,10 @@ for fid, p in enumerate(paths):
             en = pos + nxt.start() + 1 if nxt else len(t)
             i = add(full, fid, kw == 'instance', attr, (st0, en))
             if kw == 'class': decl_cls[i] = 1
+            if kw == 'instance':
+                body = t[pos:en]
+                cut = min([k for k in (body.find(':='), body.find(' where'), body.find('\nwhere')) if k > 0] or [len(body)])
+                inst_header[i] = (body[:cut], fid, ns)
             decls.append((i, pos, ns, kw))
     # end offsets
     out = []
@@ -243,10 +256,16 @@ class_gated = '--class-gated' in sys.argv
 KEEP_ATTR = "--no-attr" not in sys.argv
 fseen = bytearray(len(files))
 seen = bytearray(len(decl_name))
+parent = {}
+BLOCK = set()
+for a in sys.argv:
+    if a.startswith('--block='):
+        for nm in a[8:].split(','):
+            BLOCK.update(name2ids.get(nm, []))
 def run(st):
     while st:
         x = st.pop()
-        if seen[x]: continue
+        if seen[x] or x in BLOCK: continue
         seen[x] = 1
         if not fseen[decl_file[x]]:
             fseen[decl_file[x]] = 1
@@ -256,18 +275,48 @@ def run(st):
                 st.extend(y for y in file_decls[decl_file[x]] if not seen[y] and (decl_inst[y] or (decl_attr[y] and KEEP_ATTR)))
         d = deps[x]
         if d is not None:
-            st.extend(y for y in d if not seen[y])
+            for y in d:
+                if not seen[y]:
+                    parent.setdefault(y, x); st.append(y)
 run(list(roots_ids))
 print(f"  named references only: {sum(seen)} declarations in {sum(fseen)} files", file=sys.stderr, flush=True)
 if class_gated:
     insts = [i for i in range(len(decl_name)) if decl_inst[i] and deps[i] is not None]
+    hdr_deps = {}
+    for i, (h, fid_, ns_) in inst_header.items():
+        parts = ns_.split('.') if ns_ else []
+        prefixes = ['.'.join(parts[:k]) for k in range(len(parts), 0, -1)]
+        hs = set()
+        for tok in set(ident.findall(h)):
+            tok = tok.rstrip('.')
+            if tok.startswith('_root_.'): tok = tok[7:]
+            if tok: hs |= resolve(tok, prefixes, file_ctx[fid_][1], fid_)
+        hs.discard(i); hdr_deps[i] = hs
+    print(f'  instance headers resolved: {len(hdr_deps)}', file=sys.stderr, flush=True)
     rnd = 0
     while True:
-        add_ = [i for i in insts if not seen[i] and any(decl_cls[d] and seen[d] for d in deps[i])]
+        add_ = []
+        for i in insts:
+            if seen[i] or i not in hdr_deps: continue
+            hd = hdr_deps[i]
+            proj_cls = [d for d in hd if decl_cls[d]]
+            cls_ok = (not proj_cls) or any(seen[d] for d in proj_cls)
+            if cls_ok and any(seen[d] for d in hd if not decl_cls[d]):
+                add_.append(i)
         rnd += 1
         print(f'  instance round {rnd}: +{len(add_)}', file=sys.stderr, flush=True)
         if not add_: break
         run(add_)
+for a in sys.argv:
+    if a.startswith('--why='):
+        for nm in a[6:].split(','):
+            for i in name2ids.get(nm, []):
+                if not seen[i]: print(f'why {nm}: not reached'); continue
+                path = [i]
+                while path[-1] in parent and len(path) < 60: path.append(parent[path[-1]])
+                print(f'why {nm}:'); [print('   ', decl_name[j], '  [', files[decl_file[j]], ']') for j in reversed(path)]
+if '--no-write' in sys.argv:
+    print(f'reachable: {sum(seen)} declarations in {sum(fseen)} files'); sys.exit(0)
 reach = [i for i in range(len(decl_name)) if seen[i]]
 rf = set(decl_file[i] for i in reach)
 print(f'reachable declarations: {len(reach)} of {len(decl_name)}')
