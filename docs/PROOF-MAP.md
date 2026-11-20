@@ -27,6 +27,8 @@ Main.lean: the five theorems
             every_character_of_literature_of_vWin (O, hV)      vwin_of_row h : VWin
                                          │
             every_character_of_theta_integrals_local_matching (… many inputs …)
+                                         │
+            every_character_of_green_v_win (Green, VWin, Hyps …)
 
   and h := galoisLocalGlobalStrong_recParameter
              = galoisRepresentations_of_thetaLift tLiftK
@@ -81,7 +83,7 @@ The original has seven, plus `allChi`, which only re-exports one of them.
 | `UpperTheory.FinalTheorems.everyCharacter_of_row` | `Row0b …` | step on the chain | yes |
 | `UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin` | `O : OpenLiteratureStatements`, `hV : VWin` | step on the chain | yes |
 | `every_character_of_theta_integrals_local_matching` | many | step on the chain: the heart of the argument | yes |
-| `UpperTheory.Top.every_character_of_green_v_win` | `Green`, `VWin` | side route | kept by the trace |
+| `UpperTheory.Top.every_character_of_green_v_win` | `Green`, `VWin` | step on the chain: `every_character_of_theta_integrals_local_matching` calls it | yes |
 | `UpperTheory.Top.plugAll` | `Green`, `VWin`, `Hyps …` | side route, unused | removed |
 | `everyE₂` | several | side route, unused | removed |
 

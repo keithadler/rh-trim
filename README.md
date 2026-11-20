@@ -66,8 +66,8 @@ five theorems ← short textbook arguments over Mathlib ← ONE KEY CLAIM ← Ga
   than from the geometry of Shimura varieties.
 - **Nothing from the literature is assumed:** the 162 formal statements of published results
   are proved inside the project. See [docs/LITERATURE.md](docs/LITERATURE.md).
-- **Seven theorems conclude the key claim.** Four form the one chain the proof uses; three are
-  side routes.
+- **Seven theorems conclude the key claim.** Five form the one chain the proof uses; two are
+  unused side routes.
 
 Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md).
 

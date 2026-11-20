@@ -89,7 +89,7 @@ DOCS = [
   "window statement `VWin`."),
  (D + 'CharacterBoxes/MainConclusion.lean', r'UpperTheory\.FinalTheorems\.everyCharacter',
   "The key claim, unconditionally: `everyCharacter_of_row` applied to\n"
-  "`galoisLocalGlobalStrong_recParameter`, which the project proves from theta lifts. Of the five\n"
+  "`galoisLocalGlobalStrong_recParameter`, which the project proves from theta lifts. Of the seven\n"
   "theorems in the original that conclude `EveryCharacter`, this is the only one with no hypotheses."),
  (D + 'ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/EveryCharacterOfLiteratureOfVWin.lean',
   r'UpperTheory\.LiteratureTheorems\.OpenLiteratureStatements',

@@ -78,8 +78,6 @@ Everything here is a reading of text. The trace can still be wrong in both direc
 
 - **Dot notation.** `h.foo` matches by prefix rules, not by `h`'s type.
 - **Local-name detection is pattern-based**, so some local names are still matched as globals.
-- **Kept side routes.** `every_character_of_green_v_win` is still in the fork, possibly for this
-  reason.
 
 ### It may keep too little (a build would report these)
 
