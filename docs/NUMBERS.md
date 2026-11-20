@@ -8,7 +8,7 @@ All counts are from scripts over the source text, not from a build. Reproduce th
 | | Original | This fork | Kept |
 |---|---|---|---|
 | Lean files | 175,188 | 137,020 | 78% |
-| Lines (including the 38 docstrings this fork adds) | 17,549,430 | 12,002,990 | 68% |
+| Lines (including the 38 docstrings this fork adds) | 17,549,430 | 11,953,342 | 68% |
 | Declarations, counted by keyword | 1,060,833 | 629,722 | 59% |
 | Declarations, as the trace counts them | 1,137,512 | 631,251 | 55% |
 | Docstrings | 1 | 39 | |

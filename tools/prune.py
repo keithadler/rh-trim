@@ -75,7 +75,10 @@ for m in sorted(keep):
             body_start = k + 1
         else:
             break
-    out = '\n'.join('import ' + i for i in ded) + '\n\n' + '\n'.join(lines[body_start:])
+    if ded == imports(m):
+        out = t        # imports unchanged: keep the file's own header byte for byte
+    else:
+        out = '\n'.join('import ' + i for i in ded) + '\n\n' + '\n'.join(lines[body_start:])
     p = os.path.join(dest, 'src', m.replace('.', '/') + '.lean')
     os.makedirs(os.path.dirname(p), exist_ok=True)
     open(p, 'w', encoding='utf-8').write(out)

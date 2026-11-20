@@ -93,6 +93,7 @@ Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md).
 | `data/kept-files.txt.gz` | the 137,019 modules the trace keeps |
 | `data/cuts.json.gz` | the byte ranges of the 216,245 declarations cut from those modules |
 | `data/expected-tree.txt` | the fingerprint (sha256 over every path and file) of the result |
+| `data/replay-map.tsv.gz` | every module of the [distributed replay](https://github.com/rohanarun/alpoge-rh-replay), by its ID, with its status here: dropped, trimmed, changed, identical, and whether its compiled file is reusable |
 | `tools/reach.py` | the dependency trace (about 17 minutes over the whole proof) |
 | `tools/prune.py`, `check_fork.py`, `trim_main.py`, `add_docs.py` | the steps `make-fork.sh` runs |
 | `tools/tree_hash.py`, `libstats.py`, `closure.py`, `org_stats.py` | fingerprint, counts, import closures, code statistics |
