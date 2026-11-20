@@ -1,0 +1,61 @@
+name: Build report
+description: You built the reduced version (or the original). Share what happened.
+title: "Build report: "
+labels: ["build-report"]
+body:
+  - type: dropdown
+    id: what
+    attributes:
+      label: What did you build?
+      options:
+        - The reduced version (make-fork.sh)
+        - The original mirror
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: fingerprint
+    attributes:
+      label: Fingerprint printed by make-fork.sh
+      description: The "OK" line from step 6, if you built the reduced version.
+  - type: input
+    id: machine
+    attributes:
+      label: Machine
+      placeholder: "e.g. 64 cores, 256 GB RAM, Ubuntu 24.04, AMD EPYC"
+    validations:
+      required: true
+  - type: input
+    id: time
+    attributes:
+      label: Build time and peak memory
+      placeholder: "e.g. 9 h 40 m, 180 GB peak"
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - Built with no errors
+        - Built after I fixed errors (list them below)
+        - Failed (errors below)
+        - Still running
+    validations:
+      required: true
+  - type: textarea
+    id: errors
+    attributes:
+      label: Errors, in full
+      description: Paste every error. Each one names a missing piece, which is exactly what we need.
+      render: text
+  - type: textarea
+    id: verdicts
+    attributes:
+      label: Checker verdicts
+      description: Comparator, Lean kernel, nanoda, con-leche, con-ron, Tenet, anything else you ran.
+      render: text
+  - type: checkboxes
+    id: sandbox
+    attributes:
+      label: Safety
+      options:
+        - label: I built it in a sandbox or container with no network

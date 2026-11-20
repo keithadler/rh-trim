@@ -1,0 +1,22 @@
+(version 1)
+; macOS sandbox for building the fork. Replace HOME_DIR (your home folder) and FORK_DIR
+; (the fork's folder, absolute) before use. Run it as:
+;   sandbox-exec -f sandbox-macos.sb env HOME=FORK_DIR/.sandbox-home \
+;     PATH=HOME_DIR/.elan/toolchains/leanprover--lean4---v4.33.1/bin:/usr/bin:/bin lake build Main
+; Fetch Mathlib's cache first, outside the sandbox: lake exe cache get
+(allow default)
+; Compiling the proof runs its code: no network at all.
+(deny network*)
+; Nothing under the home folder is readable except the fork and the Lean toolchain.
+(deny file-read* (subpath "HOME_DIR"))
+(allow file-read* (literal "HOME_DIR")
+                  (subpath "FORK_DIR")
+                  (subpath "HOME_DIR/.elan/toolchains/leanprover--lean4---v4.33.1"))
+; Path lookups (stat, realpath) only, not file contents.
+(allow file-read-metadata)
+; Writes only into the fork and temp.
+(deny file-write* (subpath "/"))
+(allow file-write* (subpath "FORK_DIR")
+                   (subpath "/private/tmp")
+                   (subpath "/private/var/folders")
+                   (literal "/dev/null"))
