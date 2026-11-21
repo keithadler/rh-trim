@@ -84,7 +84,7 @@ lines = [
  '# Live: building the claimed Lean proof of the Riemann Hypothesis', '',
  f'{head}: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; '
  f'last update **{now:%Y-%m-%d %H:%M} UTC**.', '',
- '> **The goal:** get the exact reduced form of the proof, then check it with **Tenet-HS, a Lean kernel '
+ '> **The goal:** get the exact reduced form of the proof, then check it with **tenet-hs, a Lean kernel '
  'written from scratch in Haskell**, and race it against Lean\'s own kernel. Does the Haskell kernel '
  'accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below '
  'is step one: the kernels need the compiled proof.', '',
