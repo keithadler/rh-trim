@@ -1,48 +1,48 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 06:08 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 06:18 UTC**.
 
-## 39.0% built
+## 40.0% built
 
-`███████████████▌░░░░░░░░░░░░░░░░░░░░░░░░`  **68,386** of 175,187 proof files
+`███████████████▉░░░░░░░░░░░░░░░░░░░░░░░░`  **69,996** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 10m | 17:18 | 159 files/min | $11.50 | $29 | 0 |
+| 11h 05m | 17:24 | 158 files/min | $11.76 | $29 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0608.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0618.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 49,365 / 141,928 | `██████▉░░░░░░░░░░░░░` 35% |
-| `Formalism` | 12,504 / 18,254 | `█████████████▋░░░░░░` 69% |
-| `GroundTheory` | 1,864 / 8,507 | `████▍░░░░░░░░░░░░░░░` 22% |
-| `ReciprocityTheory` | 3,073 / 3,845 | `███████████████▉░░░░` 80% |
+| `Development` | 50,273 / 141,928 | `███████ ░░░░░░░░░░░░` 35% |
+| `Formalism` | 12,511 / 18,254 | `█████████████▋░░░░░░` 69% |
+| `GroundTheory` | 2,416 / 8,507 | `█████▋░░░░░░░░░░░░░░` 28% |
+| `ReciprocityTheory` | 3,210 / 3,845 | `████████████████▋░░░` 83% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 4 / 449 | `▏░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 133 / 167 | `███████████████▉░░░░` 80% |
+| `Lemmata` | 139 / 167 | `████████████████▋░░░` 83% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 200, 21 Lean processes running |
-| Memory | 24 GB used of 776 GB |
-| Disk | 138 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 197, 34 Lean processes running |
+| Memory | 32 GB used of 776 GB |
+| Disk | 137 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.WeilBound.ThetaLifts.LatticeBasics.HgtIntOf`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscrepancyAddOrdGtNegOneLogResolutionStatement`
-- `Development.AutomorphicSpectrum.PublishedTheorems.PublishedGlobalResults.PrimesInProgressionsRelative`
-- `Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MonomialCase.MonomialSplittingUniqueness`
-- `Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnfoldingCompactness.MemStabiliserIffFrameLowerBlock`
-- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitLocalPlaceLocalModelsLinearSubspace`
+- `GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StTubeCollarCompare`
+- `GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsBranchesGoodPoint`
+- `Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.GaloisCohomologyRatios.InvariantsEqOfPointwise`
+- `Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.RealAdelicFockSpace.FinRealAdSmulAlt`
+- `GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PContinuousSectionHolomorphic`
+- `GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProjChowNonzero`
 
 ## What happens when it finishes
 
