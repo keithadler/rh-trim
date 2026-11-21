@@ -2,7 +2,7 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 16:13 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 16:24 UTC**
 
 ## The plan
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **82.8%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **83.5%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -32,26 +32,26 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 82.8%
+## Step 1: the build, 83.5%
 
-`█████████████████████████████████ ░░░░░░`  **145,008** of 175,187 proof files
+`█████████████████████████████████▍░░░░░░`  **146,225** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 3h 55m | 20:09 | 128 files/min | $26.20 | $32 | 0 |
+| 3h 45m | 20:09 | 128 files/min | $26.47 | $32 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1613.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1624.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 112,600 / 141,928 | `███████████████▊░░░░` 79% |
-| `Formalism` | 18,196 / 18,254 | `███████████████████▉` 100% |
+| `Development` | 113,658 / 141,928 | `████████████████ ░░░` 80% |
+| `Formalism` | 18,219 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
 | `ReciprocityTheory` | 3,795 / 3,845 | `███████████████████▋` 99% |
-| `CompanionTheory` | 1,897 / 2,027 | `██████████████████▋░` 94% |
-| `PositivityTheory` | 64 / 449 | `██▊░░░░░░░░░░░░░░░░░` 14% |
+| `CompanionTheory` | 1,991 / 2,027 | `███████████████████▋` 98% |
+| `PositivityTheory` | 105 / 449 | `████▋░░░░░░░░░░░░░░░` 23% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
 
 </details>
@@ -61,9 +61,9 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 194, 13 Lean processes running |
-| Memory | 22 GB used of 776 GB |
-| Disk | 91 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 193, 20 Lean processes running |
+| Memory | 26 GB used of 776 GB |
+| Disk | 90 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
@@ -71,12 +71,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobeniusFixed.HasOrdP`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerCharacterEval.Detprod`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.BernoulliNumbers.FeLFunctionConstMul`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.GenIff`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.LiftO`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.KapCyc`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.TnFree`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDualExp`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDdProps`
+- `PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ValuationDetCongruenceSubgroupEqOne`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.MemMaximalCompactOfUnderEq`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.EqOfTwist`
 
 </details>
 
