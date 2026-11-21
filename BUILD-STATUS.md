@@ -1,6 +1,6 @@
 # Build status: the ORIGINAL proof, compiling on AWS
 
-Updated **2026-11-21 00:09 UTC**, every 10 minutes while the build runs.
+Updated **2026-11-21 00:19 UTC**, every 10 minutes while the build runs.
 
 | | |
 |---|---|
@@ -8,13 +8,13 @@ Updated **2026-11-21 00:09 UTC**, every 10 minutes while the build runs.
 | Sandbox | bubblewrap, no network |
 | Building | the original, byte-exact mirror at `8b83d5e7b` (175,187 proof files) |
 | Compiling since | 2026-11-20 23:25 UTC |
-| Cost so far | about $2.33 (machine at about $1.56/h) |
+| Cost so far | about $2.59 (machine at about $1.56/h) |
 | Why the original | the source-level reduction kept dropping real dependencies; this build gives the exact dependency record to reduce from |
 | Error lines | 0 |
 
 ```
-9518 proof files built, 0 error lines
-rate: 231 files/min over the last 10 min; about 11h 56m left at that rate
+11806 proof files built, 0 error lines
+rate: 228 files/min over the last 10 min; about 11h 55m left at that rate
 ```
 
 Estimates come from the last 10 minutes of the timestamped log (`tools/progress.sh`).
