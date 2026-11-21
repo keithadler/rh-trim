@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Inter, -apple-system, Segoe UI, sans-serif">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa6ff" stop-opacity=".55"/><stop offset="1" stop-color="#8fa6ff" stop-opacity="0"/></linearGradient></defs>
+<rect width="900" height="380" rx="16" fill="#0b0e17"/>
+<text x="70" y="26" fill="#e8ecf5" font-size="16" font-weight="700">Proof files compiled</text>
+<text x="860" y="26" fill="#9aa3b8" font-size="13" text-anchor="end">updated 11:00 UTC</text>
+<line x1="70" x2="860" y1="330.0" y2="330.0" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="334.0" fill="#7d869c" font-size="11" text-anchor="end">0k</text>
+<line x1="70" x2="860" y1="276.8" y2="276.8" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="280.8" fill="#7d869c" font-size="11" text-anchor="end">35k</text>
+<line x1="70" x2="860" y1="223.6" y2="223.6" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="227.6" fill="#7d869c" font-size="11" text-anchor="end">70k</text>
+<line x1="70" x2="860" y1="170.4" y2="170.4" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="174.4" fill="#7d869c" font-size="11" text-anchor="end">105k</text>
+<line x1="70" x2="860" y1="117.2" y2="117.2" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="121.2" fill="#7d869c" font-size="11" text-anchor="end">140k</text>
+<line x1="70" x2="860" y1="64.0" y2="64.0" stroke="#ffffff" stroke-opacity=".07"/>
+<text x="62" y="68.0" fill="#7d869c" font-size="11" text-anchor="end">175k</text>
+<text x="70.0" y="348" fill="#7d869c" font-size="11" text-anchor="middle">0h</text>
+<text x="137.8" y="348" fill="#7d869c" font-size="11" text-anchor="middle">2h</text>
+<text x="205.7" y="348" fill="#7d869c" font-size="11" text-anchor="middle">4h</text>
+<text x="273.5" y="348" fill="#7d869c" font-size="11" text-anchor="middle">6h</text>
+<text x="341.4" y="348" fill="#7d869c" font-size="11" text-anchor="middle">8h</text>
+<text x="409.2" y="348" fill="#7d869c" font-size="11" text-anchor="middle">10h</text>
+<text x="477.1" y="348" fill="#7d869c" font-size="11" text-anchor="middle">12h</text>
+<text x="544.9" y="348" fill="#7d869c" font-size="11" text-anchor="middle">14h</text>
+<text x="612.8" y="348" fill="#7d869c" font-size="11" text-anchor="middle">16h</text>
+<text x="680.6" y="348" fill="#7d869c" font-size="11" text-anchor="middle">18h</text>
+<text x="748.5" y="348" fill="#7d869c" font-size="11" text-anchor="middle">20h</text>
+<text x="816.3" y="348" fill="#7d869c" font-size="11" text-anchor="middle">22h</text>
+<line x1="460.9" y1="165.8" x2="829.6" y2="64.0" stroke="#c79bff" stroke-width="2" stroke-dasharray="6 6"/>
+<circle cx="829.6" cy="64.0" r="5" fill="#c79bff"/>
+<text x="819.6" y="84.0" fill="#c79bff" font-size="12" text-anchor="end">projected finish 21:52 UTC</text>
+<polygon points="70.0,330.0 70.0,330.0 72.8,328.3 75.7,326.4 78.5,324.5 81.3,322.7 84.1,320.8 87.0,319.0 89.8,317.3 92.6,315.5 95.4,313.8 98.3,312.1 101.1,310.4 103.9,308.8 106.8,307.1 109.6,305.7 112.4,305.7 115.2,305.7 118.1,305.6 120.9,302.0 123.7,300.3 126.5,298.7 129.4,297.0 132.2,295.4 135.0,293.8 137.8,292.2 140.7,290.6 143.5,289.0 146.3,287.4 149.2,285.9 152.0,284.4 154.8,283.0 157.6,281.5 160.5,281.3 164.3,281.2 164.6,281.2 164.9,281.2 165.2,280.9 170.9,278.3 176.6,276.0 182.3,273.7 182.4,273.7 188.0,271.4 193.7,269.1 199.3,266.9 203.6,265.3 205.0,264.8 210.7,262.7 216.4,260.5 222.1,258.4 227.8,256.0 233.5,253.3 239.2,250.7 244.8,248.2 249.0,246.3 249.4,246.2 250.1,245.9 250.1,245.8 255.8,243.4 261.5,240.9 267.2,238.3 272.9,235.8 278.6,233.3 284.3,230.9 286.6,229.9 290.0,228.6 295.7,226.2 301.4,223.7 307.0,221.2 312.7,218.7 318.4,216.4 324.1,213.9 329.8,211.5 335.5,209.2 341.2,206.9 346.9,204.7 352.6,202.5 358.3,200.3 364.0,198.2 369.7,196.0 375.4,193.9 381.0,191.7 386.7,189.5 392.4,187.4 398.1,185.5 403.8,183.3 407.9,182.8 409.5,182.8 415.2,180.7 420.9,178.2 426.6,175.8 432.3,173.7 438.0,171.6 447.2,170.5 449.5,170.5 455.2,168.2 460.9,165.8 460.9,330.0" fill="url(#g)"/>
+<polyline points="70.0,330.0 72.8,328.3 75.7,326.4 78.5,324.5 81.3,322.7 84.1,320.8 87.0,319.0 89.8,317.3 92.6,315.5 95.4,313.8 98.3,312.1 101.1,310.4 103.9,308.8 106.8,307.1 109.6,305.7 112.4,305.7 115.2,305.7 118.1,305.6 120.9,302.0 123.7,300.3 126.5,298.7 129.4,297.0 132.2,295.4 135.0,293.8 137.8,292.2 140.7,290.6 143.5,289.0 146.3,287.4 149.2,285.9 152.0,284.4 154.8,283.0 157.6,281.5 160.5,281.3 164.3,281.2 164.6,281.2 164.9,281.2 165.2,280.9 170.9,278.3 176.6,276.0 182.3,273.7 182.4,273.7 188.0,271.4 193.7,269.1 199.3,266.9 203.6,265.3 205.0,264.8 210.7,262.7 216.4,260.5 222.1,258.4 227.8,256.0 233.5,253.3 239.2,250.7 244.8,248.2 249.0,246.3 249.4,246.2 250.1,245.9 250.1,245.8 255.8,243.4 261.5,240.9 267.2,238.3 272.9,235.8 278.6,233.3 284.3,230.9 286.6,229.9 290.0,228.6 295.7,226.2 301.4,223.7 307.0,221.2 312.7,218.7 318.4,216.4 324.1,213.9 329.8,211.5 335.5,209.2 341.2,206.9 346.9,204.7 352.6,202.5 358.3,200.3 364.0,198.2 369.7,196.0 375.4,193.9 381.0,191.7 386.7,189.5 392.4,187.4 398.1,185.5 403.8,183.3 407.9,182.8 409.5,182.8 415.2,180.7 420.9,178.2 426.6,175.8 432.3,173.7 438.0,171.6 447.2,170.5 449.5,170.5 455.2,168.2 460.9,165.8" fill="none" stroke="#8fa6ff" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="460.9" cy="165.8" r="6" fill="#8fe3b0"/>
+<text x="470.9" y="169.8" fill="#8fe3b0" font-size="13" font-weight="700">108,165</text>
+<line x1="70" x2="860" y1="64.0" y2="64.0" stroke="#8fe3b0" stroke-opacity=".35" stroke-dasharray="2 4"/>
+<text x="76" y="57.0" fill="#8fe3b0" fill-opacity=".8" font-size="11">all 175,187 proof files</text>
+<text x="465" y="370" fill="#7d869c" font-size="11" text-anchor="middle">hours since the first proof file (23:29 UTC)</text>
+</svg>

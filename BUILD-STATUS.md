@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 10:50 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:00 UTC**.
 
-## 60.8% built
+## 61.7% built
 
-`████████████████████████▎░░░░░░░░░░░░░░░`  **106,565** of 175,187 proof files
+`████████████████████████▋░░░░░░░░░░░░░░░`  **108,165** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 33m | 22:23 | 99 files/min | $18.52 | $37 | 0 |
+| 10h 52m | 21:52 | 103 files/min | $18.78 | $36 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1050.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1100.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 77,413 / 141,928 | `██████████▉░░░░░░░░░` 55% |
-| `Formalism` | 16,192 / 18,254 | `█████████████████▋░░` 89% |
+| `Development` | 78,830 / 141,928 | `███████████ ░░░░░░░░` 56% |
+| `Formalism` | 16,374 / 18,254 | `█████████████████▉░░` 90% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,691 / 3,845 | `███████████████████▏` 96% |
+| `ReciprocityTheory` | 3,692 / 3,845 | `███████████████████▏` 96% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 158 / 167 | `██████████████████▉░` 95% |
@@ -29,9 +29,9 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 22 Lean processes running |
-| Memory | 25 GB used of 776 GB |
-| Disk | 114 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 185, 16 Lean processes running |
+| Memory | 21 GB used of 776 GB |
+| Disk | 113 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
