@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 08:49 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 08:59 UTC**.
 
-## 52.8% built
+## 53.6% built
 
-`█████████████████████ ░░░░░░░░░░░░░░░░░░`  **92,505** of 175,187 proof files
+`█████████████████████▍░░░░░░░░░░░░░░░░░░`  **93,884** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 9h 44m | 18:33 | 141 files/min | $15.68 | $31 | 0 |
+| 9h 37m | 18:36 | 141 files/min | $15.94 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0849.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0859.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 66,356 / 141,928 | `█████████▎░░░░░░░░░░` 47% |
-| `Formalism` | 13,751 / 18,254 | `███████████████ ░░░░` 75% |
+| `Development` | 67,586 / 141,928 | `█████████▌░░░░░░░░░░` 48% |
+| `Formalism` | 13,867 / 18,254 | `███████████████▏░░░░` 76% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,586 / 3,845 | `██████████████████▋░` 93% |
+| `ReciprocityTheory` | 3,619 / 3,845 | `██████████████████▊░` 94% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 150 / 167 | `█████████████████▉░░` 90% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 18 Lean processes running |
+| CPUs | 192 vCPUs (96 cores), load 196, 18 Lean processes running |
 | Memory | 23 GB used of 776 GB |
-| Disk | 124 GB free of 207 GB |
+| Disk | 123 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Formalism.LocalToGlobal.CharacterGerms.RowTiePLSmallMain`
-- `Formalism.LocalToGlobal.CharacterGerms.RowTiePAllOps`
-- `Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantDvdTraceOfJacobianFiniteColength`
-- `Formalism.SharpRestriction.Divisibility.GeneratorPowers.FoldPermutation`
-- `Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GermsDerivKernelOfFormal`
-- `Development.AbelianVarietyTheory.Proofs.AlgebraicCurves.AlgebraicIndependentFreeVar`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientModelTopClassesMapStatement`
+- `Development.AbelianVarietyTheory.Proofs.JetHarmonics.PackagesExistFrobeniusComplexConjugationStatement`
+- `Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.Imports`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassPresFormsFiniteGroupHeckeOperatorsStatement`
+- `Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.HolomorphicIsBigOOfHalfPowerBound`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharacterValueAtConjugatePlacePow`
 
 ## What happens when it finishes
 
