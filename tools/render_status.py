@@ -79,27 +79,72 @@ if os.path.exists(old_fixed): os.remove(old_fixed)
 
 # ---------- the page ----------
 done = T['result'] != ''
-head = '✅ **Finished**' if done and 'exit status 0' in T['result'] else ('⚠️ **Stopped**' if done else '🟢 **Compiling**')
+ok = done and 'exit status 0' in T['result']
+race = T.get('race', {}); race_tsv = race.get('tsv', ''); race_log = race.get('log', '')
+race_rows = [r.split('\\t') for r in race_tsv.strip().split('\\n')[1:] if r.strip()] if race_tsv.strip() else []
+# Status of each step of the plan: 'done', 'now', 'next' or 'stop'
+st = {}
+st['build'] = 'done' if ok else ('stop' if done else 'now')
+st['export'] = 'done' if race_rows or 'sha256' in race_log else ('now' if ok else 'next')
+st['race'] = 'done' if len(race_rows) >= 8 else ('now' if st['export'] == 'done' else 'next')
+st['axioms'] = 'done' if 'axioms' in race_log.lower() and st['race'] == 'done' else ('now' if st['race'] == 'done' else 'next')
+st['minify'] = 'next'
+st['publish'] = 'next'
+ICON = {'done': '✅ done', 'now': '🔵 **in progress**', 'next': '⏳ waiting', 'stop': '⚠️ stopped'}
+head = '✅ **Build finished**' if ok else ('⚠️ **Build stopped**' if done else '🔵 **Step 1 of 6: compiling**')
+STEPS = [
+ ('build', '1', 'Build the original', f'Compile all 175,187 proof files, exactly as published. **{pct:.1f}%** so far.'),
+ ('export', '2', 'Exact reduced form', 'Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself.'),
+ ('race', '3', 'Haskell vs Lean', "Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race."),
+ ('axioms', '4', 'Axioms', 'List exactly which axioms the five theorems rest on.'),
+ ('minify', '5', 'The smallest proof', 'Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles.'),
+ ('publish', '6', 'Publish', 'Post the times, the verdicts and the exact sizes here.'),
+]
+MER = {'done': 'done', 'now': 'now', 'next': 'next', 'stop': 'stop'}
+mer = ['```mermaid', 'flowchart LR']
+labels = {'build': '1 Build the<br>original', 'export': '2 Exact<br>reduced form', 'race': '3 Haskell<br>vs Lean',
+          'axioms': '4 Axioms', 'minify': '5 Smallest<br>proof', 'publish': '6 Publish'}
+keys = [k for k, *_ in STEPS]
+mer.append('  ' + ' --> '.join(f'{k}["{labels[k]}"]' for k in keys))
+mer += ['  classDef done fill:#1f6f43,stroke:#8fe3b0,color:#fff',
+        '  classDef now fill:#2b3f8f,stroke:#8fa6ff,color:#fff,stroke-width:3px',
+        '  classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc',
+        '  classDef stop fill:#7a2a2a,stroke:#ff9b9b,color:#fff']
+for k in keys: mer.append(f'  class {k} {MER[st[k]]}')
+mer.append('```')
+
 lines = [
- '# Live: building the claimed Lean proof of the Riemann Hypothesis', '',
- f'{head}: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; '
- f'last update **{now:%Y-%m-%d %H:%M} UTC**.', '',
- '> **The goal:** get the exact reduced form of the proof, then check it with **tenet-hs, a Lean kernel '
- 'written from scratch in Haskell**, and race it against Lean\'s own kernel. Does the Haskell kernel '
- 'accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below '
- 'is step one: the kernels need the compiled proof.', '',
- f'## {pct:.1f}% built', '',
+ '# Live: checking the claimed Lean proof of the Riemann Hypothesis', '',
+ '> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel '
+ "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
+ f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
+ '## The plan', '', *mer, '',
+ '| | Step | What happens | Status |', '|:---:|---|---|---|']
+for k, n, name, what in STEPS:
+    lines.append(f'| **{n}** | **{name}** | {what} | {ICON[st[k]]} |')
+lines += ['', 'Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.', '']
+
+if race_rows:
+    lines += ['## Step 3 results: Haskell vs Lean', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
+    for c in race_rows:
+        if len(c) >= 6:
+            lines.append(f"| {c[0]} | {'✅ accepts' if c[1] == '0' else '❌ exit ' + c[1]} | {c[2]} | {c[3]} s | {c[5]} GB |")
+    lines.append('')
+
+lines += [
+ f'## Step 1: the build, {pct:.1f}%', '',
  f'`{bar(built / TOTAL, 40)}`  **{built:,}** of 175,187 proof files', '',
  '| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |',
  '|:---:|:---:|:---:|:---:|:---:|:---:|',
  f"| {fmt_d(left_min) if left_min else '?'} | {eta.strftime('%H:%M') if eta else '?'} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '',
  f'![Proof files compiled over time](docs/status/{chart_name})', '',
- '## By library', '',
+ '<details><summary><b>By library</b></summary>', '',
  '| Library | Built | Progress |', '|---|---:|---|']
 for name, tot in LIBS:
     b = T['lib'].get(name, 0)
     lines.append(f'| `{name}` | {b:,} / {tot:,} | `{bar(min(b / tot, 1), 20)}` {100 * b / tot:.0f}% |')
-lines += ['', '## The machine', '',
+lines += ['', '</details>', '',
+ '<details><summary><b>The machine</b></summary>', '',
  '| | |', '|---|---|',
  '| Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |',
  f"| CPUs | 192 vCPUs (96 cores), load {T['load']:.0f}, {T['lean_procs']} Lean processes running |",
@@ -107,22 +152,11 @@ lines += ['', '## The machine', '',
  f"| Disk | {T['disk_free_gb']:.0f} GB free of {T['disk_total_gb']:.0f} GB |",
  '| Sandbox | bubblewrap: no network, everything read-only except the build folder |',
  '| Safety net | the disk survives termination, and is snapshotted every 2 hours |', '',
- '## Just compiled', '']
+ '</details>', '',
+ '<details><summary><b>Just compiled</b></summary>', '']
 lines += [f'- `{m}`' for m in reversed(T['recent'])]
-race_tsv = T.get('race', {}).get('tsv', '')
-if race_tsv.strip():
-    lines += ['', '## Kernel race: Haskell vs Lean', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
-    for row in race_tsv.strip().split('\\n')[1:]:
-        c = row.split('\\t')
-        if len(c) >= 6:
-            lines.append(f"| {c[0]} | {'✅ accepts' if c[1] == '0' else '❌ exit ' + c[1]} | {c[2]} | {c[3]} s | {c[5]} GB |")
-lines += ['', '## What happens when it finishes', '',
- '**Queued on the machine; it starts by itself when the build succeeds:**', '',
- '1. **Exact reduced form.** Export the five theorems with `lean4export`. The export holds exactly the declarations the proof uses, measured by Lean itself, not guessed.',
- "2. **Haskell vs Lean.** Time **tenet-hs** (Haskell) against Lean's own kernel on that one export, with peak memory recorded. The same race also runs Lean's paranoid mode, nanoda, con-leche, con-ron, **Tenet** (C#) and **tenet-jvm**, one checker at a time so none slows another. All eight accepted a test export of the same format.",
- "3. **Axioms.** List exactly which axioms the five theorems depend on.",
- '4. **Publish** the times, the verdicts and the exact size here.', '',
- '## Log', '',
+lines += ['', '</details>', '',
+ '<details><summary><b>Log: what went wrong and how it was handled</b></summary>', '',
  "- **2026-11-20 23:29 UTC:** started compiling the original proof, after the source-level reduction turned out to drop real dependencies ([why](README.md)).",
  "- **00:39 to 00:49:** disk full. Lake's per-module `.setup.json` files reached 92 GB (about 4.6 MB each, listing every import). They are now deleted as modules finish; nothing built was lost.",
  "- **01:45:** status counter fixed. Lake re-prints warnings for modules already built, which the old counter counted twice.",
@@ -130,6 +164,7 @@ lines += ['', '## What happens when it finishes', '',
  "- **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.",
  "- **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.",
  "- **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.", '',
+ '</details>', '',
  'Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')

@@ -1,24 +1,52 @@
-# Live: building the claimed Lean proof of the Riemann Hypothesis
+# Live: checking the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:33 UTC**.
+> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-> **The goal:** get the exact reduced form of the proof, then check it with **tenet-hs, a Lean kernel written from scratch in Haskell**, and race it against Lean's own kernel. Does the Haskell kernel accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below is step one: the kernels need the compiled proof.
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 15:34 UTC**
 
-## 79.8% built
+## The plan
 
-`███████████████████████████████▉░░░░░░░░`  **139,713** of 175,187 proof files
+```mermaid
+flowchart LR
+  build["1 Build the<br>original"] --> export["2 Exact<br>reduced form"] --> race["3 Haskell<br>vs Lean"] --> axioms["4 Axioms"] --> minify["5 Smallest<br>proof"] --> publish["6 Publish"]
+  classDef done fill:#1f6f43,stroke:#8fe3b0,color:#fff
+  classDef now fill:#2b3f8f,stroke:#8fa6ff,color:#fff,stroke-width:3px
+  classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc
+  classDef stop fill:#7a2a2a,stroke:#ff9b9b,color:#fff
+  class build now
+  class export next
+  class race next
+  class axioms next
+  class minify next
+  class publish next
+```
+
+| | Step | What happens | Status |
+|:---:|---|---|---|
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **79.8%** so far. | 🔵 **in progress** |
+| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
+| **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
+| **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting |
+| **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting |
+
+Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
+
+## Step 1: the build, 79.8%
+
+`███████████████████████████████▉░░░░░░░░`  **139,846** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 4h 48m | 20:22 | 123 files/min | $25.15 | $33 | 0 |
+| 4h 47m | 20:22 | 123 files/min | $25.18 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1533.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1534.svg)
 
-## By library
+<details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 107,365 / 141,928 | `███████████████▏░░░░` 76% |
+| `Development` | 107,498 / 141,928 | `███████████████▏░░░░` 76% |
 | `Formalism` | 18,195 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
 | `ReciprocityTheory` | 3,795 / 3,845 | `███████████████████▋` 99% |
@@ -26,36 +54,33 @@
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
 
-## The machine
+</details>
+
+<details><summary><b>The machine</b></summary>
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 19 Lean processes running |
-| Memory | 24 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 12 Lean processes running |
+| Memory | 18 GB used of 776 GB |
 | Disk | 94 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
-## Just compiled
+</details>
 
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRegularGermRepresentative`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeBaseChangeLineDegree`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoublingSeesawIdentityStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalOrderBoundaryFormEqStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullbackModelArcPhiDivisor`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericPointInOpenOfInjectiveStatement`
+<details><summary><b>Just compiled</b></summary>
 
-## What happens when it finishes
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInclusionLocalizationReflexStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratorCorrespondencePullbackStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeBasisDeterminantUnit`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlatPrincipalHeightOneStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelFormAlongDvrStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DvrArcExtensionSpecial`
 
-**Queued on the machine; it starts by itself when the build succeeds:**
+</details>
 
-1. **Exact reduced form.** Export the five theorems with `lean4export`. The export holds exactly the declarations the proof uses, measured by Lean itself, not guessed.
-2. **Haskell vs Lean.** Time **tenet-hs** (Haskell) against Lean's own kernel on that one export, with peak memory recorded. The same race also runs Lean's paranoid mode, nanoda, con-leche, con-ron, **Tenet** (C#) and **tenet-jvm**, one checker at a time so none slows another. All eight accepted a test export of the same format.
-3. **Axioms.** List exactly which axioms the five theorems depend on.
-4. **Publish** the times, the verdicts and the exact size here.
-
-## Log
+<details><summary><b>Log: what went wrong and how it was handled</b></summary>
 
 - **2026-11-20 23:29 UTC:** started compiling the original proof, after the source-level reduction turned out to drop real dependencies ([why](README.md)).
 - **00:39 to 00:49:** disk full. Lake's per-module `.setup.json` files reached 92 GB (about 4.6 MB each, listing every import). They are now deleted as modules finish; nothing built was lost.
@@ -64,5 +89,7 @@
 - **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.
 - **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.
 - **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.
+
+</details>
 
 Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).
