@@ -2,7 +2,7 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 15:34 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 15:43 UTC**
 
 ## The plan
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **79.8%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **80.5%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -32,21 +32,21 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 79.8%
+## Step 1: the build, 80.5%
 
-`███████████████████████████████▉░░░░░░░░`  **139,846** of 175,187 proof files
+`████████████████████████████████▏░░░░░░░`  **140,949** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 4h 47m | 20:22 | 123 files/min | $25.18 | $33 | 0 |
+| 4h 44m | 20:28 | 120 files/min | $25.42 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1534.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1543.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 107,498 / 141,928 | `███████████████▏░░░░` 76% |
+| `Development` | 108,601 / 141,928 | `███████████████▎░░░░` 77% |
 | `Formalism` | 18,195 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
 | `ReciprocityTheory` | 3,795 / 3,845 | `███████████████████▋` 99% |
@@ -61,8 +61,8 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 12 Lean processes running |
-| Memory | 18 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 19 Lean processes running |
+| Memory | 24 GB used of 776 GB |
 | Disk | 94 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -71,12 +71,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInclusionLocalizationReflexStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratorCorrespondencePullbackStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeBasisDeterminantUnit`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlatPrincipalHeightOneStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelFormAlongDvrStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DvrArcExtensionSpecial`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusIntegralChangeOfParametrization`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicNonnegIntegralPos`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerBoundLogRatioHalf`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlowupDivisorLocalEquationStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullbackDivisorAmpleMapSupportStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithFormDifferenceBoundStatement`
 
 </details>
 
