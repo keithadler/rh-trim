@@ -4,7 +4,7 @@
 
 **Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.
 
-🔵 **Step 2 of 6: exporting the exact reduced form** · updated every 10 minutes · last update **2026-11-21 23:15 UTC**
+🔵 **Step 2 of 6: exporting the exact reduced form** · updated every 10 minutes · last update **2026-11-21 23:25 UTC**
 
 ## The plan
 
@@ -40,11 +40,11 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $37.16 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $37.42 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261121-2315.svg)
+![Proof files compiled over time](docs/status/chart-20261121-2325.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -65,8 +65,8 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 3, 0 Lean processes running |
-| Memory | 26 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 4, 0 Lean processes running |
+| Memory | 16 GB used of 776 GB |
 | Disk | 431 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
