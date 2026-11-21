@@ -64,8 +64,15 @@ svg.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(TOTAL):.1f}" y2="{Y(TOTAL):.1f}"
 svg.append(f'<text x="{L + 6}" y="{Y(TOTAL) - 7:.1f}" fill="#8fe3b0" fill-opacity=".8" font-size="11">all 175,187 proof files</text>')
 svg.append(f'<text x="{L + pw / 2:.0f}" y="{H - 10}" fill="#7d869c" font-size="11" text-anchor="middle">hours since the first proof file (23:29 UTC)</text>')
 svg.append('</svg>')
-os.makedirs(os.path.join(repo, 'docs'), exist_ok=True)
-open(os.path.join(repo, 'docs', 'status-chart.svg'), 'w').write('\n'.join(svg))
+# A new file name each update: GitHub caches images by path, so a redrawn file would not refresh.
+cdir = os.path.join(repo, 'docs', 'status')
+os.makedirs(cdir, exist_ok=True)
+for old in os.listdir(cdir):
+    if old.startswith('chart-') and old.endswith('.svg'): os.remove(os.path.join(cdir, old))
+chart_name = f'chart-{now:%Y%m%d-%H%M}.svg'
+open(os.path.join(cdir, chart_name), 'w').write('\n'.join(svg))
+old_fixed = os.path.join(repo, 'docs', 'status-chart.svg')
+if os.path.exists(old_fixed): os.remove(old_fixed)
 
 # ---------- the page ----------
 done = T['result'] != ''
@@ -79,7 +86,7 @@ lines = [
  '| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |',
  '|:---:|:---:|:---:|:---:|:---:|:---:|',
  f"| {fmt_d(left_min) if left_min else '?'} | {eta:%H:%M} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '',
- '![Proof files compiled over time](docs/status-chart.svg)', '',
+ f'![Proof files compiled over time](docs/status/{chart_name})', '',
  '## By library', '',
  '| Library | Built | Progress |', '|---|---:|---|']
 for name, tot in LIBS:
