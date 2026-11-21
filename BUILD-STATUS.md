@@ -1,48 +1,48 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 03:58 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 04:08 UTC**.
 
-## 26.9% built
+## 27.8% built
 
-`██████████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **47,188** of 175,187 proof files
+`███████████▏░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **48,766** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 15h 11m | 19:09 | 140 files/min | $8.11 | $32 | 0 |
+| 14h 42m | 18:50 | 143 files/min | $8.37 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0358.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0408.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 29,605 / 141,928 | `████▏░░░░░░░░░░░░░░░` 21% |
-| `Formalism` | 12,077 / 18,254 | `█████████████▏░░░░░░` 66% |
-| `GroundTheory` | 1,079 / 8,507 | `██▌░░░░░░░░░░░░░░░░░` 13% |
-| `ReciprocityTheory` | 2,892 / 3,845 | `███████████████ ░░░░` 75% |
-| `CompanionTheory` | 1,406 / 2,027 | `█████████████▊░░░░░░` 69% |
+| `Development` | 31,011 / 141,928 | `████▎░░░░░░░░░░░░░░░` 22% |
+| `Formalism` | 12,134 / 18,254 | `█████████████▎░░░░░░` 66% |
+| `GroundTheory` | 1,091 / 8,507 | `██▌░░░░░░░░░░░░░░░░░` 13% |
+| `ReciprocityTheory` | 2,981 / 3,845 | `███████████████▌░░░░` 78% |
+| `CompanionTheory` | 1,416 / 2,027 | `█████████████▉░░░░░░` 70% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
-| `Lemmata` | 127 / 167 | `███████████████▏░░░░` 76% |
+| `Lemmata` | 131 / 167 | `███████████████▋░░░░` 78% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 16 Lean processes running |
-| Memory | 22 GB used of 776 GB |
-| Disk | 149 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 190, 23 Lean processes running |
+| Memory | 23 GB used of 776 GB |
+| Disk | 148 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumMultResCycIndicatorSymmStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralSquaredThetaTermsTorusCoordinatesStatement`
-- `Development.WeilBound.CoreStatements.PublishedTheorems.NefNumerics.NefRiemannRoch.TopIntersectionGrowthBoundStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartCombinationPowerStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySurjectiveToPushforwardAmpleLineBundle`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundleUniqueUpToIsoStatement`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeModPowActionIsLocallyConstant`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedIsCrysAndJumpEqZero`
+- `ReciprocityTheory.ClassFieldTheory.LocalClassField.TransportDefs`
+- `Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ConnTors`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultiplicativeVirtualCharacterStatement`
+- `Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.JumpsPFilAntitoneOfLe`
 
 ## What happens when it finishes
 
