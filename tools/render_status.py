@@ -84,6 +84,10 @@ lines = [
  '# Live: building the claimed Lean proof of the Riemann Hypothesis', '',
  f'{head}: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; '
  f'last update **{now:%Y-%m-%d %H:%M} UTC**.', '',
+ '> **The goal:** get the exact reduced form of the proof, then check it with **Tenet-HS, a Lean kernel '
+ 'written from scratch in Haskell**, and race it against Lean\'s own kernel. Does the Haskell kernel '
+ 'accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below '
+ 'is step one: the kernels need the compiled proof.', '',
  f'## {pct:.1f}% built', '',
  f'`{bar(built / TOTAL, 40)}`  **{built:,}** of 175,187 proof files', '',
  '| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |',
@@ -107,7 +111,7 @@ lines += ['', '## The machine', '',
 lines += [f'- `{m}`' for m in reversed(T['recent'])]
 race_tsv = T.get('race', {}).get('tsv', '')
 if race_tsv.strip():
-    lines += ['', '## Kernel race on the exact export', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
+    lines += ['', '## Kernel race: Haskell vs Lean', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
     for row in race_tsv.strip().split('\\n')[1:]:
         c = row.split('\\t')
         if len(c) >= 6:
@@ -115,7 +119,7 @@ if race_tsv.strip():
 lines += ['', '## What happens when it finishes', '',
  '**Queued on the machine; it starts by itself when the build succeeds:**', '',
  '1. **Exact reduced form.** Export the five theorems with `lean4export`. The export holds exactly the declarations the proof uses, measured by Lean itself, not guessed.',
- "2. **Kernel race.** Check that one export, one checker at a time, each timed with peak memory recorded: Lean's kernel, its paranoid mode, nanoda, con-leche, con-ron, and the three clean-room kernels **Tenet** (C#), **tenet-hs** (Haskell) and **tenet-jvm**. All eight accepted a test export of the same format.",
+ "2. **Haskell vs Lean.** Time **tenet-hs** (Haskell) against Lean's own kernel on that one export, with peak memory recorded. The same race also runs Lean's paranoid mode, nanoda, con-leche, con-ron, **Tenet** (C#) and **tenet-jvm**, one checker at a time so none slows another. All eight accepted a test export of the same format.",
  "3. **Axioms.** List exactly which axioms the five theorems depend on.",
  '4. **Publish** the times, the verdicts and the exact size here.', '',
  '## Log', '',

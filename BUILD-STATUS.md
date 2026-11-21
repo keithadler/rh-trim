@@ -1,6 +1,8 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:23 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:33 UTC**.
+
+> **The goal:** get the exact reduced form of the proof, then check it with **Tenet-HS, a Lean kernel written from scratch in Haskell**, and race it against Lean's own kernel. Does the Haskell kernel accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below is step one: the kernels need the compiled proof.
 
 ## 79.1% built
 
@@ -8,9 +10,9 @@
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 4h 52m | 20:15 | 125 files/min | $24.89 | $32 | 0 |
+| 4h 52m | 20:25 | 125 files/min | $25.14 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1523.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1533.svg)
 
 ## By library
 
@@ -49,7 +51,7 @@
 **Queued on the machine; it starts by itself when the build succeeds:**
 
 1. **Exact reduced form.** Export the five theorems with `lean4export`. The export holds exactly the declarations the proof uses, measured by Lean itself, not guessed.
-2. **Kernel race.** Check that one export, one checker at a time, each timed with peak memory recorded: Lean's kernel, its paranoid mode, nanoda, con-leche, con-ron, and the three clean-room kernels **Tenet** (C#), **tenet-hs** (Haskell) and **tenet-jvm**. All eight accepted a test export of the same format.
+2. **Haskell vs Lean.** Time **tenet-hs** (Haskell) against Lean's own kernel on that one export, with peak memory recorded. The same race also runs Lean's paranoid mode, nanoda, con-leche, con-ron, **Tenet** (C#) and **tenet-jvm**, one checker at a time so none slows another. All eight accepted a test export of the same format.
 3. **Axioms.** List exactly which axioms the five theorems depend on.
 4. **Publish** the times, the verdicts and the exact size here.
 
