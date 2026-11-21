@@ -11,13 +11,16 @@ LIBS = [('Development', 141928), ('Formalism', 18254), ('GroundTheory', 8507), (
 PRICE = 1.56
 START = datetime.datetime(2026, 11, 20, 23, 29)          # first proof file, UTC
 now = datetime.datetime.utcnow()
-s = T['series5min']; built = T['built']
-# rate from the last hour of 5-minute buckets (skip the bucket still filling)
-win = s[-13:-1] if len(s) > 13 else s[:-1] or s
-rate = (win[-1] - win[0]) / (5 * (len(win) - 1)) if len(win) > 1 else 0          # files per minute
-left_min = (TOTAL - built) / rate if rate else None
+HIST = sorted(T['history']); built = T['built']
+t0 = HIST[0][0]
+# rate over the last hour of history, in files per minute
+recent = [p for p in HIST if p[0] >= HIST[-1][0] - 3600]
+rate = (recent[-1][1] - recent[0][1]) / ((recent[-1][0] - recent[0][0]) / 60) if len(recent) > 1 and recent[-1][0] > recent[0][0] else 0
+left_min = (TOTAL - built) / rate if rate > 0 else None
 eta = now + datetime.timedelta(minutes=left_min) if left_min else None
-cost = T['uptime'] / 3600 * PRICE
+LAUNCH = datetime.datetime(2026, 11, 20, 22, 40)          # instance launched, UTC
+STOPPED_H = 0.1                                            # Spot interruption 02:06 to 02:12, not billed
+cost = ((now - LAUNCH).total_seconds() / 3600 - STOPPED_H) * PRICE
 cost_end = cost + (left_min / 60 * PRICE if left_min else 0)
 pct = 100 * built / TOTAL
 
@@ -32,13 +35,13 @@ def fmt_d(m):
 # ---------- the SVG chart ----------
 W, H, L, R, TP, B = 900, 380, 70, 40, 64, 50
 pw, ph = W - L - R, H - TP - B
-hours_done = len(s) * 5 / 60
+hours_done = (HIST[-1][0] - t0) / 3600
 hours_total = hours_done + (left_min / 60 if left_min else 0)
 xmax = max(hours_total, hours_done, 1) * 1.04
 X = lambda h: L + pw * h / xmax
 Y = lambda n: TP + ph * (1 - n / TOTAL)
-pts = ' '.join(f'{X((i + 1) * 5 / 60):.1f},{Y(v):.1f}' for i, v in enumerate(s))
-area = f'{X(0):.1f},{Y(0):.1f} ' + pts + f' {X(len(s) * 5 / 60):.1f},{Y(0):.1f}'
+pts = ' '.join(f'{X((t - t0) / 3600):.1f},{Y(v):.1f}' for t, v in HIST)
+area = f'{X(0):.1f},{Y(0):.1f} ' + pts + f' {X(hours_done):.1f},{Y(0):.1f}'
 svg = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" font-family="Inter, -apple-system, Segoe UI, sans-serif">',
        '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa6ff" stop-opacity=".55"/><stop offset="1" stop-color="#8fa6ff" stop-opacity="0"/></linearGradient></defs>',
        f'<rect width="{W}" height="{H}" rx="16" fill="#0b0e17"/>',
@@ -85,7 +88,7 @@ lines = [
  f'`{bar(built / TOTAL, 40)}`  **{built:,}** of 175,187 proof files', '',
  '| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |',
  '|:---:|:---:|:---:|:---:|:---:|:---:|',
- f"| {fmt_d(left_min) if left_min else '?'} | {eta:%H:%M} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '',
+ f"| {fmt_d(left_min) if left_min else '?'} | {eta.strftime('%H:%M') if eta else '?'} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '',
  f'![Proof files compiled over time](docs/status/{chart_name})', '',
  '## By library', '',
  '| Library | Built | Progress |', '|---|---:|---|']
@@ -102,14 +105,24 @@ lines += ['', '## The machine', '',
  '| Safety net | the disk survives termination, and is snapshotted every 2 hours |', '',
  '## Just compiled', '']
 lines += [f'- `{m}`' for m in reversed(T['recent'])]
+race_tsv = T.get('race', {}).get('tsv', '')
+if race_tsv.strip():
+    lines += ['', '## Kernel race on the exact export', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
+    for row in race_tsv.strip().split('\\n')[1:]:
+        c = row.split('\\t')
+        if len(c) >= 6:
+            lines.append(f"| {c[0]} | {'✅ accepts' if c[1] == '0' else '❌ exit ' + c[1]} | {c[2]} | {c[3]} s | {c[5]} GB |")
 lines += ['', '## What happens when it finishes', '',
+ '**Queued on the machine; it starts by itself when the build succeeds:**', '',
  '1. **Exact reduced form.** Export the five theorems with `lean4export`. The export holds exactly the declarations the proof uses, measured by Lean itself, not guessed.',
- "2. **Kernel race.** Check that export with Lean's kernel, **tenet-hs** (Haskell), **Tenet** (C#) and **tenet-jvm**, all timed on this same machine.",
- '3. **Publish** the times, the verdicts and the exact size here.', '',
+ "2. **Kernel race.** Check that one export, one checker at a time, each timed with peak memory recorded: Lean's kernel, its paranoid mode, nanoda, con-leche, con-ron, and the three clean-room kernels **Tenet** (C#), **tenet-hs** (Haskell) and **tenet-jvm**. All eight accepted a test export of the same format.",
+ "3. **Axioms.** List exactly which axioms the five theorems depend on.",
+ '4. **Publish** the times, the verdicts and the exact size here.', '',
  '## Log', '',
  "- **2026-11-20 23:29 UTC:** started compiling the original proof, after the source-level reduction turned out to drop real dependencies ([why](README.md)).",
  "- **00:39 to 00:49:** disk full. Lake's per-module `.setup.json` files reached 92 GB (about 4.6 MB each, listing every import). They are now deleted as modules finish; nothing built was lost.",
- "- **01:45:** status counter fixed. Lake re-prints warnings for modules already built, which the old counter counted twice.", '',
+ "- **01:45:** status counter fixed. Lake re-prints warnings for modules already built, which the old counter counted twice.",
+ "- **02:06 to 02:12:** AWS reclaimed the Spot machine. It stopped with its disk kept, and came back on its own when capacity returned; the build resumed with nothing lost. Everything now restarts by itself after any interruption, and progress is counted from compiled files on disk.", '',
  'Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')
