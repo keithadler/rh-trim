@@ -8,13 +8,14 @@ Updated **2026-11-21 00:50 UTC**, every 10 minutes while the build runs.
 | Sandbox | bubblewrap, no network |
 | Building | the original, byte-exact mirror at `8b83d5e7b` (175,187 proof files) |
 | Compiling since | 2026-11-20 23:25 UTC |
-| Cost so far | about $3.38 (machine at about $1.56/h) |
+| Cost so far | about $0.00 (machine at about $1.56/h) |
 | Why the original | the source-level reduction kept dropping real dependencies; this build gives the exact dependency record to reduce from |
-| Error lines | 0 |
+| Disk | ? |
+| Error lines | ? (since the 00:49 restart) |
+| Incident | 00:39 to 00:49 UTC: disk full. Lake's `.setup.json` files reached 92 GB (about 4.6 MB per module, each listing its whole import closure). They are now deleted as modules finish; nothing built was lost. |
 
 ```
-725 proof files built, 0 error lines
-rate: 944 files/min over the last 0 min; about 3h 04m left at that rate
+waiting for the first files
 ```
 
 Estimates come from the last 10 minutes of the timestamped log (`tools/progress.sh`).
