@@ -1,26 +1,26 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 03:37 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 03:47 UTC**.
 
-## 25.3% built
+## 26.1% built
 
-`██████████▏░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **44,355** of 175,187 proof files
+`██████████▍░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **45,755** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 15h 01m | 18:39 | 145 files/min | $7.59 | $31 | 0 |
+| 15h 06m | 18:54 | 143 files/min | $7.85 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0337.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0347.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 26,876 / 141,928 | `███▊░░░░░░░░░░░░░░░░` 19% |
-| `Formalism` | 12,071 / 18,254 | `█████████████▏░░░░░░` 66% |
+| `Development` | 28,198 / 141,928 | `███▉░░░░░░░░░░░░░░░░` 20% |
+| `Formalism` | 12,074 / 18,254 | `█████████████▏░░░░░░` 66% |
 | `GroundTheory` | 1,079 / 8,507 | `██▌░░░░░░░░░░░░░░░░░` 13% |
 | `ReciprocityTheory` | 2,890 / 3,845 | `███████████████ ░░░░` 75% |
-| `CompanionTheory` | 1,310 / 2,027 | `████████████▉░░░░░░░` 65% |
+| `CompanionTheory` | 1,385 / 2,027 | `█████████████▋░░░░░░` 68% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
 | `Lemmata` | 127 / 167 | `███████████████▏░░░░` 76% |
 
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 24 Lean processes running |
-| Memory | 27 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 25 Lean processes running |
+| Memory | 28 GB used of 776 GB |
 | Disk | 149 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompletedLocalRingEndomorphismCharacterAct`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMulOfValLe`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValGPtOfStalk`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationBaseChangeCompletedLocalAbelianLoc`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreUniformisedModelPointGroupPullbackStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionRingHomExtPadicAlgClosureStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.AxisTrivialLineBundleGroupPullbackStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeriodsPulledDegenerationDataStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveSemilinearLiftBaseChangeBijective`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodScalarCoordinatesSymmBimultUpToUnits`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoCompValuesMulStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationBundleDescendsAlongGaloisExtension`
 
 ## What happens when it finishes
 
