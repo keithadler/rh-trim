@@ -4,7 +4,7 @@
 
 **Next up: the Haskell run** (step 3) starts by itself about **20:43 UTC**, as soon as the build finishes.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 20:06 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 20:16 UTC**
 
 ## The plan
 
@@ -25,7 +25,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **97.5%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **98.2%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ starts about **20:43 UTC**, when the build finishes |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ starts about **20:43 UTC**, when the build finishes |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -34,25 +34,25 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 97.5%
+## Step 1: the build, 98.2%
 
-`██████████████████████████████████████▉░`  **170,758** of 175,187 proof files
+`███████████████████████████████████████▎`  **171,954** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 0h 37m | 20:43 | 119 files/min | $32.24 | $33 | 0 |
+| 0h 27m | 20:43 | 118 files/min | $32.50 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-2006.svg)
+![Proof files compiled over time](docs/status/chart-20261121-2016.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 137,629 / 141,928 | `███████████████████▍` 97% |
-| `Formalism` | 18,249 / 18,254 | `███████████████████▉` 100% |
-| `GroundTheory` | 8,388 / 8,507 | `███████████████████▋` 99% |
+| `Development` | 138,803 / 141,928 | `███████████████████▌` 98% |
+| `Formalism` | 18,254 / 18,254 | `████████████████████` 100% |
+| `GroundTheory` | 8,403 / 8,507 | `███████████████████▊` 99% |
 | `ReciprocityTheory` | 3,845 / 3,845 | `████████████████████` 100% |
-| `CompanionTheory` | 2,026 / 2,027 | `███████████████████▉` 100% |
+| `CompanionTheory` | 2,027 / 2,027 | `████████████████████` 100% |
 | `PositivityTheory` | 449 / 449 | `████████████████████` 100% |
 | `Lemmata` | 167 / 167 | `████████████████████` 100% |
 
@@ -63,8 +63,8 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 14 Lean processes running |
-| Memory | 21 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 16 Lean processes running |
+| Memory | 25 GB used of 776 GB |
 | Disk | 77 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -73,12 +73,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicIntegersHenselianFiniteResidueStatement`
-- `Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsAutStableSLMatrixGroupImageBlockDiagPartStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPushoutTorsorNTorsionCharacter`
-- `Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BlockDiagPartOfRatIdempotentOneAndMulOfTriangulaStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruenceUnitsBasisOfNbhdsStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraMapQrOneBijective`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectiveOfUnramified`
+- `GroundTheory.PAdicHodge.ExtRobbaLimit`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupremumTwistingOpensEqTopStatement`
+- `Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.AlgebraEquivSetup.TrivOfLe`
+- `Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IntegralStructures.GeometricFlagBases.PrimeLevelLocalization.PCongOf`
+- `Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalInvariantTensorStatement`
 
 </details>
 
