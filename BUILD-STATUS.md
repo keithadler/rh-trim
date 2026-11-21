@@ -1,24 +1,24 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:17 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:27 UTC**.
 
-## 34.5% built
+## 35.4% built
 
-`█████████████▊░░░░░░░░░░░░░░░░░░░░░░░░░░`  **60,375** of 175,187 proof files
+`██████████████▏░░░░░░░░░░░░░░░░░░░░░░░░░`  **62,048** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 34m | 16:52 | 165 files/min | $10.19 | $28 | 0 |
+| 11h 26m | 16:54 | 165 files/min | $10.45 | $28 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0517.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0527.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 41,777 / 141,928 | `█████▉░░░░░░░░░░░░░░` 29% |
-| `Formalism` | 12,429 / 18,254 | `█████████████▌░░░░░░` 68% |
-| `GroundTheory` | 1,554 / 8,507 | `███▋░░░░░░░░░░░░░░░░` 18% |
+| `Development` | 43,377 / 141,928 | `██████ ░░░░░░░░░░░░░` 31% |
+| `Formalism` | 12,434 / 18,254 | `█████████████▌░░░░░░` 68% |
+| `GroundTheory` | 1,622 / 8,507 | `███▊░░░░░░░░░░░░░░░░` 19% |
 | `ReciprocityTheory` | 3,058 / 3,845 | `███████████████▉░░░░` 80% |
 | `CompanionTheory` | 1,422 / 2,027 | `██████████████ ░░░░░` 70% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 21 Lean processes running |
-| Memory | 22 GB used of 776 GB |
-| Disk | 142 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 19 Lean processes running |
+| Memory | 21 GB used of 776 GB |
+| Disk | 141 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocallyConstantEtaleTraceAddCharHermitianKerneStatement`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegOneMemNormOfValuationEqStatement`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StabilizerStableLatticeLeIntegralUnitsSubgroup`
-- `Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerGlobalFactors.TendstoUH`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalL2NormOneIsometry`
-- `Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairCoordinatesTransportInnerData`
+- `Formalism.WachLatticeTwists.CoprimeLiftBounds.WachTwistTheoremDeltaClause`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImgEqOfInvariant`
+- `Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsAlgebraicHeckeCharOfWeightOfIntegerExpo`
+- `Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.TwistStripLimits.LengthTwistsOfStrip`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupProperties`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PaleyWienerDecayStatement`
 
 ## What happens when it finishes
 
