@@ -2,9 +2,9 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.
+**The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.
 
-🔵 **Step 2 of 6: exporting the exact reduced form** · updated every 10 minutes · last update **2026-11-21 23:35 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-21 23:41 UTC**
 
 ## The plan
 
@@ -16,8 +16,8 @@ flowchart LR
   classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc
   classDef stop fill:#7a2a2a,stroke:#ff9b9b,color:#fff
   class build done
-  class export now
-  class race next
+  class export done
+  class race now
   class axioms next
   class minify next
   class publish next
@@ -26,13 +26,27 @@ flowchart LR
 | | Step | What happens | Status |
 |:---:|---|---|---|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done |
-| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | 🔵 **in progress** |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
+| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting |
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
+
+## Step 2 result: the exact reduced form
+
+Exported from the unmodified build with `lean4export` 3.1.0 (Lean 4.33.1), in the no-network sandbox, starting from the five main theorems. This is everything the proof uses, measured by Lean itself, including the parts of Mathlib and Lean's core library it needs.
+
+| | |
+|---|---|
+| Declarations | **1,468,414**: 1,246,109 theorems, 214,238 definitions, 7,969 inductive types, 91 opaque, 4 quotient |
+| Axioms | **3, all Lean's standard ones:** `propext`, `Quot.sound`, `Classical.choice` |
+| Size | 61.6 GB of NDJSON, 1,065,214,329 expressions, 14,065,146 names |
+| Export time | 2 h 17 m, 163 GB peak memory, exit 0 |
+| sha256 | `4301ce4828d397c728e87f3e6a1251aa42abe5e12809bb9e0b73cc3d33072e7e` |
+
+**Checking now:** `lean-kernel`, started 23:22 UTC (0 of 8 checkers finished). Order: Lean kernel, Lean paranoid, nanoda, con-leche, con-ron, Tenet, **tenet-hs**, tenet-jvm.
 
 ## Step 1: the build ✅ done
 
@@ -40,11 +54,11 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $37.68 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $37.83 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261121-2335.svg)
+![Proof files compiled over time](docs/status/chart-20261121-2341.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -66,7 +80,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
 | CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
-| Memory | 48 GB used of 776 GB |
+| Memory | 62 GB used of 776 GB |
 | Disk | 431 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |

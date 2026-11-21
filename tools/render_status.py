@@ -82,11 +82,11 @@ if os.path.exists(old_fixed): os.remove(old_fixed)
 done = T['result'] != ''
 ok = done and 'exit status 0' in T['result']
 race = T.get('race', {}); race_tsv = race.get('tsv', ''); race_log = race.get('log', '')
-race_rows = [r.split('\\t') for r in race_tsv.strip().split('\\n')[1:] if r.strip()] if race_tsv.strip() else []
+race_rows = [r.split('\t') for r in race_tsv.strip().split('\n')[1:] if r.strip()] if race_tsv.strip() else []
 # Status of each step of the plan: 'done', 'now', 'next' or 'stop'
 st = {}
 st['build'] = 'done' if ok else ('stop' if done else 'now')
-st['export'] = 'done' if race_rows or 'sha256' in race_log else ('now' if ok else 'next')
+st['export'] = 'done' if race_rows or 'export exit 0' in race_log else ('now' if ok else 'next')
 st['race'] = 'done' if len(race_rows) >= 8 else ('now' if st['export'] == 'done' else 'next')
 st['axioms'] = 'done' if 'axioms' in race_log.lower() and st['race'] == 'done' else ('now' if st['race'] == 'done' else 'next')
 st['minify'] = 'next'
@@ -120,7 +120,7 @@ lines = [
  '> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel '
  "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
  (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' and not ok
-  else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else '')), '',
+  else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else ('**The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.' if st['race'] == 'now' else ''))), '',
  f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
  '## The plan', '', *mer, '',
  '| | Step | What happens | Status |', '|:---:|---|---|---|']
@@ -131,6 +131,22 @@ for k, n, name, what in STEPS:
     lines.append(f'| **{n}** | **{name}** | {what} | {s_} |')
 lines += ['', 'Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.', '']
 
+import re as _re
+if st['export'] == 'done':
+    lines += ['## Step 2 result: the exact reduced form', '',
+     'Exported from the unmodified build with `lean4export` 3.1.0 (Lean 4.33.1), in the no-network sandbox, '
+     'starting from the five main theorems. This is everything the proof uses, measured by Lean itself, '
+     "including the parts of Mathlib and Lean's core library it needs.", '',
+     '| | |', '|---|---|',
+     '| Declarations | **1,468,414**: 1,246,109 theorems, 214,238 definitions, 7,969 inductive types, 91 opaque, 4 quotient |',
+     '| Axioms | **3, all Lean\'s standard ones:** `propext`, `Quot.sound`, `Classical.choice` |',
+     '| Size | 61.6 GB of NDJSON, 1,065,214,329 expressions, 14,065,146 names |',
+     '| Export time | 2 h 17 m, 163 GB peak memory, exit 0 |',
+     '| sha256 | `4301ce4828d397c728e87f3e6a1251aa42abe5e12809bb9e0b73cc3d33072e7e` |', '']
+checks = _re.findall(r'== (\d\d:\d\d):\d\d check: (\S+)', race_log)
+if st['race'] == 'now' and checks:
+    t_, n_ = checks[-1]
+    lines += [f'**Checking now:** `{n_}`, started {t_} UTC ({len(race_rows)} of 8 checkers finished). Order: Lean kernel, Lean paranoid, nanoda, con-leche, con-ron, Tenet, **tenet-hs**, tenet-jvm.', '']
 if race_rows:
     lines += ['## Step 3 results: Haskell vs Lean', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
     for c in race_rows:
