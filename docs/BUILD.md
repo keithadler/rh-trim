@@ -1,5 +1,9 @@
 # Building the reduced version
 
+> **Want the original instead?** It built cleanly on 2026-11-21: see
+> [BUILD-ORIGINAL.md](BUILD-ORIGINAL.md). The reduced version below drops real dependencies (see the
+> README), so expect it to fail.
+
 Step-by-step instructions for one cloud machine, from nothing to a build report.
 
 **Want to help build the *original*, as published?** Join the distributed replay at

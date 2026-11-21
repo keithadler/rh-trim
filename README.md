@@ -55,9 +55,11 @@ commit. It applies the reduction (text edits only), and checks the result byte f
 against a published fingerprint. That takes about 2 minutes plus the 1.7 GB clone. Nothing
 is compiled or run.
 
-**To build it,** follow [docs/BUILD.md](docs/BUILD.md). One script does it on a cloud machine:
-about 4 to 6 hours and about $9 to $13 on an AWS spot `c7a.32xlarge`, by estimate. Build only
-inside a sandbox or on a throwaway machine, because compiling Lean runs code.
+**To build the original proof yourself,** follow [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).
+One script, `build-original.sh`, did it for us on one AWS Spot `m6a.48xlarge`: about 21 hours and
+about $35, all 175,187 files, 0 errors. Build only on a throwaway machine, because compiling Lean
+runs code. (The reduced version's guide, [docs/BUILD.md](docs/BUILD.md), builds a reduction we
+know drops real dependencies; it is kept for the record.)
 
 To help build the *original*, join the distributed replay at
 [rohanarun/alpoge-rh-replay](https://github.com/rohanarun/alpoge-rh-replay).
