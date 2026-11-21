@@ -2,7 +2,7 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 16:44 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 16:54 UTC**
 
 ## The plan
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **84.8%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **85.4%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -32,26 +32,26 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 84.8%
+## Step 1: the build, 85.4%
 
-`█████████████████████████████████▉░░░░░░`  **148,528** of 175,187 proof files
+`██████████████████████████████████▏░░░░░`  **149,613** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 3h 38m | 20:22 | 122 files/min | $26.99 | $33 | 0 |
+| 3h 39m | 20:33 | 117 files/min | $27.25 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1644.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1654.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 115,785 / 141,928 | `████████████████▎░░░` 82% |
+| `Development` | 116,828 / 141,928 | `████████████████▍░░░` 82% |
 | `Formalism` | 18,225 / 18,254 | `███████████████████▉` 100% |
-| `GroundTheory` | 8,301 / 8,507 | `███████████████████▌` 98% |
-| `ReciprocityTheory` | 3,834 / 3,845 | `███████████████████▉` 100% |
+| `GroundTheory` | 8,334 / 8,507 | `███████████████████▌` 98% |
+| `ReciprocityTheory` | 3,839 / 3,845 | `███████████████████▉` 100% |
 | `CompanionTheory` | 2,010 / 2,027 | `███████████████████▊` 99% |
-| `PositivityTheory` | 203 / 449 | `█████████ ░░░░░░░░░░` 45% |
+| `PositivityTheory` | 207 / 449 | `█████████▏░░░░░░░░░░` 46% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
 
 </details>
@@ -61,9 +61,9 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 17 Lean processes running |
-| Memory | 21 GB used of 776 GB |
-| Disk | 89 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 16 Lean processes running |
+| Memory | 26 GB used of 776 GB |
+| Disk | 88 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
@@ -71,12 +71,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterEqOneNearOne`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCovolumeCommonAdelicFixatorOfColumns`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormalizedValuationUniformizerStatement`
-- `Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ThetaIdempotents.ThetaCoefficients.LFibExC`
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesCongruenceSubgroupIsOpenIsCompact`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceUnderFixedSplitPlace`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CIMulIdx`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EV0MemGoodFStatement`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FockVacMovedTopStatement`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CofiniteLabelsAtStatement`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtPtsHLtG`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SizeAtAltAlt`
 
 </details>
 
