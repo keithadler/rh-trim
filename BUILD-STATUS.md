@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 12:10 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 12:21 UTC**.
 
-## 67.7% built
+## 68.5% built
 
-`███████████████████████████ ░░░░░░░░░░░░`  **118,654** of 175,187 proof files
+`███████████████████████████▍░░░░░░░░░░░░`  **119,984** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 6h 21m | 18:32 | 148 files/min | $20.62 | $31 | 0 |
+| 6h 25m | 18:46 | 143 files/min | $20.88 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1210.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1221.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 87,559 / 141,928 | `████████████▎░░░░░░░` 62% |
-| `Formalism` | 18,093 / 18,254 | `███████████████████▊` 99% |
-| `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,726 / 3,845 | `███████████████████▍` 97% |
+| `Development` | 88,698 / 141,928 | `████████████▍░░░░░░░` 62% |
+| `Formalism` | 18,142 / 18,254 | `███████████████████▉` 99% |
+| `GroundTheory` | 7,340 / 8,507 | `█████████████████▎░░` 86% |
+| `ReciprocityTheory` | 3,741 / 3,845 | `███████████████████▍` 97% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 198, 28 Lean processes running |
-| Memory | 37 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 194, 22 Lean processes running |
+| Memory | 26 GB used of 776 GB |
 | Disk | 105 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.Adapted`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralUnfoldingLeOfTranslateCoverStatement`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardNegativeSignsDiagonalFrameEqSignature`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneLeNormRationalTranslateStatement`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralHaarEqZeroOfFibreIntegralsEqZeroStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaloisCharacterAntiRamifiedExactlyStatement`
+- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators`
+- `Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.GenericCharacterTrivialSuperdiagonalOffExceptionStatement`
+- `Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviZeroInCompatibleChart`
+- `Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothOnOfChartComposition`
+- `Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull`
 
 ## What happens when it finishes
 
