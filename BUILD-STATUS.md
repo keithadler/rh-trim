@@ -2,7 +2,7 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 17:14 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 17:24 UTC**
 
 ## The plan
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **86.5%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **87.2%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -32,27 +32,27 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 86.5%
+## Step 1: the build, 87.2%
 
-`██████████████████████████████████▌░░░░░`  **151,623** of 175,187 proof files
+`██████████████████████████████████▊░░░░░`  **152,717** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 3h 40m | 20:54 | 107 files/min | $27.78 | $34 | 0 |
+| 3h 29m | 20:53 | 107 files/min | $28.04 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1714.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1724.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 118,823 / 141,928 | `████████████████▋░░░` 84% |
-| `Formalism` | 18,225 / 18,254 | `███████████████████▉` 100% |
-| `GroundTheory` | 8,346 / 8,507 | `███████████████████▌` 98% |
+| `Development` | 119,795 / 141,928 | `████████████████▉░░░` 84% |
+| `Formalism` | 18,227 / 18,254 | `███████████████████▉` 100% |
+| `GroundTheory` | 8,353 / 8,507 | `███████████████████▋` 98% |
 | `ReciprocityTheory` | 3,839 / 3,845 | `███████████████████▉` 100% |
 | `CompanionTheory` | 2,010 / 2,027 | `███████████████████▊` 99% |
-| `PositivityTheory` | 210 / 449 | `█████████▎░░░░░░░░░░` 47% |
-| `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
+| `PositivityTheory` | 321 / 449 | `██████████████▎░░░░░` 71% |
+| `Lemmata` | 167 / 167 | `████████████████████` 100% |
 
 </details>
 
@@ -61,9 +61,9 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 18 Lean processes running |
+| CPUs | 192 vCPUs (96 cores), load 199, 16 Lean processes running |
 | Memory | 23 GB used of 776 GB |
-| Disk | 87 GB free of 207 GB |
+| Disk | 86 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
@@ -71,12 +71,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.OrbitalIntegrals.TwistedOrbitalIntegrals.QuotIndep`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.OrbitalIntegrals.TwistedOrbitalIntegrals.HaarComm`
-- `Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.Hilbert90BaseChange`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.OrbitalIntegrals.TwistedOrbitalIntegrals.QuotMass`
-- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MultiplicityPosOfRestrictedEigenformCopy`
-- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LevelProdStatement`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsCuspValueLePhiOfHilbertSamuel`
+- `PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.LocalFieldEmbeddingMem`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalTorusIntegralIdentity`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerAdditiveCharacterEquivarianceStatement`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.SpectralEigenvalues.BetaSurj`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.SpectralEigenvalues.LamW`
 
 </details>
 
