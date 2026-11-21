@@ -122,6 +122,13 @@ lines = [
  (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' and not ok
   else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else ('**The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.' if st['race'] == 'now' else ''))), '',
  f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
+ '| The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |',
+ '|---|---|',
+ '| Source | byte-exact mirror [Deicyde/riemann-hypothesis](https://github.com/Deicyde/riemann-hypothesis) at `8b83d5e`, Lean 4.33.1, Mathlib v4.33.1 |',
+ '| Size | 175,187 files, about 17.5 million lines, 1 docstring |',
+ '| The five theorems checked | `riemannHypothesis`, `riemannZeta_eq_zero_re`, `LFunction_ne_zero_of_half_lt_re`, `LFunction_eq_zero_re`, `LFunction_eq_zero_re_of_isPrimitive` |',
+ '| Build it yourself | [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md): one script, about 21 hours and $35 on one AWS Spot machine |',
+ '',
  '## The plan', '', *mer, '',
  '| | Step | What happens | Status |', '|:---:|---|---|---|']
 for k, n, name, what in STEPS:
@@ -143,15 +150,32 @@ if st['export'] == 'done':
      '| Size | 61.6 GB of NDJSON, 1,065,214,329 expressions, 14,065,146 names |',
      '| Export time | 2 h 17 m, 163 GB peak memory, exit 0 |',
      '| sha256 | `4301ce4828d397c728e87f3e6a1251aa42abe5e12809bb9e0b73cc3d33072e7e` |', '']
-checks = _re.findall(r'== (\d\d:\d\d):\d\d check: (\S+)', race_log)
-if st['race'] == 'now' and checks:
-    t_, n_ = checks[-1]
-    lines += [f'**Checking now:** `{n_}`, started {t_} UTC ({len(race_rows)} of 8 checkers finished). Order: Lean kernel, Lean paranoid, nanoda, con-leche, con-ron, Tenet, **tenet-hs**, tenet-jvm.', '']
-if race_rows:
-    lines += ['## Step 3 results: Haskell vs Lean', '', '| Checker | Verdict | Wall time | CPU (user) | Peak memory |', '|---|:---:|---:|---:|---:|']
-    for c in race_rows:
-        if len(c) >= 6:
-            lines.append(f"| {c[0]} | {'✅ accepts' if c[1] == '0' else '❌ exit ' + c[1]} | {c[2]} | {c[3]} s | {c[5]} GB |")
+KERNELS = [
+ ('lean-kernel', "Lean's kernel", "Lean 4.36's own type checker, the reference"),
+ ('lean-kernel-paranoid', 'Lean paranoid', 'the same kernel with extra checks'),
+ ('nanoda', 'nanoda', 'independent kernel in Rust'),
+ ('con-leche', 'con-leche', 'independent checker'),
+ ('con-ron', 'con-ron', 'independent checker'),
+ ('tenet', '**Tenet**', 'written from scratch in C# ([repo](https://github.com/keithadler/tenet))'),
+ ('tenet-hs', '**tenet-hs**', 'written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs))'),
+ ('tenet-jvm', '**tenet-jvm**', 'written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm))'),
+]
+done_rows = {c[0]: c for c in race_rows if len(c) >= 6}
+cur = T.get('checker') or {}
+if st['export'] == 'done':
+    lines += ['## Step 3: the kernel race, Haskell vs Lean', '',
+     'Each checker reads the same 61.6 GB export and checks every declaration from scratch, one checker at a time '
+     'so none slows another. Wall time is real time; CPU about equal to wall time means one core.', '',
+     '| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |', '|:---:|---|---|:---:|---:|---:|---:|']
+    for n_, (key, name, what) in enumerate(KERNELS, 1):
+        if key in done_rows:
+            c = done_rows[key]
+            verdict = '✅ accepts' if c[1] == '0' else f'❌ exit {c[1]}'
+            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
+        elif cur.get('name') == key:
+            lines.append(f"| {n_} | {name} | {what} | 🔵 **checking** | {fmt_d(cur['elapsed_s'] / 60)} so far | {cur['cpu_s']:,} s | {cur['rss_gb']:.0f} GB now |")
+        else:
+            lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
     lines.append('')
 
 lines += [
@@ -183,9 +207,10 @@ lines += ['', '</details>', '',
  '| Sandbox | bubblewrap: no network, everything read-only except the build folder |',
  '| Safety net | the disk survives termination, and is snapshotted every 2 hours |', '',
  '</details>', '',
- '<details><summary><b>Just compiled</b></summary>', '']
-lines += [f'- `{m}`' for m in reversed(T['recent'])]
-lines += ['', '</details>', '',
+ ]
+if not ok:
+    lines += ['<details><summary><b>Just compiled</b></summary>', ''] + [f'- `{m}`' for m in reversed(T['recent'])] + ['', '</details>', '']
+lines += [
  '<details><summary><b>Log: what went wrong and how it was handled</b></summary>', '',
  "- **2026-11-20 23:29 UTC:** started compiling the original proof, after the source-level reduction turned out to drop real dependencies ([why](README.md)).",
  "- **00:39 to 00:49:** disk full. Lake's per-module `.setup.json` files reached 92 GB (about 4.6 MB each, listing every import). They are now deleted as modules finish; nothing built was lost.",
@@ -194,8 +219,11 @@ lines += ['', '</details>', '',
  "- **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.",
  "- **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.",
  "- **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.",
- "- **20:52:38: build finished.** `Build completed successfully (183893 jobs)`: all 175,187 proof files, 0 errors, no `sorry`, 6 h 56 m of compiling since the last restart. The export (step 2) started at 20:53.", '',
+ "- **20:52:38: build finished.** `Build completed successfully (183893 jobs)`: all 175,187 proof files, 0 errors, no `sorry`, 6 h 56 m of compiling since the last restart. The export (step 2) started at 20:53.",
+ "- **21:30:** the export file was growing toward the disk's limit (51 GB free, about 0.66 GB a minute). The disk was grown from 200 GB to 600 GB while running; nothing stopped.",
+ "- **23:10: export finished.** 1,468,414 declarations, 61.6 GB, exit 0, in 2 h 17 m. Only Lean's three standard axioms appear.",
+ "- **23:22: the kernel race started** with Lean's kernel.", '',
  '</details>', '',
- 'Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).']
+ 'Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')

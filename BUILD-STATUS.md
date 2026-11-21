@@ -4,7 +4,14 @@
 
 **The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-21 23:41 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-21 23:44 UTC**
+
+| The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
+|---|---|
+| Source | byte-exact mirror [Deicyde/riemann-hypothesis](https://github.com/Deicyde/riemann-hypothesis) at `8b83d5e`, Lean 4.33.1, Mathlib v4.33.1 |
+| Size | 175,187 files, about 17.5 million lines, 1 docstring |
+| The five theorems checked | `riemannHypothesis`, `riemannZeta_eq_zero_re`, `LFunction_ne_zero_of_half_lt_re`, `LFunction_eq_zero_re`, `LFunction_eq_zero_re_of_isPrimitive` |
+| Build it yourself | [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md): one script, about 21 hours and $35 on one AWS Spot machine |
 
 ## The plan
 
@@ -46,7 +53,20 @@ Exported from the unmodified build with `lean4export` 3.1.0 (Lean 4.33.1), in th
 | Export time | 2 h 17 m, 163 GB peak memory, exit 0 |
 | sha256 | `4301ce4828d397c728e87f3e6a1251aa42abe5e12809bb9e0b73cc3d33072e7e` |
 
-**Checking now:** `lean-kernel`, started 23:22 UTC (0 of 8 checkers finished). Order: Lean kernel, Lean paranoid, nanoda, con-leche, con-ron, Tenet, **tenet-hs**, tenet-jvm.
+## Step 3: the kernel race, Haskell vs Lean
+
+Each checker reads the same 61.6 GB export and checks every declaration from scratch, one checker at a time so none slows another. Wall time is real time; CPU about equal to wall time means one core.
+
+| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |
+|:---:|---|---|:---:|---:|---:|---:|
+| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 0h 20m so far | 1,246 s | 70 GB now |
+| 2 | Lean paranoid | the same kernel with extra checks | ⏳ queued | | | |
+| 3 | nanoda | independent kernel in Rust | ⏳ queued | | | |
+| 4 | con-leche | independent checker | ⏳ queued | | | |
+| 5 | con-ron | independent checker | ⏳ queued | | | |
+| 6 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | ⏳ queued | | | |
+| 7 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | ⏳ queued | | | |
+| 8 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏳ queued | | | |
 
 ## Step 1: the build ✅ done
 
@@ -54,11 +74,11 @@ Exported from the unmodified build with `lean4export` 3.1.0 (Lean 4.33.1), in th
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $37.83 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $37.91 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261121-2341.svg)
+![Proof files compiled over time](docs/status/chart-20261121-2344.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -80,21 +100,10 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
 | CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
-| Memory | 62 GB used of 776 GB |
+| Memory | 77 GB used of 776 GB |
 | Disk | 431 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
-
-</details>
-
-<details><summary><b>Just compiled</b></summary>
-
-- `Main`
-- `Supplements.Kernels.MainTheoremsAll`
-- `Supplements.Kernels.MainTheoremsCritical`
-- `Supplements.Kernels.MainTheorems`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.SmallClassNumbers.CorGKOf`
-- `Development.AutomorphicArithmetic.CharacterBoxes.MainConclusion`
 
 </details>
 
@@ -108,7 +117,10 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 - **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.
 - **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.
 - **20:52:38: build finished.** `Build completed successfully (183893 jobs)`: all 175,187 proof files, 0 errors, no `sorry`, 6 h 56 m of compiling since the last restart. The export (step 2) started at 20:53.
+- **21:30:** the export file was growing toward the disk's limit (51 GB free, about 0.66 GB a minute). The disk was grown from 200 GB to 600 GB while running; nothing stopped.
+- **23:10: export finished.** 1,468,414 declarations, 61.6 GB, exit 0, in 2 h 17 m. Only Lean's three standard axioms appear.
+- **23:22: the kernel race started** with Lean's kernel.
 
 </details>
 
-Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).
+Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).
