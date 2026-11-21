@@ -19,7 +19,7 @@ rate = (recent[-1][1] - recent[0][1]) / ((recent[-1][0] - recent[0][0]) / 60) if
 left_min = (TOTAL - built) / rate if rate > 0 else None
 eta = now + datetime.timedelta(minutes=left_min) if left_min else None
 LAUNCH = datetime.datetime(2026, 11, 20, 22, 40)          # instance launched, UTC
-STOPPED_H = 0.1                                            # Spot interruption 02:06 to 02:12, not billed
+STOPPED_H = 0.15                                           # Spot interruption 02:06 to 02:12, not billed
 cost = ((now - LAUNCH).total_seconds() / 3600 - STOPPED_H) * PRICE
 cost_end = cost + (left_min / 60 * PRICE if left_min else 0)
 pct = 100 * built / TOTAL
@@ -122,7 +122,8 @@ lines += ['', '## What happens when it finishes', '',
  "- **2026-11-20 23:29 UTC:** started compiling the original proof, after the source-level reduction turned out to drop real dependencies ([why](README.md)).",
  "- **00:39 to 00:49:** disk full. Lake's per-module `.setup.json` files reached 92 GB (about 4.6 MB each, listing every import). They are now deleted as modules finish; nothing built was lost.",
  "- **01:45:** status counter fixed. Lake re-prints warnings for modules already built, which the old counter counted twice.",
- "- **02:06 to 02:12:** AWS reclaimed the Spot machine. It stopped with its disk kept, and came back on its own when capacity returned; the build resumed with nothing lost. Everything now restarts by itself after any interruption, and progress is counted from compiled files on disk.", '',
+ "- **02:06 to 02:12:** AWS reclaimed the Spot machine. It stopped with its disk kept, and came back on its own when capacity returned; the build resumed with nothing lost. Everything now restarts by itself after any interruption, and progress is counted from compiled files on disk.",
+ "- **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.", '',
  'Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')
