@@ -1,24 +1,24 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 13:01 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 13:42 UTC**.
 
-## 71.9% built
+## 72.4% built
 
-`████████████████████████████▋░░░░░░░░░░░`  **125,901** of 175,187 proof files
+`████████████████████████████▉░░░░░░░░░░░`  **126,816** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 5h 42m | 18:44 | 144 files/min | $21.93 | $31 | 0 |
+| 17h 13m | 06:55 | 47 files/min | $22.26 | $49 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1301.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1342.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 94,283 / 141,928 | `█████████████▎░░░░░░` 66% |
-| `Formalism` | 18,167 / 18,254 | `███████████████████▉` 100% |
-| `GroundTheory` | 7,612 / 8,507 | `█████████████████▉░░` 89% |
+| `Development` | 94,997 / 141,928 | `█████████████▍░░░░░░` 67% |
+| `Formalism` | 18,169 / 18,254 | `███████████████████▉` 100% |
+| `GroundTheory` | 7,811 / 8,507 | `██████████████████▎░` 92% |
 | `ReciprocityTheory` | 3,776 / 3,845 | `███████████████████▋` 98% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
@@ -29,20 +29,14 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 16 Lean processes running |
-| Memory | 21 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 192, 25 Lean processes running |
+| Memory | 25 GB used of 776 GB |
 | Disk | 102 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFamilyInIdealOfIsOFamilyStatement`
-- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieEigenDecomposition`
-- `Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsBounds`
-- `Development.WeilBound.CoreStatements.PluriharmonicCharts.MinorIJConjTranspose`
-- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricNumberZeroFinrank`
-- `Development.AutomorphicSpectrum.Proofs.MetricProofs.GramDetPosOfSemidefiniteTransversalStatement`
 
 ## What happens when it finishes
 
@@ -61,5 +55,6 @@
 - **02:06 to 02:12:** AWS reclaimed the Spot machine. It stopped with its disk kept, and came back on its own when capacity returned; the build resumed with nothing lost. Everything now restarts by itself after any interruption, and progress is counted from compiled files on disk.
 - **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.
 - **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.
+- **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.
 
 Rate and finish come from the last hour of the timestamped build log. Build method: [docs/BUILD.md](docs/BUILD.md).
