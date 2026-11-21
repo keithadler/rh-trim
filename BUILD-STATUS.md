@@ -1,26 +1,26 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:17 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:27 UTC**.
 
-## 18.4% built
+## 19.4% built
 
-`███████▍░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **32,317** of 175,187 proof files
+`███████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **34,049** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 14h 36m | 16:54 | 163 files/min | $5.50 | $28 | 0 |
+| 15h 03m | 17:30 | 156 files/min | $5.76 | $29 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0217.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0227.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 15,282 / 141,928 | `██▏░░░░░░░░░░░░░░░░░` 11% |
-| `Formalism` | 11,996 / 18,254 | `█████████████▏░░░░░░` 66% |
-| `GroundTheory` | 916 / 8,507 | `██▏░░░░░░░░░░░░░░░░░` 11% |
-| `ReciprocityTheory` | 2,816 / 3,845 | `██████████████▋░░░░░` 73% |
-| `CompanionTheory` | 1,180 / 2,027 | `███████████▋░░░░░░░░` 58% |
+| `Development` | 16,861 / 141,928 | `██▍░░░░░░░░░░░░░░░░░` 12% |
+| `Formalism` | 12,010 / 18,254 | `█████████████▏░░░░░░` 66% |
+| `GroundTheory` | 1,006 / 8,507 | `██▎░░░░░░░░░░░░░░░░░` 12% |
+| `ReciprocityTheory` | 2,851 / 3,845 | `██████████████▊░░░░░` 74% |
+| `CompanionTheory` | 1,194 / 2,027 | `███████████▊░░░░░░░░` 59% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
 | `Lemmata` | 125 / 167 | `██████████████▉░░░░░` 75% |
 
@@ -29,14 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 173, 41 Lean processes running |
-| Memory | 37 GB used of 776 GB |
-| Disk | 157 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 25 Lean processes running |
+| Memory | 26 GB used of 776 GB |
+| Disk | 154 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRelationsPeriodMatrixHermitianStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNeZeroOfRealIndependentIsotropicHermitianStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormPeriodsAlternatingNondegRankEqTwoMulStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLagrangianDualPairInCoisotropicStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoisotropicSublatticeOfTorsionCountStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIndependentBasisLatticeFamilyStatement`
 
 ## What happens when it finishes
 
