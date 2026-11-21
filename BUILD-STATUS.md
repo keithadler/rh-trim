@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 12:31 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 12:41 UTC**.
 
-## 69.3% built
+## 70.2% built
 
-`███████████████████████████▋░░░░░░░░░░░░`  **121,470** of 175,187 proof files
+`████████████████████████████ ░░░░░░░░░░░`  **122,954** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 6h 21m | 18:52 | 141 files/min | $21.14 | $31 | 0 |
+| 6h 12m | 18:54 | 140 files/min | $21.40 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1231.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1241.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 90,037 / 141,928 | `████████████▋░░░░░░░` 63% |
+| `Development` | 91,496 / 141,928 | `████████████▉░░░░░░░` 64% |
 | `Formalism` | 18,156 / 18,254 | `███████████████████▉` 99% |
-| `GroundTheory` | 7,460 / 8,507 | `█████████████████▌░░` 88% |
-| `ReciprocityTheory` | 3,754 / 3,845 | `███████████████████▌` 98% |
+| `GroundTheory` | 7,478 / 8,507 | `█████████████████▌░░` 88% |
+| `ReciprocityTheory` | 3,761 / 3,845 | `███████████████████▌` 98% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 17 Lean processes running |
-| Memory | 20 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 15 Lean processes running |
+| Memory | 19 GB used of 776 GB |
 | Disk | 104 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwPhiF`
-- `Development.WeilBound.CoreStatements.HomogeneousNonvanishing.REnlarge`
-- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPointLocalizationPrimeStatement`
-- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StableHopfOrderSubgroupLengthStatement`
-- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionGroupOpenImmersionLiftStatement`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedPlacesDeclaredStatement`
+- `Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFourthStatement`
+- `Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartThirdStatement`
+- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyReindexedStatement`
+- `Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackSmooth`
+- `GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.WeightsNormal`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselLevelOneCosetAtPlaceStatement`
 
 ## What happens when it finishes
 
