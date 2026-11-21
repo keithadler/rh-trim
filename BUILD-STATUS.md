@@ -1,23 +1,23 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:50 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 12:00 UTC**.
 
-## 66.2% built
+## 67.0% built
 
-`██████████████████████████▍░░░░░░░░░░░░░`  **115,892** of 175,187 proof files
+`██████████████████████████▊░░░░░░░░░░░░░`  **117,344** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 6h 26m | 18:17 | 153 files/min | $20.09 | $30 | 0 |
+| 6h 20m | 18:21 | 152 files/min | $20.35 | $30 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1150.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1200.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 85,033 / 141,928 | `███████████▉░░░░░░░░` 60% |
-| `Formalism` | 17,857 / 18,254 | `███████████████████▌` 98% |
+| `Development` | 86,335 / 141,928 | `████████████▏░░░░░░░` 61% |
+| `Formalism` | 18,007 / 18,254 | `███████████████████▋` 99% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
 | `ReciprocityTheory` | 3,726 / 3,845 | `███████████████████▍` 97% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 198, 38 Lean processes running |
-| Memory | 43 GB used of 776 GB |
-| Disk | 108 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 197, 35 Lean processes running |
+| Memory | 41 GB used of 776 GB |
+| Disk | 107 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodFormsDefiniteExist`
-- `Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeOperatorsRationalAdjointClosedOfWeakChar`
-- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardParahoricDoubleCosetRepsInvEqStatement`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetOfSelfDual`
-- `Development.AutomorphicArithmetic.UnitTensorPairings.ExtVecPairingIndepOfBaseSamePre`
-- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealLastStageNormalizedOfScalarHypothesesStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SupportDegreeEqOfMemWeightPolynomialsStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SymmetricCharResidueConjEqWeightedUnipotentSum`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadRowsShareBoundTwoPrimesStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlacesAvoidAuxiliary`
+- `Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEquivariantUnitaryCoefficientMapOntoStatement`
+- `Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportedColumnLatticeHasLevelAndDualGeneratorStatement`
 
 ## What happens when it finishes
 
