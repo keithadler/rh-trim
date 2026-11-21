@@ -1,22 +1,22 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 07:48 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 07:58 UTC**.
 
-## 47.9% built
+## 48.7% built
 
-`███████████████████▏░░░░░░░░░░░░░░░░░░░░`  **83,994** of 175,187 proof files
+`███████████████████▍░░░░░░░░░░░░░░░░░░░░`  **85,391** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 11m | 18:00 | 149 files/min | $14.11 | $30 | 0 |
+| 10h 14m | 18:13 | 146 files/min | $14.37 | $30 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0748.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0758.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 58,929 / 141,928 | `████████▎░░░░░░░░░░░` 42% |
+| `Development` | 60,326 / 141,928 | `████████▌░░░░░░░░░░░` 43% |
 | `Formalism` | 12,840 / 18,254 | `██████████████ ░░░░░` 70% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
 | `ReciprocityTheory` | 3,419 / 3,845 | `█████████████████▊░░` 89% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 23 Lean processes running |
-| Memory | 26 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 17 Lean processes running |
+| Memory | 20 GB used of 776 GB |
 | Disk | 129 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableFiniteAdelesLie`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaIntegralDefiniteSourceConvergesContinuousInStatement`
-- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AddCharSymplecticFinitePartRestEqOne`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridMeasureDomainDownwardEqSender`
-- `Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmEigenLineDegreeFormula`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateTuplesConjugateResidueLevelsStatement`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetGeneratingOperatorStableBounded`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatPartitionOfUnityStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankChartShearInvariance`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerOrthogonalityRelation`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsKernelIntegralStatement`
+- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitaryScalarBlendSelfAdjointIdempotentStatement`
 
 ## What happens when it finishes
 
