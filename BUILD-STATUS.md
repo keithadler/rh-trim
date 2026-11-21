@@ -1,26 +1,26 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:27 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:37 UTC**.
 
-## 19.4% built
+## 20.3% built
 
-`███████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **34,049** of 175,187 proof files
+`████████ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **35,538** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 15h 03m | 17:30 | 156 files/min | $5.76 | $29 | 0 |
+| 15h 58m | 18:35 | 146 files/min | $6.02 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0227.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0237.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 16,861 / 141,928 | `██▍░░░░░░░░░░░░░░░░░` 12% |
+| `Development` | 18,312 / 141,928 | `██▌░░░░░░░░░░░░░░░░░` 13% |
 | `Formalism` | 12,010 / 18,254 | `█████████████▏░░░░░░` 66% |
-| `GroundTheory` | 1,006 / 8,507 | `██▎░░░░░░░░░░░░░░░░░` 12% |
+| `GroundTheory` | 1,028 / 8,507 | `██▍░░░░░░░░░░░░░░░░░` 12% |
 | `ReciprocityTheory` | 2,851 / 3,845 | `██████████████▊░░░░░` 74% |
-| `CompanionTheory` | 1,194 / 2,027 | `███████████▊░░░░░░░░` 59% |
+| `CompanionTheory` | 1,210 / 2,027 | `███████████▉░░░░░░░░` 60% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
 | `Lemmata` | 125 / 167 | `██████████████▉░░░░░` 75% |
 
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 25 Lean processes running |
+| CPUs | 192 vCPUs (96 cores), load 195, 24 Lean processes running |
 | Memory | 26 GB used of 776 GB |
-| Disk | 154 GB free of 207 GB |
+| Disk | 153 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRelationsPeriodMatrixHermitianStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNeZeroOfRealIndependentIsotropicHermitianStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormPeriodsAlternatingNondegRankEqTwoMulStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLagrangianDualPairInCoisotropicStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoisotropicSublatticeOfTorsionCountStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIndependentBasisLatticeFamilyStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureSumWedgeWellDefinedAndDeRhamLiftStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceRingFractionEmbedding`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeConjugateInField`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamCorrespondencePolynomialStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassModularTransformationLevelStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeAboveValuationEq`
 
 ## What happens when it finishes
 
