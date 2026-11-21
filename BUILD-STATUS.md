@@ -1,26 +1,26 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:47 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 02:57 UTC**.
 
-## 21.2% built
+## 22.0% built
 
-`████████▍░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **37,059** of 175,187 proof files
+`████████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **38,573** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 16h 50m | 19:38 | 137 files/min | $6.28 | $33 | 0 |
+| 17h 31m | 20:29 | 130 files/min | $6.54 | $34 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0247.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0257.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 19,763 / 141,928 | `██▊░░░░░░░░░░░░░░░░░` 14% |
-| `Formalism` | 12,036 / 18,254 | `█████████████▏░░░░░░` 66% |
-| `GroundTheory` | 1,055 / 8,507 | `██▍░░░░░░░░░░░░░░░░░` 12% |
-| `ReciprocityTheory` | 2,853 / 3,845 | `██████████████▊░░░░░` 74% |
-| `CompanionTheory` | 1,223 / 2,027 | `████████████ ░░░░░░░` 60% |
+| `Development` | 21,202 / 141,928 | `██▉░░░░░░░░░░░░░░░░░` 15% |
+| `Formalism` | 12,064 / 18,254 | `█████████████▏░░░░░░` 66% |
+| `GroundTheory` | 1,068 / 8,507 | `██▌░░░░░░░░░░░░░░░░░` 13% |
+| `ReciprocityTheory` | 2,863 / 3,845 | `██████████████▉░░░░░` 74% |
+| `CompanionTheory` | 1,247 / 2,027 | `████████████▎░░░░░░░` 62% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
 | `Lemmata` | 127 / 167 | `███████████████▏░░░░` 76% |
 
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 23 Lean processes running |
-| Memory | 24 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 22 Lean processes running |
+| Memory | 22 GB used of 776 GB |
 | Disk | 152 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationExtendLocalizationAtPrime`
-- `GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareBundleDescendsQuotientFiniteSubgroupStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsModelPresentingDivisor`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PowerSeriesArcAbelianLocusStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRefinementCovers`
+- `Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SecValFeTranslate`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSysGlobalModels`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleDivSymm`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoOfGenericNormalLocalBaseStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCommGroupLocalCoordinatesAtOrigin`
+- `Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart`
 
 ## What happens when it finishes
 
