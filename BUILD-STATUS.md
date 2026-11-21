@@ -1,37 +1,37 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 09:49 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 09:59 UTC**.
 
-## 57.1% built
+## 58.0% built
 
-`██████████████████████▊░░░░░░░░░░░░░░░░░`  **100,006** of 175,187 proof files
+`███████████████████████▏░░░░░░░░░░░░░░░░`  **101,553** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 18m | 20:07 | 122 files/min | $17.18 | $33 | 0 |
+| 9h 43m | 19:42 | 126 files/min | $17.44 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0949.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0959.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 71,904 / 141,928 | `██████████▏░░░░░░░░░` 51% |
-| `Formalism` | 15,223 / 18,254 | `████████████████▋░░░` 83% |
+| `Development` | 72,939 / 141,928 | `██████████▎░░░░░░░░░` 51% |
+| `Formalism` | 15,706 / 18,254 | `█████████████████▏░░` 86% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
 | `ReciprocityTheory` | 3,690 / 3,845 | `███████████████████▏` 96% |
-| `CompanionTheory` | 1,813 / 2,027 | `█████████████████▉░░` 89% |
+| `CompanionTheory` | 1,840 / 2,027 | `██████████████████▏░` 91% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 154 / 167 | `██████████████████▍░` 92% |
+| `Lemmata` | 156 / 167 | `██████████████████▋░` 93% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 198, 15 Lean processes running |
-| Memory | 20 GB used of 776 GB |
-| Disk | 120 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 198, 22 Lean processes running |
+| Memory | 25 GB used of 776 GB |
+| Disk | 119 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
