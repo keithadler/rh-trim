@@ -1,26 +1,26 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 08:59 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 09:09 UTC**.
 
-## 53.6% built
+## 54.3% built
 
-`█████████████████████▍░░░░░░░░░░░░░░░░░░`  **93,884** of 175,187 proof files
+`█████████████████████▋░░░░░░░░░░░░░░░░░░`  **95,194** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 9h 37m | 18:36 | 141 files/min | $15.94 | $31 | 0 |
+| 9h 38m | 18:48 | 138 files/min | $16.21 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0859.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0909.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 67,586 / 141,928 | `█████████▌░░░░░░░░░░` 48% |
-| `Formalism` | 13,867 / 18,254 | `███████████████▏░░░░` 76% |
+| `Development` | 68,810 / 141,928 | `█████████▋░░░░░░░░░░` 48% |
+| `Formalism` | 13,915 / 18,254 | `███████████████▏░░░░` 76% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,619 / 3,845 | `██████████████████▊░` 94% |
-| `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
+| `ReciprocityTheory` | 3,654 / 3,845 | `███████████████████ ` 95% |
+| `CompanionTheory` | 1,443 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 150 / 167 | `█████████████████▉░░` 90% |
 
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 18 Lean processes running |
-| Memory | 23 GB used of 776 GB |
-| Disk | 123 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 197, 27 Lean processes running |
+| Memory | 31 GB used of 776 GB |
+| Disk | 122 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientModelTopClassesMapStatement`
-- `Development.AbelianVarietyTheory.Proofs.JetHarmonics.PackagesExistFrobeniusComplexConjugationStatement`
-- `Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.Imports`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassPresFormsFiniteGroupHeckeOperatorsStatement`
-- `Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.HolomorphicIsBigOOfHalfPowerBound`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharacterValueAtConjugatePlacePow`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTopOfDictionaryDepth`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryMatrixMajorantOperatorNormLeDefiniteStatement`
+- `Development.AbelianVarietyTheory.Proofs.JetHarmonics.CombinedBoundForRunScalars`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylTensorReductionWeightProjectorStatement`
+- `Formalism.HermitianCurvature.HermitianCurvatureProofs.Imports`
+- `CompanionTheory.AutomorphicTheory.KFiniteVectors.KDecay`
 
 ## What happens when it finishes
 
