@@ -8,7 +8,7 @@
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 14h 38m | 16:55 | 163 files/min | $5.48 | $28 | 0 |
+| 14h 48m | 17:05 | 161 files/min | $5.48 | $29 | 0 |
 
 ![Proof files compiled over time](docs/status/chart-20261121-0216.svg)
 
@@ -29,8 +29,8 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 137, 192 Lean processes running |
-| Memory | 83 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 164, 192 Lean processes running |
+| Memory | 91 GB used of 776 GB |
 | Disk | 157 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
