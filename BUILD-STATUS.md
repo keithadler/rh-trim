@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 06:28 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 06:38 UTC**.
 
-## 40.9% built
+## 41.8% built
 
-`████████████████▎░░░░░░░░░░░░░░░░░░░░░░░`  **71,625** of 175,187 proof files
+`████████████████▋░░░░░░░░░░░░░░░░░░░░░░░`  **73,282** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 56m | 17:24 | 158 files/min | $12.02 | $29 | 0 |
+| 10h 42m | 17:20 | 159 files/min | $12.28 | $29 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0628.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0638.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 50,593 / 141,928 | `███████▏░░░░░░░░░░░░` 36% |
+| `Development` | 50,734 / 141,928 | `███████▏░░░░░░░░░░░░` 36% |
 | `Formalism` | 12,511 / 18,254 | `█████████████▋░░░░░░` 69% |
-| `GroundTheory` | 3,681 / 8,507 | `████████▋░░░░░░░░░░░` 43% |
-| `ReciprocityTheory` | 3,254 / 3,845 | `████████████████▉░░░` 85% |
+| `GroundTheory` | 5,155 / 8,507 | `████████████ ░░░░░░░` 61% |
+| `ReciprocityTheory` | 3,296 / 3,845 | `█████████████████▏░░` 86% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 4 / 449 | `▏░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 139 / 167 | `████████████████▋░░░` 83% |
@@ -29,7 +29,7 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 24 Lean processes running |
+| CPUs | 192 vCPUs (96 cores), load 196, 25 Lean processes running |
 | Memory | 28 GB used of 776 GB |
 | Disk | 136 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
@@ -37,12 +37,12 @@
 
 ## Just compiled
 
-- `GroundTheory.HeightsAndTheta.Heights.HeightKernels.PThetaConstants`
-- `GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGaussSqrt`
-- `GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsChartFormsRational`
-- `GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualCurvePoint`
-- `GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsRest`
-- `GroundTheory.HeightsAndTheta.Heights.HeightKernels.PThetaNormMajorant`
+- `GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsFundCycleBaseChange`
+- `GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.PtsIntegrable`
+- `Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.LevIdem`
+- `GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagBundleSectionDiv`
+- `GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConePolyLocalization`
+- `GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitChartRing`
 
 ## What happens when it finishes
 
