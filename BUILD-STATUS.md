@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:20 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:30 UTC**.
 
-## 63.5% built
+## 64.4% built
 
-`█████████████████████████▍░░░░░░░░░░░░░░`  **111,184** of 175,187 proof files
+`█████████████████████████▋░░░░░░░░░░░░░░`  **112,766** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 7h 41m | 19:02 | 139 files/min | $19.31 | $31 | 0 |
+| 7h 19m | 18:50 | 142 files/min | $19.57 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1120.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1130.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 81,359 / 141,928 | `███████████▍░░░░░░░░` 57% |
-| `Formalism` | 16,859 / 18,254 | `██████████████████▍░` 92% |
+| `Development` | 82,738 / 141,928 | `███████████▋░░░░░░░░` 58% |
+| `Formalism` | 17,055 / 18,254 | `██████████████████▋░` 93% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,696 / 3,845 | `███████████████████▏` 96% |
+| `ReciprocityTheory` | 3,703 / 3,845 | `███████████████████▎` 96% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 159 / 167 | `███████████████████ ` 95% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 23 Lean processes running |
-| Memory | 29 GB used of 776 GB |
-| Disk | 112 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 28 Lean processes running |
+| Memory | 30 GB used of 776 GB |
+| Disk | 111 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteClassesSubsetAdmissibleOfGoodO`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmG2PairOfAdmissible`
-- `Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReplacementValuesBaseLevelTypePartsEq`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedPowerMonomialFrobeniusCongrPow`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRepBaseChangeStatement`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusMapsDividedPowerSeriesGeneratorSet`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowerSeriesTwistedScalingTriangularLaurent`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Xstab`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H1fTSpanCardBoundStatement`
+- `Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.LocalCountConclusions.ThetaMbe0True`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitRowAt`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsBaseChangeComapOfExactFlatStatement`
 
 ## What happens when it finishes
 
