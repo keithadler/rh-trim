@@ -2,9 +2,9 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
+**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.
 
-
-✅ **Build finished** · updated every 10 minutes · last update **2026-11-21 20:54 UTC**
+🔵 **Step 2 of 6: exporting the exact reduced form** · updated every 10 minutes · last update **2026-11-21 20:57 UTC**
 
 ## The plan
 
@@ -34,15 +34,17 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 100.0%
+## Step 1: the build ✅ done
 
-`████████████████████████████████████████`  **175,187** of 175,187 proof files
+`████████████████████████████████████████`  **175,187** of 175,187 proof files · `Build completed successfully (183893 jobs)`
 
-| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
+| ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| ? | ? | 97 files/min | $33.48 | $33 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $33.58 | 0 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-2054.svg)
+Spent so far keeps counting while the machine runs steps 2 to 4.
+
+![Proof files compiled over time](docs/status/chart-20261121-2057.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -63,9 +65,9 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 5, 0 Lean processes running |
-| Memory | 8 GB used of 776 GB |
-| Disk | 77 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
+| Memory | 14 GB used of 776 GB |
+| Disk | 74 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
@@ -91,6 +93,7 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 - **2026-11-21 09:21 to 09:24:** a second Spot interruption. The machine resumed the build by itself within a minute of coming back.
 - **10:25 to 10:34:** a third Spot interruption, with no capacity for 9 minutes. Resumed by itself again; nothing lost.
 - **13:04 to 13:32:** a fourth Spot interruption, 28 minutes this time. Resumed by itself again; nothing lost.
+- **20:52:38: build finished.** `Build completed successfully (183893 jobs)`: all 175,187 proof files, 0 errors, no `sorry`, 6 h 56 m of compiling since the last restart. The export (step 2) started at 20:53.
 
 </details>
 

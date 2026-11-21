@@ -21,6 +21,7 @@ eta = now + datetime.timedelta(minutes=left_min) if left_min else None
 LAUNCH = datetime.datetime(2026, 11, 20, 22, 40)          # instance launched, UTC
 STOPPED_H = 0.77                                           # Spot interruption 02:06 to 02:12, not billed
 cost = ((now - LAUNCH).total_seconds() / 3600 - STOPPED_H) * PRICE
+BUILD_COST = ((datetime.datetime(2026, 11, 21, 20, 52) - LAUNCH).total_seconds() / 3600 - STOPPED_H) * PRICE
 cost_end = cost + (left_min / 60 * PRICE if left_min else 0)
 pct = 100 * built / TOTAL
 
@@ -91,7 +92,8 @@ st['axioms'] = 'done' if 'axioms' in race_log.lower() and st['race'] == 'done' e
 st['minify'] = 'next'
 st['publish'] = 'next'
 ICON = {'done': '✅ done', 'now': '🔵 **in progress**', 'next': '⏳ waiting', 'stop': '⚠️ stopped'}
-head = '✅ **Build finished**' if ok else ('⚠️ **Build stopped**' if done else '🔵 **Step 1 of 6: compiling**')
+NOW = {'export': '🔵 **Step 2 of 6: exporting the exact reduced form**', 'race': '🔵 **Step 3 of 6: Haskell vs Lean race running**', 'axioms': '🔵 **Step 4 of 6: listing axioms**'}
+head = next((NOW[k] for k in ('export', 'race', 'axioms') if st[k] == 'now'), '✅ **Steps 1 to 4 done**') if ok else ('⚠️ **Build stopped**' if done else '🔵 **Step 1 of 6: compiling**')
 STEPS = [
  ('build', '1', 'Build the original', f'Compile all 175,187 proof files, exactly as published. **{pct:.1f}%** so far.'),
  ('export', '2', 'Exact reduced form', 'Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself.'),
@@ -117,7 +119,8 @@ lines = [
  '# Live: checking the claimed Lean proof of the Riemann Hypothesis', '',
  '> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel '
  "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
- (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' else ''), '',
+ (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' and not ok
+  else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else '')), '',
  f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
  '## The plan', '', *mer, '',
  '| | Step | What happens | Status |', '|:---:|---|---|---|']
@@ -136,11 +139,18 @@ if race_rows:
     lines.append('')
 
 lines += [
+] + ([
+ '## Step 1: the build ✅ done', '',
+ f'`{bar(1, 40)}`  **175,187** of 175,187 proof files · `Build completed successfully (183893 jobs)`', '',
+ '| ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |',
+ '|:---:|:---:|:---:|:---:|:---:|:---:|',
+ f"| about 21 h | 2026-11-21 20:52 | ${BUILD_COST:.2f} | ${cost:.2f} | {T['errors']} | 0 |", '',
+ 'Spent so far keeps counting while the machine runs steps 2 to 4.', ''] if ok else [
  f'## Step 1: the build, {pct:.1f}%', '',
  f'`{bar(built / TOTAL, 40)}`  **{built:,}** of 175,187 proof files', '',
  '| ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |',
  '|:---:|:---:|:---:|:---:|:---:|:---:|',
- f"| {fmt_d(left_min) if left_min else '?'} | {eta.strftime('%H:%M') if eta else '?'} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '',
+ f"| {fmt_d(left_min) if left_min else '?'} | {eta.strftime('%H:%M') if eta else '?'} | {rate:.0f} files/min | ${cost:.2f} | ${cost_end:.0f} | {T['errors']} |", '']) + [
  f'![Proof files compiled over time](docs/status/{chart_name})', '',
  '<details><summary><b>By library</b></summary>', '',
  '| Library | Built | Progress |', '|---|---:|---|']
