@@ -1,24 +1,24 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 04:47 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 04:57 UTC**.
 
-## 31.6% built
+## 32.6% built
 
-`████████████▋░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **55,426** of 175,187 proof files
+`█████████████ ░░░░░░░░░░░░░░░░░░░░░░░░░░`  **57,062** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 12h 19m | 17:06 | 162 files/min | $9.40 | $29 | 0 |
+| 11h 54m | 16:51 | 165 files/min | $9.66 | $28 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0447.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0457.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 37,204 / 141,928 | `█████▏░░░░░░░░░░░░░░` 26% |
-| `Formalism` | 12,295 / 18,254 | `█████████████▍░░░░░░` 67% |
-| `GroundTheory` | 1,316 / 8,507 | `███ ░░░░░░░░░░░░░░░░` 15% |
+| `Development` | 38,702 / 141,928 | `█████▍░░░░░░░░░░░░░░` 27% |
+| `Formalism` | 12,373 / 18,254 | `█████████████▌░░░░░░` 68% |
+| `GroundTheory` | 1,376 / 8,507 | `███▏░░░░░░░░░░░░░░░░` 16% |
 | `ReciprocityTheory` | 3,055 / 3,845 | `███████████████▉░░░░` 79% |
 | `CompanionTheory` | 1,422 / 2,027 | `██████████████ ░░░░░` 70% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 198, 26 Lean processes running |
-| Memory | 38 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 21 Lean processes running |
+| Memory | 25 GB used of 776 GB |
 | Disk | 144 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.ComplementarySeries.SegmentJacquetSubquotients.JhMultRevJacSub`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScalingStatement`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfDualSiegelWeilMeasures`
-- `GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.AdicFrames.SwmConeStatements`
-- `Development.AbelianVarietyTheory.Definitions.Divisors.LocallyCompactSpaceAxis`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumQuadraticCharacterBoundStatement`
+- `GroundTheory.AutomorphicForms.TensorProductTheorem.Window`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteDimensionalDefiniteUnitaryLevelForms`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfAdelicFourierSeparatingCharsVanish`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.CrystallineComparison.LocalComparisonFromAlternative`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousUnitaryDiagonalEmbeddingDoubled`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryIdeleCharTrivialCongruentOneModulo`
 
 ## What happens when it finishes
 
