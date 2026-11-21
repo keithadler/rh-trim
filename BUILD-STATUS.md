@@ -1,23 +1,23 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 14:33 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 14:43 UTC**.
 
-## 75.5% built
+## 76.2% built
 
-`██████████████████████████████▏░░░░░░░░░`  **132,219** of 175,187 proof files
+`██████████████████████████████▍░░░░░░░░░`  **133,519** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 7h 01m | 21:34 | 102 files/min | $23.58 | $35 | 0 |
+| 5h 12m | 19:55 | 133 files/min | $23.84 | $32 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1433.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1443.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 99,878 / 141,928 | `██████████████ ░░░░░` 70% |
-| `Formalism` | 18,189 / 18,254 | `███████████████████▉` 100% |
+| `Development` | 101,174 / 141,928 | `██████████████▎░░░░░` 71% |
+| `Formalism` | 18,193 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
 | `ReciprocityTheory` | 3,794 / 3,845 | `███████████████████▋` 99% |
 | `CompanionTheory` | 1,896 / 2,027 | `██████████████████▋░` 94% |
@@ -29,14 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 21 Lean processes running |
-| Memory | 26 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 23 Lean processes running |
+| Memory | 27 GB used of 776 GB |
 | Disk | 98 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
+- `Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XRootnumDual`
+- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModelOverModPLatticeCharacterStatement`
+- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModelOverModPLatticeCharacter`
+- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineBundleChartGenericComparisonStatement`
+- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineBundleChartGenericComparison`
+- `Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleFramesStatement`
 
 ## What happens when it finishes
 
