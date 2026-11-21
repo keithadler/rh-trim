@@ -2,15 +2,15 @@
 
 🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:33 UTC**.
 
-> **The goal:** get the exact reduced form of the proof, then check it with **Tenet-HS, a Lean kernel written from scratch in Haskell**, and race it against Lean's own kernel. Does the Haskell kernel accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below is step one: the kernels need the compiled proof.
+> **The goal:** get the exact reduced form of the proof, then check it with **tenet-hs, a Lean kernel written from scratch in Haskell**, and race it against Lean's own kernel. Does the Haskell kernel accept the proof, and is it faster? Tenet (C#) and tenet-jvm run in the same race. The build below is step one: the kernels need the compiled proof.
 
-## 79.1% built
+## 79.8% built
 
-`███████████████████████████████▋░░░░░░░░`  **138,539** of 175,187 proof files
+`███████████████████████████████▉░░░░░░░░`  **139,713** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 4h 52m | 20:25 | 125 files/min | $25.14 | $33 | 0 |
+| 4h 48m | 20:22 | 123 files/min | $25.15 | $33 | 0 |
 
 ![Proof files compiled over time](docs/status/chart-20261121-1533.svg)
 
@@ -18,10 +18,10 @@
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 106,192 / 141,928 | `██████████████▉░░░░░` 75% |
+| `Development` | 107,365 / 141,928 | `███████████████▏░░░░` 76% |
 | `Formalism` | 18,195 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
-| `ReciprocityTheory` | 3,794 / 3,845 | `███████████████████▋` 99% |
+| `ReciprocityTheory` | 3,795 / 3,845 | `███████████████████▋` 99% |
 | `CompanionTheory` | 1,896 / 2,027 | `██████████████████▋░` 94% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 165 / 167 | `███████████████████▊` 99% |
@@ -31,20 +31,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 19 Lean processes running |
-| Memory | 23 GB used of 776 GB |
-| Disk | 95 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 19 Lean processes running |
+| Memory | 24 GB used of 776 GB |
+| Disk | 94 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameImageSpansGenericStalk`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFibrePointPolarized`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralFibreOverCell`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralAdaptedMinorNormsStatement`
-- `Development.AutomorphicArithmetic.DivisorFrames.EigenvarietyOverFrame`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFiniteSemiabelianOverAlgClosedStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRegularGermRepresentative`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeBaseChangeLineDegree`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoublingSeesawIdentityStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalOrderBoundaryFormEqStatement`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullbackModelArcPhiDivisor`
+- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericPointInOpenOfInjectiveStatement`
 
 ## What happens when it finishes
 
