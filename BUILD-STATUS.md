@@ -1,22 +1,22 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:03 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 15:13 UTC**.
 
-## 77.7% built
+## 78.4% built
 
-`███████████████████████████████ ░░░░░░░░`  **136,197** of 175,187 proof files
+`███████████████████████████████▎░░░░░░░░`  **137,374** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 4h 54m | 19:58 | 132 files/min | $24.37 | $32 | 0 |
+| 4h 54m | 20:08 | 128 files/min | $24.63 | $32 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1503.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1513.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 103,850 / 141,928 | `██████████████▋░░░░░` 73% |
+| `Development` | 105,027 / 141,928 | `██████████████▊░░░░░` 74% |
 | `Formalism` | 18,195 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,288 / 8,507 | `███████████████████▍` 97% |
 | `ReciprocityTheory` | 3,794 / 3,845 | `███████████████████▋` 99% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 15 Lean processes running |
-| Memory | 21 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 24 Lean processes running |
+| Memory | 29 GB used of 776 GB |
 | Disk | 96 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagTrivialNsmulCharP`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.TripleDescendsToSmallerGeometryStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormLowPolyEqNegSumCrossingStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSumPowMulFactorialStatement`
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentialControlUniformDelta`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardCrossingSetEqGrassmannianDimStatement`
+- `Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ExistsShortIntegralVectorOfDeterminantBound`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoherentSubmoduleSectionsAffineStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartRegularMinorNorms`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusExtendsNormalLocal`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PotentialLogGrowthBoundStatement`
+- `Development.AutomorphicArithmetic.CyclotomicBounds.TraceDuality.ValGen`
 
 ## What happens when it finishes
 
