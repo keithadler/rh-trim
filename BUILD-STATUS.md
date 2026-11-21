@@ -1,42 +1,48 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:00 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 11:10 UTC**.
 
-## 61.7% built
+## 62.6% built
 
-`████████████████████████▋░░░░░░░░░░░░░░░`  **108,165** of 175,187 proof files
+`█████████████████████████ ░░░░░░░░░░░░░░`  **109,677** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 52m | 21:52 | 103 files/min | $18.78 | $36 | 0 |
+| 10h 21m | 21:31 | 105 files/min | $19.04 | $35 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1100.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1110.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 78,830 / 141,928 | `███████████ ░░░░░░░░` 56% |
-| `Formalism` | 16,374 / 18,254 | `█████████████████▉░░` 90% |
+| `Development` | 80,019 / 141,928 | `███████████▎░░░░░░░░` 56% |
+| `Formalism` | 16,696 / 18,254 | `██████████████████▎░` 91% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
 | `ReciprocityTheory` | 3,692 / 3,845 | `███████████████████▏` 96% |
 | `CompanionTheory` | 1,889 / 2,027 | `██████████████████▋░` 93% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 158 / 167 | `██████████████████▉░` 95% |
+| `Lemmata` | 159 / 167 | `███████████████████ ` 95% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 185, 16 Lean processes running |
-| Memory | 21 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 197, 25 Lean processes running |
+| Memory | 28 GB used of 776 GB |
 | Disk | 113 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExportFromReciprocityTheoremsStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExportFromReciprocityTheorems`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExportStatementOfDiscreteSeriesStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExportStatementOfDiscreteSeries`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateBaseOfReciprocityStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateBaseOfReciprocity`
 
 ## What happens when it finishes
 
