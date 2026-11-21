@@ -1,48 +1,48 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 07:28 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 07:38 UTC**.
 
-## 46.3% built
+## 47.1% built
 
-`██████████████████▌░░░░░░░░░░░░░░░░░░░░░`  **81,044** of 175,187 proof files
+`██████████████████▊░░░░░░░░░░░░░░░░░░░░░`  **82,553** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 10m | 17:39 | 154 files/min | $13.59 | $29 | 0 |
+| 10h 05m | 17:43 | 153 files/min | $13.85 | $30 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0728.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0738.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 56,165 / 141,928 | `███████▉░░░░░░░░░░░░` 40% |
-| `Formalism` | 12,665 / 18,254 | `█████████████▉░░░░░░` 69% |
+| `Development` | 57,530 / 141,928 | `████████ ░░░░░░░░░░░` 41% |
+| `Formalism` | 12,800 / 18,254 | `██████████████ ░░░░░` 70% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,410 / 3,845 | `█████████████████▋░░` 89% |
+| `ReciprocityTheory` | 3,417 / 3,845 | `█████████████████▊░░` 89% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 142 / 167 | `█████████████████ ░░` 85% |
+| `Lemmata` | 144 / 167 | `█████████████████▏░░` 86% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 18 Lean processes running |
-| Memory | 23 GB used of 776 GB |
-| Disk | 131 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 198, 18 Lean processes running |
+| Memory | 24 GB used of 776 GB |
+| Disk | 130 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AnalyticFibreDescriptionLevelMoveMarkingComp`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePointSignEqThetaLawSemicharacter`
-- `Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevTrue`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridBlockCongruenceOffTypePrimeDescriptionStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.KapTopLastPosRun`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.DatumPhiASplitPlaceTransportEqStatement`
+- `Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.EqZeroOfLePolyExp`
+- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlagUnipotentHaarEqMapCoordinates`
+- `Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortSeriesValueTwistedEqConjugateValueStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumCompactVacuumReadsDetCharacter`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.ToEAfOrientedHermitianFormEqTraceFrames`
+- `Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspFDOfCuspFiniteClaim`
 
 ## What happens when it finishes
 
