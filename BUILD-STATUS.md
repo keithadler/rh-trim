@@ -1,25 +1,25 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:47 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:58 UTC**.
 
-## 37.3% built
+## 38.1% built
 
-`██████████████▉░░░░░░░░░░░░░░░░░░░░░░░░░`  **65,299** of 175,187 proof files
+`███████████████▎░░░░░░░░░░░░░░░░░░░░░░░░`  **66,808** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 11m | 16:59 | 164 files/min | $10.97 | $28 | 0 |
+| 11h 12m | 17:10 | 161 files/min | $11.23 | $29 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0547.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0558.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 46,500 / 141,928 | `██████▌░░░░░░░░░░░░░` 33% |
-| `Formalism` | 12,498 / 18,254 | `█████████████▋░░░░░░` 68% |
-| `GroundTheory` | 1,656 / 8,507 | `███▉░░░░░░░░░░░░░░░░` 19% |
-| `ReciprocityTheory` | 3,065 / 3,845 | `███████████████▉░░░░` 80% |
+| `Development` | 47,856 / 141,928 | `██████▋░░░░░░░░░░░░░` 34% |
+| `Formalism` | 12,501 / 18,254 | `█████████████▋░░░░░░` 68% |
+| `GroundTheory` | 1,801 / 8,507 | `████▏░░░░░░░░░░░░░░░` 21% |
+| `ReciprocityTheory` | 3,070 / 3,845 | `███████████████▉░░░░` 80% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 4 / 449 | `▏░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 133 / 167 | `███████████████▉░░░░` 80% |
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 196, 24 Lean processes running |
-| Memory | 27 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 185, 28 Lean processes running |
+| Memory | 28 GB used of 776 GB |
 | Disk | 139 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.WeilBound.CoreStatements.PublishedTheorems.CasselmanWallach.OrthonormalEigenbasisOfBasic`
-- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramifiedStatement`
-- `Development.AutomorphicSpectrum.Proofs.GlobalProofs.AnalyticVectorExponentialSeries`
-- `Development.WeilBound.CoreStatements.PublishedTheorems.CasselmanWallach.CasimirPowerCommute`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslateIsometry`
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.GlBridge`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDomainTensorComplex`
+- `Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.LogDerivativeIdealQuotient`
+- `Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CohomologyVanishingSpecializes`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicIndependentEtaleTowerCoordinates`
+- `Development.AbelianVarietyTheory.Definitions.Divisors.DominatesIffIsLocalHom`
+- `Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldExtensionEtaleCover`
 
 ## What happens when it finishes
 
