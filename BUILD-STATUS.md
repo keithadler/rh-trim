@@ -2,9 +2,9 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-**Next up: the Haskell run** (step 3) starts by itself about **20:58 UTC**, as soon as the build finishes.
+**Next up: the Haskell run** (step 3) starts by itself about **20:49 UTC**, as soon as the build finishes.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 19:15 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 19:25 UTC**
 
 ## The plan
 
@@ -25,30 +25,30 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **94.0%** so far. | 🔵 **in progress** |
-| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ starts about **20:58 UTC**, when the build finishes |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ starts about **20:58 UTC**, when the build finishes |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **94.7%** so far. | 🔵 **in progress** |
+| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ starts about **20:49 UTC**, when the build finishes |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ starts about **20:49 UTC**, when the build finishes |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting |
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 94.0%
+## Step 1: the build, 94.7%
 
-`█████████████████████████████████████▌░░`  **164,729** of 175,187 proof files
+`█████████████████████████████████████▉░░`  **165,984** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 1h 42m | 20:58 | 102 files/min | $30.93 | $34 | 0 |
+| 1h 23m | 20:49 | 110 files/min | $31.19 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1915.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1925.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 131,627 / 141,928 | `██████████████████▌░` 93% |
+| `Development` | 132,882 / 141,928 | `██████████████████▋░` 94% |
 | `Formalism` | 18,247 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,369 / 8,507 | `███████████████████▋` 98% |
 | `ReciprocityTheory` | 3,841 / 3,845 | `███████████████████▉` 100% |
@@ -63,8 +63,8 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 20 Lean processes running |
-| Memory | 27 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 13 Lean processes running |
+| Memory | 21 GB used of 776 GB |
 | Disk | 79 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -73,12 +73,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendChainMapAlongQuasiIsoKInjective`
-- `Development.EtaleCohomology.TateTwists.TtResSidePf`
-- `Development.EtaleCohomology.TateTwists.EtaleCupProductFlipExistsOfComponents`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafExtendScalarsZmodKernelLocallyMultiple`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSurjectiveEtaleLocallyHasSections`
-- `Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.MixedUnlinkedExponents.LpEvalZero`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechConerveChainsQuasiIsoOfLocallySurjective`
+- `Development.EtaleCohomology.EtaleSheaves.EtaleBaseChangePolynomialInductionOfLimit`
+- `Development.AutomorphicArithmetic.CommutativeAlgebra.CohomologyContinuityFilteredColimitRings`
+- `Development.EtaleCohomology.EtaleSheaves.BasePf`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroIsNilpotentMulFiniteInfFgIdealsStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.PicardTorsionTrivialOfTorsorsHaveSections`
 
 </details>
 
