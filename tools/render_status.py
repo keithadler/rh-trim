@@ -117,11 +117,15 @@ lines = [
  '# Live: checking the claimed Lean proof of the Riemann Hypothesis', '',
  '> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel '
  "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
+ (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' else ''), '',
  f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
  '## The plan', '', *mer, '',
  '| | Step | What happens | Status |', '|:---:|---|---|---|']
 for k, n, name, what in STEPS:
-    lines.append(f'| **{n}** | **{name}** | {what} | {ICON[st[k]]} |')
+    s_ = ICON[st[k]]
+    if k in ('export', 'race') and st[k] == 'next' and eta:
+        s_ = f'⏳ starts about **{eta:%H:%M} UTC**, when the build finishes'
+    lines.append(f'| **{n}** | **{name}** | {what} | {s_} |')
 lines += ['', 'Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.', '']
 
 if race_rows:
