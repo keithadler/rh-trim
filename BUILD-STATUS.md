@@ -2,9 +2,9 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-**Next up: the Haskell run** (step 3) starts by itself about **20:46 UTC**, as soon as the build finishes.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 20:46 UTC**
+
+✅ **Build finished** · updated every 10 minutes · last update **2026-11-21 20:54 UTC**
 
 ## The plan
 
@@ -15,8 +15,8 @@ flowchart LR
   classDef now fill:#2b3f8f,stroke:#8fa6ff,color:#fff,stroke-width:3px
   classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc
   classDef stop fill:#7a2a2a,stroke:#ff9b9b,color:#fff
-  class build now
-  class export next
+  class build done
+  class export now
   class race next
   class axioms next
   class minify next
@@ -25,9 +25,9 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | 🔵 **in progress** |
-| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ starts about **20:46 UTC**, when the build finishes |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ starts about **20:46 UTC**, when the build finishes |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done |
+| **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | 🔵 **in progress** |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting |
@@ -36,19 +36,19 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 ## Step 1: the build, 100.0%
 
-`███████████████████████████████████████▉`  **175,163** of 175,187 proof files
+`████████████████████████████████████████`  **175,187** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 0h 00m | 20:46 | 110 files/min | $33.29 | $33 | 0 |
+| ? | ? | 97 files/min | $33.48 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-2046.svg)
+![Proof files compiled over time](docs/status/chart-20261121-2054.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 141,908 / 141,928 | `███████████████████▉` 100% |
+| `Development` | 141,928 / 141,928 | `████████████████████` 100% |
 | `Formalism` | 18,254 / 18,254 | `████████████████████` 100% |
 | `GroundTheory` | 8,507 / 8,507 | `████████████████████` 100% |
 | `ReciprocityTheory` | 3,845 / 3,845 | `████████████████████` 100% |
@@ -63,9 +63,9 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 8, 3 Lean processes running |
-| Memory | 19 GB used of 776 GB |
-| Disk | 76 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 5, 0 Lean processes running |
+| Memory | 8 GB used of 776 GB |
+| Disk | 77 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
@@ -73,12 +73,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.TeichmullerRootsUnity.RootsUnityPullback.IsMuMmG`
-- `Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.CstSmoothOfP`
-- `Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.TraceSplitHolds`
-- `Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.TeichmullerRootsUnity.RootsUnityPullback.MmPull`
-- `Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.LimitBilinearCup.LimOneExAlt`
-- `Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.FrobeniusFactorisation.NuPull`
+- `Main`
+- `Supplements.Kernels.MainTheoremsAll`
+- `Supplements.Kernels.MainTheoremsCritical`
+- `Supplements.Kernels.MainTheorems`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.SmallClassNumbers.CorGKOf`
+- `Development.AutomorphicArithmetic.CharacterBoxes.MainConclusion`
 
 </details>
 
