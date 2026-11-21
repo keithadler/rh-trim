@@ -1,14 +1,14 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 01:43 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 01:53 UTC**.
 
-## 15.8% built
+## 17.0% built
 
-`██████▎░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **27,682** of 175,187 proof files
+`██████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`  **29,709** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 12h 19m | 14:02 | 200 files/min | $4.76 | $24 | 0 |
+| 10h 17m | 12:10 | 236 files/min | $5.02 | $21 | 0 |
 
 ![Proof files compiled over time](docs/status-chart.svg)
 
@@ -16,33 +16,33 @@
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 11,496 / 141,928 | `█▌░░░░░░░░░░░░░░░░░░` 8% |
-| `Formalism` | 11,883 / 18,254 | `█████████████ ░░░░░░` 65% |
-| `GroundTheory` | 880 / 8,507 | `██ ░░░░░░░░░░░░░░░░░` 10% |
-| `ReciprocityTheory` | 2,127 / 3,845 | `███████████ ░░░░░░░░` 55% |
-| `CompanionTheory` | 1,173 / 2,027 | `███████████▌░░░░░░░░` 58% |
+| `Development` | 13,147 / 141,928 | `█▊░░░░░░░░░░░░░░░░░░` 9% |
+| `Formalism` | 11,947 / 18,254 | `█████████████ ░░░░░░` 65% |
+| `GroundTheory` | 883 / 8,507 | `██ ░░░░░░░░░░░░░░░░░` 10% |
+| `ReciprocityTheory` | 2,431 / 3,845 | `████████████▋░░░░░░░` 63% |
+| `CompanionTheory` | 1,175 / 2,027 | `███████████▌░░░░░░░░` 58% |
 | `PositivityTheory` | 0 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
-| `Lemmata` | 121 / 167 | `██████████████▍░░░░░` 72% |
+| `Lemmata` | 124 / 167 | `██████████████▊░░░░░` 74% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 200, 34 Lean processes running |
-| Memory | 31 GB used of 776 GB |
-| Disk | 166 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 194, 20 Lean processes running |
+| Memory | 24 GB used of 776 GB |
+| Disk | 165 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.InvariantPolyOperatorCopiesTransportedLaw`
-- `Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetSubSt`
-- `Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndFrFixAsm`
-- `Development.AbelianVarietyTheory.Proofs.GenericRegularity.ImNegOfFramePeriodVector`
-- `ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LowerBlockMatrices`
-- `ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HNormB`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankOneCuspidalUnitaryCharEquivApplySymm`
+- `ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal`
+- `Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatMvPowerSeriesOfIsNoetherianRingStatement`
+- `ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.MoveQkCore`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentOfClopenStatement`
+- `ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.OmPoly`
 
 ## What happens when it finishes
 
