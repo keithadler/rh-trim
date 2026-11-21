@@ -1,37 +1,37 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 09:29 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 09:39 UTC**.
 
-## 55.3% built
+## 56.1% built
 
-`██████████████████████▏░░░░░░░░░░░░░░░░░`  **96,948** of 175,187 proof files
+`██████████████████████▍░░░░░░░░░░░░░░░░░`  **98,332** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 07m | 20:37 | 117 files/min | $16.65 | $34 | 0 |
+| 11h 03m | 20:43 | 116 files/min | $16.91 | $34 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0929.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0939.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 69,888 / 141,928 | `█████████▊░░░░░░░░░░` 49% |
-| `Formalism` | 14,294 / 18,254 | `███████████████▋░░░░` 78% |
+| `Development` | 70,878 / 141,928 | `█████████▉░░░░░░░░░░` 50% |
+| `Formalism` | 14,607 / 18,254 | `████████████████ ░░░` 80% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
-| `ReciprocityTheory` | 3,689 / 3,845 | `███████████████████▏` 96% |
-| `CompanionTheory` | 1,705 / 2,027 | `████████████████▊░░░` 84% |
+| `ReciprocityTheory` | 3,690 / 3,845 | `███████████████████▏` 96% |
+| `CompanionTheory` | 1,784 / 2,027 | `█████████████████▌░░` 88% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 150 / 167 | `█████████████████▉░░` 90% |
+| `Lemmata` | 151 / 167 | `██████████████████ ░` 90% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 12, 36 Lean processes running |
-| Memory | 15 GB used of 776 GB |
-| Disk | 123 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 195, 27 Lean processes running |
+| Memory | 25 GB used of 776 GB |
+| Disk | 120 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
