@@ -2,7 +2,7 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 17:44 UTC**
+🔵 **Step 1 of 6: compiling** · updated every 10 minutes · last update **2026-11-21 17:54 UTC**
 
 ## The plan
 
@@ -23,7 +23,7 @@ flowchart LR
 
 | | Step | What happens | Status |
 |:---:|---|---|---|
-| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **88.5%** so far. | 🔵 **in progress** |
+| **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **89.2%** so far. | 🔵 **in progress** |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ⏳ waiting |
 | **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ⏳ waiting |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting |
@@ -32,26 +32,26 @@ flowchart LR
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
-## Step 1: the build, 88.5%
+## Step 1: the build, 89.2%
 
-`███████████████████████████████████▍░░░░`  **155,013** of 175,187 proof files
+`███████████████████████████████████▋░░░░`  **156,200** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 3h 08m | 20:53 | 107 files/min | $28.56 | $33 | 0 |
+| 2h 48m | 20:43 | 112 files/min | $28.83 | $33 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-1744.svg)
+![Proof files compiled over time](docs/status/chart-20261121-1754.svg)
 
 <details><summary><b>By library</b></summary>
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 122,001 / 141,928 | `█████████████████▏░░` 86% |
-| `Formalism` | 18,231 / 18,254 | `███████████████████▉` 100% |
+| `Development` | 123,172 / 141,928 | `█████████████████▎░░` 87% |
+| `Formalism` | 18,240 / 18,254 | `███████████████████▉` 100% |
 | `GroundTheory` | 8,354 / 8,507 | `███████████████████▋` 98% |
-| `ReciprocityTheory` | 3,839 / 3,845 | `███████████████████▉` 100% |
+| `ReciprocityTheory` | 3,841 / 3,845 | `███████████████████▉` 100% |
 | `CompanionTheory` | 2,011 / 2,027 | `███████████████████▊` 99% |
-| `PositivityTheory` | 405 / 449 | `██████████████████ ░` 90% |
+| `PositivityTheory` | 410 / 449 | `██████████████████▎░` 91% |
 | `Lemmata` | 167 / 167 | `████████████████████` 100% |
 
 </details>
@@ -61,8 +61,8 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 16 Lean processes running |
-| Memory | 23 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 12 Lean processes running |
+| Memory | 19 GB used of 776 GB |
 | Disk | 85 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -71,12 +71,12 @@ Steps 2 to 4 are queued on the machine and start by themselves when the build su
 
 <details><summary><b>Just compiled</b></summary>
 
-- `Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.LieGeometryGrowth.ImportsVariant`
-- `Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Cbcc`
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.SecondDifferenceInvPowBoundStatement`
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructureStatement`
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTowerPlaceAtUpperHalfPlanePointStatement`
-- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowPropertiesStatement`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixedFieldAlmostEtaleSubgroupOf`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.NatCastEqOneOfCoprime`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOfMemAdjoin`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.HalfPeterssonIntegralHeckeUAdjointStatement`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBasisOnZetaPowMulQPowStatement`
+- `Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnramifiedIntegersAdicComplete`
 
 </details>
 
