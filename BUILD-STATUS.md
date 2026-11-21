@@ -1,48 +1,48 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 07:58 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 08:08 UTC**.
 
-## 48.7% built
+## 49.5% built
 
-`███████████████████▍░░░░░░░░░░░░░░░░░░░░`  **85,391** of 175,187 proof files
+`███████████████████▊░░░░░░░░░░░░░░░░░░░░`  **86,799** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 10h 14m | 18:13 | 146 files/min | $14.37 | $30 | 0 |
+| 10h 12m | 18:21 | 144 files/min | $14.64 | $31 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0758.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0808.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 60,326 / 141,928 | `████████▌░░░░░░░░░░░` 43% |
-| `Formalism` | 12,840 / 18,254 | `██████████████ ░░░░░` 70% |
+| `Development` | 61,604 / 141,928 | `████████▋░░░░░░░░░░░` 43% |
+| `Formalism` | 12,968 / 18,254 | `██████████████▏░░░░░` 71% |
 | `GroundTheory` | 7,213 / 8,507 | `████████████████▉░░░` 85% |
 | `ReciprocityTheory` | 3,419 / 3,845 | `█████████████████▊░░` 89% |
 | `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
 | `PositivityTheory` | 6 / 449 | `▎░░░░░░░░░░░░░░░░░░░` 1% |
-| `Lemmata` | 144 / 167 | `█████████████████▏░░` 86% |
+| `Lemmata` | 146 / 167 | `█████████████████▍░░` 87% |
 
 ## The machine
 
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 195, 17 Lean processes running |
-| Memory | 20 GB used of 776 GB |
-| Disk | 129 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 198, 24 Lean processes running |
+| Memory | 26 GB used of 776 GB |
+| Disk | 128 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetGeneratingOperatorStableBounded`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatPartitionOfUnityStatement`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankChartShearInvariance`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerOrthogonalityRelation`
-- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsKernelIntegralStatement`
-- `Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitaryScalarBlendSelfAdjointIdempotentStatement`
+- `Formalism.LocalToGlobal.Columns.ExistsPlaceOverFirstPrime`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.LargePlaceRatioRamified`
+- `Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarePairGluing.SqPairGlueMain`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.HoweDualityRealPlacesTrivialCharFockLiftSmallPaiStatement`
+- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedSeesawTripleThetaIntegralEqScaledStatement`
+- `Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedPlacesFiniteSet`
 
 ## What happens when it finishes
 
