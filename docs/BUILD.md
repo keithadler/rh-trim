@@ -22,7 +22,7 @@ real rate shows in the first 10 minutes; see [step 5](#5-watch-the-rate).
 | Hetzner `CCX63` | 48 / 192 GB | about €1.37/h | 8 to 12 h | about €11 to €17 |
 | RunPod `cpu3m`, 32 vCPU | 32 / 256 GB | $1.76/h | 14 to 26 h | about $25 to $45 |
 
-- **Disk:** about 150 GB. On AWS add a 200 GB gp3 volume; it costs well under $1 for a day.
+- **Disk:** about 150 GB. `build-linux.sh` deletes Lake's per-module `.setup.json` files as it goes. Without that, they reach about 4.6 MB per module, which would mean hundreds of GB for this proof. On AWS add a 200 GB gp3 volume; it costs well under $1 for a day.
 - **Spot interruptions:** a spot machine can be taken back. Lake skips everything already built,
   so rerunning `build-linux.sh` on the same disk resumes. Keep the volume when the instance stops.
 - **Memory:** 256 GB is the safe choice. The mirror's own build allowed up to 440 GB, and how much

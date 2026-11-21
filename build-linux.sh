@@ -62,6 +62,12 @@ else
   echo "WARNING: building WITHOUT a sandbox (ALLOW_NO_SANDBOX=1)"
   RUN=()
 fi
+# Lake writes a .setup.json per module listing its whole import closure: about 4.6 MB each
+# here, 92 GB after 20k modules. They are read once when Lean starts on a module, so delete them
+# after that; this does not make Lake rebuild anything.
+( while true; do find "$FORK/.lake/build/ir" -name '*.setup.json' -mmin +2 -delete 2>/dev/null; sleep 60; done ) &
+CLEANER=$!
+trap 'kill $CLEANER 2>/dev/null' EXIT
 start=$(date +%s)
 set +e
 "${RUN[@]}" env LEAN_ABORT_ON_PANIC=1 "${BUILD[@]}" 2>&1 | while IFS= read -r line; do
