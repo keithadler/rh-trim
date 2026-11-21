@@ -1,27 +1,27 @@
 # Live: building the claimed Lean proof of the Riemann Hypothesis
 
-🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:37 UTC**.
+🟢 **Compiling**: the original proof, all 175,187 files, on one AWS machine. Updated every 10 minutes; last update **2026-11-21 05:47 UTC**.
 
-## 36.4% built
+## 37.3% built
 
-`██████████████▌░░░░░░░░░░░░░░░░░░░░░░░░░`  **63,685** of 175,187 proof files
+`██████████████▉░░░░░░░░░░░░░░░░░░░░░░░░░`  **65,299** of 175,187 proof files
 
 | ⏱ Time left | 🏁 Finish (UTC) | ⚡ Rate | 💵 Spent | 💵 Projected total | ❌ Errors |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| 11h 18m | 16:56 | 164 files/min | $10.71 | $28 | 0 |
+| 11h 11m | 16:59 | 164 files/min | $10.97 | $28 | 0 |
 
-![Proof files compiled over time](docs/status/chart-20261121-0537.svg)
+![Proof files compiled over time](docs/status/chart-20261121-0547.svg)
 
 ## By library
 
 | Library | Built | Progress |
 |---|---:|---|
-| `Development` | 44,936 / 141,928 | `██████▎░░░░░░░░░░░░░` 32% |
-| `Formalism` | 12,466 / 18,254 | `█████████████▋░░░░░░` 68% |
-| `GroundTheory` | 1,643 / 8,507 | `███▊░░░░░░░░░░░░░░░░` 19% |
+| `Development` | 46,500 / 141,928 | `██████▌░░░░░░░░░░░░░` 33% |
+| `Formalism` | 12,498 / 18,254 | `█████████████▋░░░░░░` 68% |
+| `GroundTheory` | 1,656 / 8,507 | `███▉░░░░░░░░░░░░░░░░` 19% |
 | `ReciprocityTheory` | 3,065 / 3,845 | `███████████████▉░░░░` 80% |
-| `CompanionTheory` | 1,437 / 2,027 | `██████████████▏░░░░░` 71% |
-| `PositivityTheory` | 2 / 449 | ` ░░░░░░░░░░░░░░░░░░░` 0% |
+| `CompanionTheory` | 1,440 / 2,027 | `██████████████▏░░░░░` 71% |
+| `PositivityTheory` | 4 / 449 | `▏░░░░░░░░░░░░░░░░░░░` 1% |
 | `Lemmata` | 133 / 167 | `███████████████▉░░░░` 80% |
 
 ## The machine
@@ -29,20 +29,20 @@
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 197, 21 Lean processes running |
-| Memory | 23 GB used of 776 GB |
-| Disk | 140 GB free of 207 GB |
+| CPUs | 192 vCPUs (96 cores), load 196, 24 Lean processes running |
+| Memory | 27 GB used of 776 GB |
+| Disk | 139 GB free of 207 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
 ## Just compiled
 
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SwapTwistCompactPartInProd`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SwapTwistCompactPartLe`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PermEqOneOfMonomialMem`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwistedDoubleCosets`
-- `Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameInvariantKilledSmoothSpaceCentreMem`
-- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteSupportConvolutionTriple`
+- `Development.WeilBound.CoreStatements.PublishedTheorems.CasselmanWallach.OrthonormalEigenbasisOfBasic`
+- `Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramifiedStatement`
+- `Development.AutomorphicSpectrum.Proofs.GlobalProofs.AnalyticVectorExponentialSeries`
+- `Development.WeilBound.CoreStatements.PublishedTheorems.CasselmanWallach.CasimirPowerCommute`
+- `Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslateIsometry`
+- `Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.GlBridge`
 
 ## What happens when it finishes
 
