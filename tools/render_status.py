@@ -172,8 +172,10 @@ KERNELS = [
  ('lean-kernel', "Lean's kernel", "Lean 4.36's own type checker, the reference"),
  ('lean-kernel-paranoid', 'Lean paranoid', 'the same kernel with extra checks'),
  ('nanoda', 'nanoda', 'independent kernel in Rust'),
- ('con-leche', 'con-leche', 'independent checker'),
- ('con-ron', 'con-ron', 'independent checker'),
+ ('con-leche', 'con-leche', 'independent checker, formally verified mode'),
+ ('con-ron', 'con-ron', 'independent checker, formally verified mode'),
+ ('con-leche-trusted', 'con-leche, trusted mode', 'every check the official kernel does, outside its formal theorem'),
+ ('con-ron-trusted', 'con-ron, trusted mode', 'the same, for con-ron'),
  ('tenet', '**Tenet**', 'written from scratch in C# ([repo](https://github.com/keithadler/tenet))'),
  ('tenet-hs', '**tenet-hs**', 'written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs))'),
  ('tenet-jvm', '**tenet-jvm**', 'written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm))'),
@@ -191,7 +193,8 @@ if st['export'] == 'done':
     for n_, (key, name, what) in enumerate(KERNELS, 1):
         if key in done_rows:
             c = done_rows[key]
-            verdict = '✅ accepts' if c[1] == '0' else f'❌ exit {c[1]}'
+            declined = 'declined' in (race.get('log', '') + '') and key in ('con-leche', 'con-ron') and c[1] == '2'
+            verdict = '✅ accepts' if c[1] == '0' else ('⚪ declined: a reflexive inductive type is outside its verified model' if declined else f'❌ exit {c[1]}')
             lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
         elif key in running:
             cur = running[key]
@@ -246,6 +249,7 @@ lines += [
  "- **21:30:** the export file was growing toward the disk's limit (51 GB free, about 0.66 GB a minute). The disk was grown from 200 GB to 600 GB while running; nothing stopped.",
  "- **23:10: export finished.** 1,468,414 declarations, 61.6 GB, exit 0, in 2 h 17 m. Only Lean's three standard axioms appear.",
  "- **23:22: the kernel race started** with Lean's kernel.",
+ "- **00:43 and 00:44:** con-ron and con-leche **declined** in their default, formally verified mode: the proof uses a reflexive inductive type (`FunctorialResolution.EmbeddedResolution.PrincipalizationCertificate`), which their verified model doesn't cover. That is not a rejection of the proof. Both were restarted at 00:45 in trusted mode, which runs every check the official kernel does.",
  "- **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.", '',
  '</details>', '',
  'Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).']
