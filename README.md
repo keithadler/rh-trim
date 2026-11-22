@@ -73,7 +73,7 @@ flowchart LR
 | | Files | Lines | Status |
 |---|---:|---:|---|
 | Original | 175,188 | 17,374,242 | ✅ built |
-| **Smallest proof, round 3** | 172,254 | **15,565,484** | 🔵 **building now** |
+| **Smallest proof** (round 4) | 172,254 | **15,567,987** | 🔵 **building, with automatic repair rounds** |
 
 **Where it stands:** rounds 1 and 2 cut things the build turned out to need. Lean's export lists what a
 *finished* proof uses, but tactics like `simp [foo]` name lemmas that may never appear in the result. Round 3

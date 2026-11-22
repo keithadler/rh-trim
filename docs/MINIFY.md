@@ -3,7 +3,7 @@
 Step 5 of the plan: cut the claimed Lean proof of the Riemann Hypothesis down to what its five main
 theorems actually need, rebuild it, and check it again.
 
-**Status: round 2 is building** (started 06:27 UTC, 2026-11-22; see the [log](#log)). Round 1 failed in its first minute, for a reason now fixed. Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
+**Status: building, with automatic repair rounds** (see the [log](#log)). Each round fixes what the previous one's build reported; it stops when a round builds with 0 errors. Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
 compiles and Tenet accepts its export. The proof's own code is published without a license, so this
 repository holds the method, the tools and the cut lists, not the minified source. Anyone can
 regenerate it from the public mirror with the files in [`data/min`](../data/min).
@@ -157,4 +157,15 @@ All times UTC, 2026-11-22. Newest last.
   1,001,299 of 1,137,512 source declarations kept; 64,611 repeated theorems point to one copy; 527,297 redundant
   import lines removed, then 155,333 files merged into 16,315 bundles. (The table above still shows round 1's
   numbers, which didn't build; it will show the version that builds.)
+- **06:30** Round 2 stopped after 52, then 322 errors. The lesson: Lean's export lists what a *finished* proof
+  uses, but a tactic like `simp [foo]` must name `foo` even when the finished proof never uses it. So the cut
+  must also keep everything the kept code **mentions** in its source.
+- **06:36** Round 3: keeps the export's declarations plus everything their source mentions: 1,022,429 of
+  1,137,512 declarations. Built **unmerged** (172,254 files, 15,565,484 lines) so each error points at an
+  original file; small files get merged once a round builds clean.
+- **06:41** Round 3's errors were in 14 files, nearly all `Unknown identifier` for names the source parser had
+  misread (an outer namespace). Repair: keep every declaration whose name ends the same way; where nothing
+  matches, keep the file that uses it as it was.
+- **06:42** Round 4 started (15,567,987 lines). From here an automatic loop takes over: when a round's errors
+  stop growing, it repairs them and starts the next round; Lake rebuilds only the files that changed.
 
