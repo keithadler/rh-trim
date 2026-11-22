@@ -3,14 +3,14 @@
 <!-- STATUS:BEGIN -->
 <div align="center">
 
-**The smallest proof, live** · round 8 · 🔁 REPAIRING · updated 08:59 UTC Nov 22
+**The smallest proof, live** · round 8 · 🔁 REPAIRING · updated 09:01 UTC Nov 22
 
 <table><tr>
 <td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>10.2%</h2><sub>in lines, so far</sub></td>
 <td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.61M</h2><sub>was 17.37M</sub></td>
 <td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after merging. Building unmerged (172,278) first, so each error points at an original file</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>0% built</h2><sub>451 of 172,278 files · 37 errors to repair</sub></td>
-<td align="center" width="20%"><sub><b>TIME</b></sub><h2>2h 40m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 8 rounds</sub></td>
+<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>985 of 172,278 files · 170 errors to repair</sub></td>
+<td align="center" width="20%"><sub><b>TIME</b></sub><h2>2h 42m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 8 rounds</sub></td>
 </tr></table>
 
 <sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one's build said was missing, so the percentage can only go down from here. Updated every 2 minutes from the build machine. <a href="#log">Log of every round</a></sub>
