@@ -251,4 +251,5 @@ All times UTC, 2026-11-22. Newest last.
 - **07:15** The repair loop now also repairs every 20 minutes while a round has errors, not only when its errors
   stop growing: round 4 kept finding new errors as it built further, and each restart rebuilds only the files it
   changes.
+- **07:1x to 07:22** A seventh Spot interruption. The build resumed by itself; round 4 had 5,462 files built at 07:23.
 
