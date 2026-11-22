@@ -195,6 +195,8 @@ if st['export'] == 'done':
             c = done_rows[key]
             declined = 'declined' in (race.get('log', '') + '') and key.startswith(('con-leche', 'con-ron')) and c[1] == '2'
             verdict = '✅ accepts' if c[1] == '0' else ('⚪ declined: no support for reflexive inductive types' if declined else f'❌ exit {c[1]}')
+            if key == 'tenet-jvm' and c[1] == '143':
+                verdict = '⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict'
             lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
         elif key in running:
             cur = running[key]
@@ -273,6 +275,8 @@ lines += [
  "- **23:22: the kernel race started** with Lean's kernel.",
  "- **00:43 and 00:44:** con-ron and con-leche **declined** in their default, formally verified mode: the proof uses a reflexive inductive type (`FunctorialResolution.EmbeddedResolution.PrincipalizationCertificate`), which their verified model doesn't cover. That is not a rejection of the proof. Both were restarted at 00:45 in trusted mode, which runs every check the official kernel does.",
  "- **00:50 and 00:52:** both declined again in trusted mode, at the same type. So con-leche and con-ron don't support reflexive inductive types in either mode; they give no verdict on this proof.",
+ "- **03:08:** Tenet stopped after checking **1,468,255 of 1,468,414 declarations, 0 failed**: it ran out of memory on the last 159. The cause was the race setup, not Tenet or the proof: its sandbox was capped at 120 GB, and .NET limits its heap to 75% of that (peak 89.7 GB). Rerun from 03:16 with a 320 GB cap.",
+ "- **03:17:** tenet-jvm stopped by hand. It had been stuck for about 90 minutes reading one declaration (`Formalism.MainNotions.FormalGroupSystem.Pf.ea_card_img._simp_1_1`) while its memory grew to 258 GB. Recorded as stalled, not as a verdict; to be reproduced on a small export of that lemma.",
  "- **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.", '',
  '</details>', '',
  'Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).']
