@@ -207,7 +207,7 @@ if st['export'] == 'done':
 # ---------- research on the export (tests run alongside the race)
 RESEARCH = [
  ('1', 'Mutation test the kernels', 'Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding.',
-  '🔵 harness built and tested: on a small proof, all 6 kernels accepted the clean file and rejected all 20 mutants. Next: real slices of the RH proof.'),
+  '🟢 slice 1 of 8 (`smulLA_mul\'`, 1.1M-line export): **all 6 kernels accepted the clean slice and rejected all 60 mutants**: no disagreements. The other 7 slices (up to 7.2M lines each) are running.'),
  ('2', 'Where the checking time goes', 'The declarations that take most of the kernel time, from Tenet\'s per-declaration report.',
   '⏳ when Tenet finishes (it slowed from about 900 to 17 declarations a second in one stretch, so a small set dominates)'),
  ('3', 'Duplicate theorems', 'Theorems proved more than once with an identical statement, project vs Mathlib.',
@@ -217,7 +217,7 @@ RESEARCH = [
  ('5', 'The spine and the hubs', 'The chain of declarations every dependency path must pass through (a dominator tree), and the most-used lemmas.',
   '🟢 **99.35% of the proof sits under one claim, `allChi`** (`UpperTheory.FinalTheorems.everyCharacter`). Below it: `everyCharacter_of_row` owns 77%, `every_character_of_literature_of_vWin` 67%, `every_character_of_theta_integrals_local_matching` 43%: the same chain traced by hand earlier, now measured. Top hub: `Formalism.BasicNotions.D7`, used directly by 155,523 declarations. Of the 1,468,414 declarations, 1,258,876 (86%) are the project\'s, holding 97% of the expression nodes.'),
  ('6', 'Haskell vs Lean per slice', 'tenet-hs and Lean\'s kernel timed on the same slices, matched by size, for a fair speed comparison.',
-  '⏳ uses the mutation slices'),
+  '🔵 first slice, clean file, wall time with 24 checks running at once (so rough): nanoda 7.4 s, Tenet 9.8 s, Lean 11.4 s, Lean paranoid 14.8 s, **tenet-hs 16.8 s**, tenet-jvm 17.1 s. Fair timings, one at a time on an idle machine, come after the race.'),
 ]
 lines += ['## Research on the export', '',
  'Six tests that only an exact export plus several independent kernels make possible. They run on the same machine, alongside the race, at no extra cost. '
