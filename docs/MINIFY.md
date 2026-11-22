@@ -194,6 +194,24 @@ The argument from `Green` and the window bound to every character is small (6.6%
 supplying the inputs each link takes (the row, the literature results, theta integrals and local matching). That is
 where a shorter route would have to come from: meeting one of those hypotheses more cheaply.
 
+**Second measurement: where the inputs come from.** The key claim takes one unconditional input, a `Row0b` statement
+about Galois representations (`galoisLocalGlobalStrong_recParameter`); the links above rebuild everything else from
+that row plus a local Langlands existence result. Five pieces own about 60% of the proof outright (the rest is
+shared foundations):
+
+| Piece | What it supplies | Needs | Owns alone |
+|---|---|---:|---:|
+| `nonempty_hyps_definite_side_of_closed_bound` | hypotheses on the definite side, from a closed bound (theta correspondence) | 61.0% | **37.75%** |
+| `vwin_of_row` | the window bound, from the Galois row | 22.9% | 7.98% |
+| `topCovolSlim2_use_alt_alt` | a covolume bound, through resolution of singularities and principalisation in characteristic zero | 20.9% | 6.90% |
+| `galoisLocalGlobalStrong_recParameter` | the Galois input `Row0b` | 22.8% | 6.03% |
+| `every_character_of_green_v_win` | the final argument | 6.6% | 1.25% |
+
+So the biggest target for a shorter route is the definite-side step (38% alone), and a clear "generality" question is
+the covolume bound: it uses resolution of singularities (Hironaka-type results) in full generality, 7% alone; if the
+argument needs only a special case, that part may have a much shorter proof. Both are mathematical questions, not
+mechanical ones.
+
 ## Log
 
 All times UTC, 2026-11-22. Newest last.
