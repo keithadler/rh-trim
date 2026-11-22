@@ -4,7 +4,7 @@
 
 **✅ Tenet (C#, written from scratch) accepts the whole proof:** 1,468,414 declarations, 0 failed, 1 h 0 m. Still checking: Lean's kernel, paranoid mode, nanoda and **tenet-hs (Haskell)**.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 05:35 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 05:37 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $9.70 so far |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $9.75 so far |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting | not started |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $47.03**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $47.09**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -61,15 +61,15 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 | # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |
 |:---:|---|---|:---:|---:|---:|---:|
-| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 6h 12m so far | 21,660 s (~1 cores) | 70 GB now |
-| 2 | Lean paranoid | the same kernel with extra checks | 🔵 **checking** | 4h 56m so far | 17,119 s (~1 cores) | 87 GB now |
-| 3 | nanoda | independent kernel in Rust | 🔵 **checking** | 4h 56m so far | 17,107 s (~1 cores) | 62 GB now |
+| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 6h 14m so far | 21,784 s (~1 cores) | 70 GB now |
+| 2 | Lean paranoid | the same kernel with extra checks | 🔵 **checking** | 4h 58m so far | 17,243 s (~1 cores) | 87 GB now |
+| 3 | nanoda | independent kernel in Rust | 🔵 **checking** | 4h 58m so far | 17,231 s (~1 cores) | 62 GB now |
 | 4 | con-leche | independent checker, formally verified mode | ⚪ declined: no support for reflexive inductive types | 6:07.52 | 328 s | 37.1 GB |
 | 5 | con-ron | independent checker, formally verified mode | ⚪ declined: no support for reflexive inductive types | 5:14.61 | 248 s | 53.1 GB |
 | 6 | con-leche, trusted mode | every check the official kernel does, outside its formal theorem | ⚪ declined: no support for reflexive inductive types | 6:48.95 | 356 s | 37.1 GB |
 | 7 | con-ron, trusted mode | the same, for con-ron | ⚪ declined: no support for reflexive inductive types | 4:45.75 | 253 s | 53.1 GB |
 | 8 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | ✅ accepts | 1:00:27 | 252,006 s | 236.1 GB |
-| 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | 🔵 **checking** | 4h 56m so far | 17,154 s (~1 cores) | 46 GB now |
+| 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | 🔵 **checking** | 4h 58m so far | 17,277 s (~1 cores) | 46 GB now |
 | 10 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict | 2:02:16 | 15,818 s | 257.7 GB |
 
 ## Research on the export
@@ -91,11 +91,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $47.03 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $47.09 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0535.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0537.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -117,7 +117,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
 | CPUs | 192 vCPUs (96 cores), load 25, 0 Lean processes running |
-| Memory | 320 GB used of 776 GB |
+| Memory | 325 GB used of 776 GB |
 | Disk | 271 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
