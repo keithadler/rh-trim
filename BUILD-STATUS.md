@@ -34,7 +34,7 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $11.58 |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $11.59 |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | 🔵 **in progress** | not started |
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Round 2 building: 15.45M lines (−11.1%) in 32,034 files (−81.7%).** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
