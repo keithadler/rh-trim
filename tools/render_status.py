@@ -99,7 +99,7 @@ STEPS = [
  ('export', '2', 'Exact reduced form', 'Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself.'),
  ('race', '3', 'Haskell vs Lean', "Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race."),
  ('axioms', '4', 'Axioms', 'List exactly which axioms the five theorems rest on.'),
- ('minify', '5', 'The smallest proof', 'Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Source written: 11.86M content lines, down from 14.62M (−18.9%), 161,543 files. Not built yet.** [Details](docs/MINIFY.md)'),
+ ('minify', '5', 'The smallest proof', 'Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Source written: 13.85M lines, down from 17.37M (−20.3%), in 30,698 files, down from 175,188 (−82.5%). Not built yet.** [Details](docs/MINIFY.md)'),
  ('publish', '6', 'Publish', 'Post the times, the verdicts and the exact sizes here.'),
 ]
 MER = {'done': 'done', 'now': 'now', 'next': 'next', 'stop': 'stop'}

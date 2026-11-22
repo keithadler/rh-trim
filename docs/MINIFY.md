@@ -3,7 +3,7 @@
 Step 5 of the plan: cut the claimed Lean proof of the Riemann Hypothesis down to what its five main
 theorems actually need, rebuild it, and check it again.
 
-**Status: the minified source is written but not built yet.** Nothing here is confirmed until it
+**Status: the minified source is written but not built yet** (last updated 2026-11-22). Nothing here is confirmed until it
 compiles and Tenet accepts its export. The proof's own code is published without a license, so this
 repository holds the method, the tools and the cut lists, not the minified source. Anyone can
 regenerate it from the public mirror with the files in [`data/min`](../data/min).
@@ -12,14 +12,23 @@ regenerate it from the public mirror with the files in [`data/min`](../data/min)
 
 | | Original | Minified | Change |
 |---|---:|---:|---:|
-| Files | 175,188 | **161,543** | −13,645 (−7.8%) |
-| Declarations in the source | 1,060,833 | **823,687** | −237,146 (−22.4%) |
-| Lines of content (no blank lines, no imports) | 14,621,954 | **11,858,344** | −2,763,610 (**−18.9%**) |
-| Declarations the kernel needs (from the export) | 1,468,414 | **1,441,861** | −26,553 (−1.8%) |
+| **Lines** (everything) | 17,374,242 | **13,850,849** | **−20.3%** |
+| **Files** | 175,188 | **30,698** | **−82.5%** |
+| Declarations in the source | 1,060,833 | **823,687** | −22.4% |
+| Import lines | 909,823 | **71,440** | −92.1% |
+| Declarations the kernel needs (from the export, with Mathlib) | 1,468,414 | **1,441,861** | −1.8% |
 | Expression nodes the kernel checks | 100% | **97.2%** | −2.8% |
 
-The last two rows count Mathlib and Lean's core library too, which can't be minified here; the first
-three count only the project's own source.
+The minified source's other lines (12,189,756, not blank, not imports) include about 330,000 lines of
+`section` / `end` wrappers added when files were merged (step 8); the proof content itself is
+11.86 million lines, down from 14.62 million (−18.9%).
+
+| Step | Lines after | Files after |
+|---|---:|---:|
+| Original | 17,374,242 | 175,188 |
+| Exact cut, merged repeats, empty files dropped (steps 1 to 6) | 14,888,615 | 161,543 |
+| Redundant imports removed (step 7) | 13,841,616 | 161,543 |
+| Small files merged, then imports trimmed again (step 8) | **13,850,849** | **30,698** |
 
 ## How it was cut
 
@@ -42,6 +51,17 @@ three count only the project's own source.
    declarations.
 6. **Drop empty files.** A file whose every declaration is cut, and which defines no notation, syntax,
    tactic, attribute, instance or export, is dropped; files that imported it import what it imported.
+7. **Remove redundant imports.** An import is dropped when another import of the same file already brings
+   it in, directly or not. Every file still sees exactly the same modules, so nothing about how the proof
+   compiles changes. 935,081 import lines went.
+8. **Merge small files** (the median file was 59 lines). Files in the same folder (so the same Lake library
+   and its options) **and at the same depth in the import graph** are merged into bundle modules of at most
+   25 files and 4,000 lines. Files at the same depth can't reach each other through any chain of imports,
+   so no bundle can close an import cycle. Each file's text is wrapped in its own `section … end`, so its
+   `open`, `variable`, `universe`, options and local notation stay with it; namespaces a file leaves open are
+   closed first. Two files whose `private` names clash never share a bundle, and files using `#exit` are
+   never merged. Every import of a merged file now points to its bundle. 146,388 files went into 15,543
+   bundles; then redundant imports were trimmed again.
 
 ## What "minimal" means here, and what is left
 
@@ -52,8 +72,8 @@ three count only the project's own source.
   is a different job.
 - **Some repeats remain.** 63,943 copies had no usable twin (the chosen copy comes later in the build
   order, or the theorem's proof isn't a plain `:=`).
-- **Import lines went up**, from 0.91 million to 1.33 million, because files that imported a dropped
-  file now import what it imported. These are not proof content.
+- **Wrappers:** merging files adds a `section … end` around each original file, about 330,000 lines in
+  all. They keep each file's settings to itself; they are not proof content.
 
 ## What could still fail in the build
 
@@ -63,6 +83,8 @@ three count only the project's own source.
   work out an argument by unification). Those proofs go back to their originals.
 - An added import that changes how `simp` or instance search behaves in that file. Those imports go
   back too.
+- A merged file that behaves differently inside a bundle (for example, a command that reads the module
+  name). That file goes back out of its bundle.
 
 ## Files
 
@@ -77,10 +99,21 @@ three count only the project's own source.
 | [`tools/swapcross.py`](../tools/swapcross.py) | plans the merges |
 | [`tools/finalize_cuts.py`](../tools/finalize_cuts.py) | the name check and the file drops |
 | [`tools/prune.py`](../tools/prune.py) | writes the minified source from the original |
+| [`tools/trim_imports.py`](../tools/trim_imports.py) | removes imports another import already brings in |
+| [`tools/merge_files.py`](../tools/merge_files.py) | merges same-folder, same-depth files into bundles |
 | [`tools/xidx.c`](../tools/xidx.c), [`tools/xan.c`](../tools/xan.c) | index the export; `XSWAP=` recomputes what stays reachable after merges |
 
-To regenerate the minified source from the public mirror at `8b83d5e`:
+To regenerate the minified source from the public mirror at `8b83d5e` (Mathlib's import lists come from
+`reach.py --dump-decls` run on its package; see the tools):
 
 ```bash
-python3 tools/prune.py SRC <(gunzip -c data/min/kept-files.txt.gz) OUT <(gunzip -c data/min/cuts.json.gz) <(gunzip -c data/min/swaps.json.gz) <(gunzip -c data/min/imports.json.gz)
+python3 tools/prune.py SRC <(gunzip -c data/min/kept-files.txt.gz) STEP1 <(gunzip -c data/min/cuts.json.gz) <(gunzip -c data/min/swaps.json.gz) <(gunzip -c data/min/imports.json.gz)
+```
+
+```bash
+python3 tools/trim_imports.py STEP1/src LIB_DUMPS...
+```
+
+```bash
+python3 tools/merge_files.py STEP1/src OUT/src && python3 tools/trim_imports.py OUT/src LIB_DUMPS...
 ```

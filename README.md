@@ -14,7 +14,7 @@ in C#, tenet-hs in Haskell, tenet-jvm).
 |---|---:|---:|---|
 | The original | 175,188 | 17,374,242 | ✅ built on AWS: 0 errors, no `sorry` ([how](docs/BUILD-ORIGINAL.md)) |
 | What the theorems use | 1,468,414 declarations (with Mathlib) | | ✅ exported; only Lean's 3 standard axioms |
-| **The minified proof** | **161,543** (−7.8%) | **14,888,615** (−14.3%; −18.9% of content lines) | 🔵 source written, **not built yet** ([how](docs/MINIFY.md)) |
+| **The minified proof** | **30,698** (−82.5%) | **13,850,849** (−20.3%) | 🔵 source written, **not built yet** ([how](docs/MINIFY.md)) |
 
 **Kernel checks so far:** Tenet accepts the whole original proof (1,468,414 declarations, 0 failed,
 1 h). Live results and the research on the proof's structure: [BUILD-STATUS.md](BUILD-STATUS.md).
@@ -30,9 +30,8 @@ in C#, tenet-hs in Haskell, tenet-jvm).
 
 **Next, to make it smaller still:**
 
-- **Redundant imports removed**: an import another import already brings in (running now).
-- **Small files merged** into modules of about 25 files each, folder by folder (the median file is
-  59 lines).
+- ✅ **Redundant imports removed** (935,081 import lines) and ✅ **small files merged** (161,543 files
+  into 30,698), both without changing what any file sees.
 - Then the **build**, the export of the minified proof, and **Tenet's check**, then the other kernels.
 
 Later rounds: the 63,943 repeats that still can't point to a twin, near-identical statements,
