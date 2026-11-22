@@ -248,4 +248,7 @@ All times UTC, 2026-11-22. Newest last.
 - **06:50 to 07:01** A sixth Spot interruption, 11 minutes. The machine came back by itself and the round 4 build
   resumed where it stopped. While it was down, the other strategies were measured (see
   [More ways to make it smaller](#more-ways-to-make-it-smaller-measured)).
+- **07:15** The repair loop now also repairs every 20 minutes while a round has errors, not only when its errors
+  stop growing: round 4 kept finding new errors as it built further, and each restart rebuilds only the files it
+  changes.
 
