@@ -38,27 +38,31 @@ def frontier(m):
 
 import json
 cuts = json.load(open(sys.argv[4])) if len(sys.argv) > 4 else {}
-stats = dict(files=0, rewritten=0, max_imports=0, cut_decls=0)
+swaps = json.load(open(sys.argv[5])) if len(sys.argv) > 5 else {}
+extra_imports = json.load(open(sys.argv[6])) if len(sys.argv) > 6 else {}
+stats = dict(files=0, rewritten=0, max_imports=0, cut_decls=0, swapped=0)
 for m in sorted(keep):
     if not local(m):
         print('missing source:', m, file=sys.stderr); continue
     t = open(path(m), encoding='utf-8').read()
     # cut the declarations the trace never reached (offsets are into the original text)
-    spans = cuts.get(m, [])
+    spans = [(a, b, '') for a, b in cuts.get(m, [])] + [tuple(x) for x in swaps.get(m, [])]
     if spans:
+        spans.sort(key=lambda x: (x[0], -x[1]))
         parts, last = [], 0
-        for a, b in spans:
-            if a < last: continue
-            parts.append(t[last:a]); last = b
+        for a, b, rep in spans:
+            if a < last: continue          # inside a span already cut
+            parts.append(t[last:a]); parts.append(rep); last = b
+            stats['swapped' if rep else 'cut_decls'] += 1
         parts.append(t[last:])
         t = ''.join(parts)
-        stats['cut_decls'] += len(spans)
     new = []
     for i in imports(m):
         if not local(i) or i in keep:
             new.append(i)
         else:
             new.extend(sorted(frontier(i)))
+    new = new + [x for x in extra_imports.get(m, []) if x in keep or not local(x)]
     seen, ded = set(), []
     for i in new:
         if i not in seen and i != m:

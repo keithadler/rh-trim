@@ -10,8 +10,6 @@ too little, and let a compile settle the rest.
 usage: reach.py SRC_DIR ROOT_DECL... [--keep-instances]
 """
 import os, re, sys, collections, array
-OUT = os.path.expanduser(os.environ.get('RH_TRIM_OUT', 'rh-trim-out'))
-os.makedirs(OUT, exist_ok=True)
 
 src = sys.argv[1]
 roots = [a for a in sys.argv[2:] if not a.startswith('--')]
@@ -54,7 +52,7 @@ paths.sort()
 
 import pickle
 import hashlib
-CACHE = os.path.join(OUT, 'reach-cache-%s%s.pkl' % (hashlib.sha1(os.path.abspath(src).encode()).hexdigest()[:8], '-v2' if '--v2' in sys.argv else ''))
+CACHE = os.path.expanduser('~/rh-sandbox/reach-cache-%s%s.pkl' % (hashlib.sha1(os.path.abspath(src).encode()).hexdigest()[:8], ('-v3' if '--v3' in sys.argv else '-v2') if '--v2' in sys.argv else ''))
 cached = '--cached' in sys.argv and os.path.exists(CACHE)
 if cached:
     deps = pickle.load(open(CACHE, 'rb'))[5]
@@ -134,6 +132,7 @@ for fid, p in enumerate(paths):
 print('declarations:', len(decl_name), file=sys.stderr)
 
 V2 = '--v2' in sys.argv
+V3 = '--v3' in sys.argv
 mod2fid = {m: i for i, m in enumerate(files)}
 dupnames = {k for k, v in name2ids.items() if len(set(decl_file[i] for i in v)) > 1}
 dupfiles = sorted({decl_file[i] for k in dupnames for i in name2ids[k]})
@@ -171,19 +170,24 @@ def visible(i, fid):
     return f == fid or (anc[fid] & dbit.get(f, 0)) != 0
 
 binder_res = [
-    re.compile(r'[(\{\[⦃]\s*([^():{}\[\]⦃⦄=]+?)\s*:'),                 # (x y : T)  {x : T}  [h : C]
     re.compile(r'(?:fun|λ)\s+([^=↦]+?)\s*(?:=>|↦)'),                   # fun x y =>
     re.compile(r'\b(?:intro|intros|rintro|introv|ext|funext)\b([^\n;]*)'),  # intro a b
-    re.compile(r'\b(?:obtain|rcases|cases|induction|match|rcases)\b[^\n]*?\bwith\b([^\n]*)'),
+    re.compile(r'\b(?:obtain|rcases|cases|induction|match)\b[^\n]*?\bwith\b([^\n]*)'),
     re.compile(r'\bobtain\s+([^:=\n]*)'),
-    re.compile(r'\b(?:have|haveI|let|letI|set|replace|suffices|show_term|generalize)\s+([^\s:⟨(=]+)'),
+    re.compile(r'\b(?:have|haveI|let|letI|set|replace|suffices|generalize)\s+([^\s:⟨(=]+)'),
     re.compile(r'\bwith\s+([^\s,\]\)⟩]+)'),
     re.compile(r'[∀∃∑∏⋃⋂]\s*([^,:]+?)\s*[,:∈]'),
     re.compile(r'^\s*\|\s*[^\s=]+\s+([^=\n]*?)\s*=>', re.M),               # | succ n ih =>
-    re.compile(r'⟨([^⟨⟩]*)⟩'),                                             # ⟨a, b⟩ patterns
+    re.compile(r'\b(?:obtain|rintro|intro|fun|λ|with)\s+⟨([^⟨⟩]*)⟩'),       # ⟨a, b⟩ patterns only
+    re.compile(r'^\s*\|\s*⟨([^⟨⟩]*)⟩', re.M),
 ]
+header_binder = re.compile(r'[(\{\[⦃]\s*([^():{}\[\]⦃⦄=]+?)\s*:')
 def locals_of(text):
     out = set()
+    hdr = text.split(':=', 1)[0]
+    for g in header_binder.findall(hdr):
+        for w in ident.findall(g):
+            if '.' not in w: out.add(w)
     for rx in binder_res:
         for g in rx.findall(text):
             for w in ident.findall(g):
@@ -211,6 +215,15 @@ def resolve(tok, nsprefixes, opens, fid=None):
         if vis: hits = vis
     return hits
 
+DUMP = next((a[13:] for a in sys.argv if a.startswith('--dump-decls=')), None)
+if DUMP:
+    # name, module, start, end of every declaration with a source span; then the import list per module
+    with open(DUMP, 'w', encoding='utf-8') as h:
+        for i, nm in enumerate(decl_name):
+            sp = decl_span[i]
+            if sp is not None: h.write(f'D\t{nm}\t{files[decl_file[i]]}\t{sp[0]}\t{sp[1]}\n')
+        for f, imps in enumerate(file_imports): h.write('I\t' + files[f] + '\t' + ' '.join(imps) + '\n')
+    print(f'dumped {len(decl_name)} declarations of {len(files)} modules to {DUMP}', file=sys.stderr); sys.exit(0)
 print('pass 2: references', file=sys.stderr, flush=True)
 adj_start = array.array('q', [0]) ; adj = array.array('i')
 if not cached: deps = [None] * len(decl_name)
@@ -225,13 +238,24 @@ for fid, p in enumerate([] if cached else paths):
         hits = set()
         body = t[pos:end]
         loc = locals_of(body) if V2 else ()
-        for tok in set(ident.findall(body)):
-            tok = tok.rstrip('.')
+        fields = set()
+        for mm in ident.finditer(body):
+            tok = mm.group(0).rstrip('.')
             if tok.startswith('_root_.'): tok = tok[7:]
             if not tok: continue
-            if V2 and tok.split('.', 1)[0] in loc and not tok.startswith('_root_'):
+            if mm.start() > 0 and body[mm.start() - 1] == '.':
+                fields.add(tok.split('.')[0])          # (…).foo: generalized field notation
+            head = tok.split('.', 1)[0]
+            if V2 and head in loc:
+                if '.' in tok and V3: fields.update(tok.split('.')[1:])   # h.foo.bar on a local
                 continue
-            hits |= resolve(tok, prefixes, opens, fid)
+            r = resolve(tok, prefixes, opens, fid)
+            if not r and '.' in tok and V3: fields.update(tok.split('.')[1:])
+            hits |= r
+        if V3:
+            for f_ in fields:
+                c = last2ids.get(f_, [])
+                if 0 < len(c) <= 300: hits.update(c)
         hits.discard(i)
         deps[i] = array.array('i', sorted(hits))
     if fid % 10000 == 0: print(f'  {fid} files', file=sys.stderr, flush=True)
@@ -278,7 +302,23 @@ def run(st):
             for y in d:
                 if not seen[y]:
                     parent.setdefault(y, x); st.append(y)
-run(list(roots_ids))
+EXACT = next((a[13:] for a in sys.argv if a.startswith('--keep-names=')), None)
+if EXACT:
+    # Exact mode: keep the declarations Lean's exporter wrote (the kernel closure of the theorems),
+    # plus every instance and every attribute-tagged declaration (they steer elaboration even when
+    # no finished term mentions them). Private names arrive as _private.<Module>.0.<Name>.
+    keepn = set()
+    for l in open(EXACT, encoding='utf-8'):
+        n = l.rstrip('\n')
+        if n.startswith('_private.') and '.0.' in n: n = n.split('.0.', 1)[1]
+        keepn.add(n)
+    for i, nm in enumerate(decl_name):
+        if nm in keepn or decl_inst[i] or decl_attr[i]:
+            seen[i] = 1
+    for f in range(len(files)): fseen[f] = 1      # keep every file this round; cut only declarations
+    print(f"  exact: {sum(seen)} of {len(decl_name)} source declarations kept", file=sys.stderr, flush=True)
+else:
+    run(list(roots_ids))
 print(f"  named references only: {sum(seen)} declarations in {sum(fseen)} files", file=sys.stderr, flush=True)
 if class_gated:
     insts = [i for i in range(len(decl_name)) if decl_inst[i] and deps[i] is not None]
@@ -318,10 +358,10 @@ for a in sys.argv:
 if '--no-write' in sys.argv:
     print(f'reachable: {sum(seen)} declarations in {sum(fseen)} files'); sys.exit(0)
 reach = [i for i in range(len(decl_name)) if seen[i]]
-rf = set(decl_file[i] for i in reach)
+rf = set(range(len(files))) if EXACT else set(decl_file[i] for i in reach)
 print(f'reachable declarations: {len(reach)} of {len(decl_name)}')
 print(f'files holding them: {len(rf)} of {len(files)}')
-with open(os.path.join(OUT, 'reach-files' + ('-inst' if keep_inst else '') + ('-fc' if '--file-closure' in sys.argv else '') + '.txt'), 'w') as h:
+with open(os.path.expanduser('~/rh-sandbox/exact-files.txt' if EXACT else '~/rh-sandbox/reach-files' + ('-inst' if keep_inst else '') + ('-fc' if '--file-closure' in sys.argv else '') + '.txt'), 'w') as h:
     for f in sorted(files[i] for i in rf): h.write(f + '\n')
 
 import json
@@ -332,6 +372,6 @@ for f in rf:
         if not seen[i] and decl_span[i] is not None:
             sp.append(decl_span[i])
     cuts[files[f]] = sorted(sp)
-json.dump(cuts, open(os.path.join(OUT, 'reach-cuts.json'), 'w'))
+json.dump(cuts, open(os.path.expanduser('~/rh-sandbox/exact-cuts.json' if EXACT else '~/rh-sandbox/reach-cuts.json'), 'w'))
 kept_decl_lines = 0
 print('declarations cut from kept files:', sum(len(v) for v in cuts.values()))
