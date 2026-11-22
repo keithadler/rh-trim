@@ -197,7 +197,11 @@ if st['export'] == 'done':
             verdict = '✅ accepts' if c[1] == '0' else ('⚪ declined: no support for reflexive inductive types' if declined else f'❌ exit {c[1]}')
             if key == 'tenet-jvm' and c[1] == '143':
                 verdict = '⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict'
-            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
+            if c[1] == '143' and not c[2]:
+                lines.append(f'| {n_} | {name} | {what} | ⏹ stopped at 05:37 UTC by an AWS Spot interruption after about 5 h; no verdict | | | |')
+                continue
+            cpu = f'{float(c[3]):,.0f} s' if c[3] else ''
+            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {cpu} | {c[5]} GB |')
         elif key in running:
             cur = running[key]
             cores = cur['cpu_s'] / cur['elapsed_s'] if cur['elapsed_s'] else 0
@@ -276,6 +280,7 @@ lines += [
  "- **00:43 and 00:44:** con-ron and con-leche **declined** in their default, formally verified mode: the proof uses a reflexive inductive type (`FunctorialResolution.EmbeddedResolution.PrincipalizationCertificate`), which their verified model doesn't cover. That is not a rejection of the proof. Both were restarted at 00:45 in trusted mode, which runs every check the official kernel does.",
  "- **00:50 and 00:52:** both declined again in trusted mode, at the same type. So con-leche and con-ron don't support reflexive inductive types in either mode; they give no verdict on this proof.",
  "- **03:08:** Tenet stopped after checking **1,468,255 of 1,468,414 declarations, 0 failed**: it ran out of memory on the last 159. The cause was the race setup, not Tenet or the proof: its sandbox was capped at 120 GB, and .NET limits its heap to 75% of that (peak 89.7 GB). Rerun from 03:16 with a 320 GB cap.",
+ "- **05:37 to 05:46:** a fifth Spot interruption. It stopped the four checkers still running: Lean's kernel (about 6 h in), paranoid mode, nanoda and tenet-hs, with no verdicts. Everything on disk was kept. The race is not restarted for now; the machine now builds the minified proof, which Tenet will check, and the other kernels after that.",
  "- **04:16:55: Tenet accepts the whole proof.** All 1,468,414 declarations checked, 0 failed, exit 0, in 1 h 0 m 27 s (peak 236 GB). Tenet is an independent Lean kernel written from scratch in C#, and the first of the from-scratch kernels to finish.",
  "- **03:17:** tenet-jvm stopped by hand. It had been stuck for about 90 minutes reading one declaration (`Formalism.MainNotions.FormalGroupSystem.Pf.ea_card_img._simp_1_1`) while its memory grew to 258 GB. Recorded as stalled, not as a verdict; to be reproduced on a small export of that lemma.",
  "- **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.", '',
