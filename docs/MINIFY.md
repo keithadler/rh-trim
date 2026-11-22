@@ -175,6 +175,25 @@ or that Mathlib already has? Each step below can be measured from the export bef
 
 Steps 1 to 3 are mechanical and measured; steps 4 and 5 need mathematical judgment and will say so.
 
+**First measurement (step 2), 2026-11-22.** The side routes `plugAll` and `everyE₂` turn out to be conditional: like
+the last link of the main chain, they need a `Green` property and the window bound `VWin` as inputs. So switching
+routes alone saves nothing. What each link of the chain needs (share of the whole proof's expression nodes, to state
+and prove that link, with its inputs taken as hypotheses):
+
+| Link | Needs | Owns alone |
+|---|---:|---:|
+| `allChi`, `everyCharacter` (the key claim) | 100% | 99.35% |
+| `everyCharacter_of_row` | 93.97% | 77.17% |
+| `every_character_of_literature_of_vWin` | 84.17% | 66.98% |
+| `every_character_of_theta_integrals_local_matching` | 62.26% | 43.21% |
+| `vwin_of_row` (the window bound) | 22.87% | 7.98% |
+| `every_character_of_green_v_win` (the last step) | **6.58%** | 1.25% |
+| `green_of_regular` (the `Green` input) | **0.33%** | 0.00% |
+
+The argument from `Green` and the window bound to every character is small (6.6%); nearly all the weight is in
+supplying the inputs each link takes (the row, the literature results, theta integrals and local matching). That is
+where a shorter route would have to come from: meeting one of those hypotheses more cheaply.
+
 ## Log
 
 All times UTC, 2026-11-22. Newest last.
