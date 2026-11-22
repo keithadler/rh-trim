@@ -4,7 +4,7 @@
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 20:45 UTC**
+🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 20:47 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $33.36 |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $33.42 |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | 🔵 **in progress** | not started |
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Building in automatic repair rounds; live numbers in the counter at the top of the README.** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $70.69**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $70.75**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -76,7 +76,7 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 The minified source, round 33 (15,897,471 lines in 172,338 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, in automatic repair rounds since 06:19:37 UTC on 2026-11-22. When a round builds clean, its export is checked by Tenet first, then the other kernels.
 
-🔵 **compiling** · `████████████████████████████████████▌░░░` **165,416** of 181,043 Lake jobs (91.4%) · ❌ errors: **510**
+⚠️ **stopped**: == 20:46:29 RESULT exit status 1 after 0h 17m · `███████████████████████████████████████▉` **181,026** of 181,043 Lake jobs (100.0%) · ❌ errors: **711**
 
 | Round | Started (UTC) | Lines | Files | Errors | What changed |
 |---|---|---:|---:|---:|---|
@@ -113,7 +113,7 @@ The minified source, round 33 (15,897,471 lines in 172,338 files, down from 17,3
 | round 30 | 18:48 | 15,888,477 | 172,325 | 397 | automatic repair of the previous round |
 | round 31 | 19:15 | 15,892,455 | 172,332 | 1003 | automatic repair of the previous round |
 | round 32 | 20:05 | 15,895,708 | 172,338 | 650 | automatic repair of the previous round |
-| round 33 | 20:28 | 15,897,471 | 172,338 | 390 | automatic repair of the previous round |
+| round 33 | 20:28 | 15,897,471 | 172,338 | 567 | automatic repair of the previous round |
 
 Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.
 
@@ -136,11 +136,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $70.69 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $70.75 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-2045.svg)
+![Proof files compiled over time](docs/status/chart-20261122-2047.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -162,7 +162,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
 | CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
-| Memory | 9 GB used of 776 GB |
+| Memory | 6 GB used of 776 GB |
 | Disk | 231 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -186,6 +186,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 - **00:50 and 00:52:** both declined again in trusted mode, at the same type. So con-leche and con-ron don't support reflexive inductive types in either mode; they give no verdict on this proof.
 - **03:08:** Tenet stopped after checking **1,468,255 of 1,468,414 declarations, 0 failed**: it ran out of memory on the last 159. The cause was the race setup, not Tenet or the proof: its sandbox was capped at 120 GB, and .NET limits its heap to 75% of that (peak 89.7 GB). Rerun from 03:16 with a 320 GB cap.
 - **05:37 to 05:46:** a fifth Spot interruption. It stopped the four checkers still running: Lean's kernel (about 6 h in), paranoid mode, nanoda and tenet-hs, with no verdicts. Everything on disk was kept. The race is not restarted for now; the machine now builds the minified proof, which Tenet will check, and the other kernels after that.
+- **2026-11-22 20:46:** a second machine (`r7a.12xlarge`, 48 vCPU, 369 GB, Spot), made from the 20:19 snapshot, restarts the race for the four kernels the interruptions stopped: Lean's kernel, paranoid mode, nanoda (now with 32 threads) and tenet-hs, all four in parallel on the same export. The first machine keeps building the smallest proof.
 - **04:16:55: Tenet accepts the whole proof.** All 1,468,414 declarations checked, 0 failed, exit 0, in 1 h 0 m 27 s (peak 236 GB). Tenet is an independent Lean kernel written from scratch in C#, and the first of the from-scratch kernels to finish.
 - **03:17:** tenet-jvm stopped by hand. It had been stuck for about 90 minutes reading one declaration (`Formalism.MainNotions.FormalGroupSystem.Pf.ea_card_img._simp_1_1`) while its memory grew to 258 GB. Recorded as stalled, not as a verdict; to be reproduced on a small export of that lemma.
 - **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.
