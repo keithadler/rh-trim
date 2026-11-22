@@ -4,7 +4,7 @@
 
 **The race is on:** all 8 kernels are checking the 61.6 GB export at the same time, tenet-hs (Haskell) and Lean's own kernel among them.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 01:39 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 01:40 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $3.58 so far |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $3.61 so far |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting | not started |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $40.92**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $40.94**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -80,9 +80,9 @@ Six tests that only an exact export plus several independent kernels make possib
 |:---:|---|---|---|
 | 1 | **Mutation test the kernels** | Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding. | 🔵 harness built and tested: on a small proof, all 6 kernels accepted the clean file and rejected all 20 mutants. Next: real slices of the RH proof. |
 | 2 | **Where the checking time goes** | The declarations that take most of the kernel time, from Tenet's per-declaration report. | ⏳ when Tenet finishes (it slowed from about 900 to 17 declarations a second in one stretch, so a small set dominates) |
-| 3 | **Duplicate theorems** | Theorems proved more than once with an identical statement, project vs Mathlib. | 🔵 indexing the 61.6 GB export (one pass, in C) |
-| 4 | **The trusted base** | What a person must read to trust the five STATEMENTS, as opposed to the 1.47M declarations of proof. | 🟢 first result: `riemannHypothesis` is stated with Mathlib's own definition only. `LFunction_eq_zero_re_of_isPrimitive` goes through a project-defined wrapper, `PrimitiveDirichletLZerosOnLine`, the kind of place a wrong definition could hide (Comparator's statement check covers it). Full count: after indexing. |
-| 5 | **The spine and the hubs** | The chain of declarations every dependency path must pass through (a dominator tree), and the most-used lemmas. | 🔵 analysis written and tested; runs when the index is done |
+| 3 | **Duplicate theorems** | Theorems proved more than once with an identical statement, project vs Mathlib. | 🟢 **96,761 hand-named theorems repeat another theorem's statement exactly** (69,144 groups; equal up to bound-variable names; Lean's auto-generated helpers left out). Many are two proofs of the same named `Statement` proposition. For scale: 1,075,024 theorems are the project's own. |
+| 4 | **The trusted base** | What a person must read to trust the five STATEMENTS, as opposed to the 1.47M declarations of proof. | 🟢 first result: `riemannHypothesis` is stated with Mathlib's own definition only. `LFunction_eq_zero_re_of_isPrimitive` goes through a project-defined wrapper, `PrimitiveDirichletLZerosOnLine`, the kind of place a wrong definition could hide (Comparator's statement check covers it). Full count: the five statements rest on **4,915 declarations**, only **5** of them from the project (four statement wrappers and one helper); the other 4,910 are Mathlib and Lean. |
+| 5 | **The spine and the hubs** | The chain of declarations every dependency path must pass through (a dominator tree), and the most-used lemmas. | 🟢 **99.35% of the proof sits under one claim, `allChi`** (`UpperTheory.FinalTheorems.everyCharacter`). Below it: `everyCharacter_of_row` owns 77%, `every_character_of_literature_of_vWin` 67%, `every_character_of_theta_integrals_local_matching` 43%: the same chain traced by hand earlier, now measured. Top hub: `Formalism.BasicNotions.D7`, used directly by 155,523 declarations. Of the 1,468,414 declarations, 1,258,876 (86%) are the project's, holding 97% of the expression nodes. |
 | 6 | **Haskell vs Lean per slice** | tenet-hs and Lean's kernel timed on the same slices, matched by size, for a fair speed comparison. | ⏳ uses the mutation slices |
 
 ## Step 1: the build ✅ done
@@ -91,11 +91,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $40.92 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $40.94 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0139.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0140.svg)
 
 <details><summary><b>By library</b></summary>
 
