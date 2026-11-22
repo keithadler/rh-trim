@@ -3,7 +3,7 @@
 Step 5 of the plan: cut the claimed Lean proof of the Riemann Hypothesis down to what its five main
 theorems actually need, rebuild it, and check it again.
 
-**Status: the minified source is written but not built yet** (last updated 2026-11-22). Nothing here is confirmed until it
+**Status: round 2 of the source is being written; round 1 failed in its first minute of building, for a reason now fixed** (see the [log](#log)). Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
 compiles and Tenet accepts its export. The proof's own code is published without a license, so this
 repository holds the method, the tools and the cut lists, not the minified source. Anyone can
 regenerate it from the public mirror with the files in [`data/min`](../data/min).
@@ -117,3 +117,17 @@ python3 tools/trim_imports.py STEP1/src LIB_DUMPS...
 ```bash
 python3 tools/merge_files.py STEP1/src OUT/src && python3 tools/trim_imports.py OUT/src LIB_DUMPS...
 ```
+
+## Log
+
+All times UTC, 2026-11-22. Newest last.
+
+- **06:19** Round 1 build started: 13,850,849 lines in 30,698 files.
+- **06:20** First errors, in `Formalism/LocalToGlobal/NumberFieldFamilies/OwnStruct.lean`: `Unknown identifier copyAt`.
+  The cause: instances and attributed declarations were kept on purpose, but what *they* depend on was not.
+  An instance the proof never uses still referred to `copyAt`, which had been cut. Build stopped by hand.
+- **06:30** Fix: keep the source-level dependencies of everything kept on purpose. That brings back about
+  137,000 declarations (1,001,299 kept instead of 864,558), so this round will be bigger than round 1's
+  numbers above. It's the safe version, built first so there is a version sure to compile. A later round will
+  try cutting the instances the proof never uses, and their dependencies, and let the build say if any were needed.
+
