@@ -71,7 +71,9 @@ def importable(t, p):
     tm, pm = loc[t][0], loc[p][0]
     if tm == pm or tm not in project_mods or pm not in project_mods: return False
     if topo[tm] >= topo[pm]: return False
-    return True     # Main imports every module, so the original already shows no two of them clash
+    import os
+    return os.environ.get('NOIMPORT') != '1'   # NOIMPORT=1: never add an import (extra imports put more names in
+                                               # scope, and short names elsewhere can then become ambiguous)
 
 def body_span(text, start, end):
     depth = 0; i = start; n = end

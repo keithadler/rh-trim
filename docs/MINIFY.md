@@ -63,8 +63,8 @@ The minified source's other lines (12,189,756, not blank, not imports) include a
    (equal up to the names of bound variables). For each group, one copy is chosen (the one earliest in
    the build order) and every other copy's proof is replaced by `by apply @_root_.<chosen> <;> assumption`.
    The theorem keeps its name and statement, so nothing that uses it changes. When the chosen copy isn't
-   visible from a file, that file gets one import of the chosen copy's file, only ever pointing earlier
-   in a fixed build order, so no import cycle can form. 64,046 proofs were replaced this way.
+   visible from a file, it is left alone (an earlier version added an import instead; see the log for why that broke
+   other files). 43,266 proofs are replaced this way.
 5. **Cut again.** Once those proofs are gone, whatever only they used is dead too: 26,553 more
    declarations.
 6. **Drop empty files.** A file whose every declaration is cut, and which defines no notation, syntax,
@@ -259,4 +259,12 @@ All times UTC, 2026-11-22. Newest last.
 - **12:28** Bug found and fixed: Lean began printing diagnostics containing the text `source:`, which my tools used
   to spot where each round starts. Round 14's repair therefore saw only its last few minutes of errors. The tools now
   match only their own round markers (lines starting with `==`); nothing was lost, only some repairs came a round later.
+- **16:30** The repair loop got stuck: rounds 22 to 24 kept hitting the same ~140 errors. They weren't missing
+  declarations. `SecPtRed.lean`, for example, was byte-identical to the original and still failed with
+  "Ambiguous term". The cause was the **imports added for merged repeats**: an extra import brings more names into
+  scope, so a short name in an untouched file can suddenly match two declarations. Repairing names couldn't fix that.
+- **16:38** Fix: merge a repeated theorem only when its twin is already visible, never adding an import. That keeps
+  43,266 merges (of 67,287), with no imports added. The merges that needed imports carried most of the savings, so
+  round 25 is bigger: **15,878,294 lines (8.6% smaller)**. Correctness first; the import-based merges can come back
+  later, one shared module at a time, checked for ambiguity.
 
