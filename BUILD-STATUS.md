@@ -4,7 +4,7 @@
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 06:20 UTC**
+🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 06:21 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $10.88 |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $10.89 |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | 🔵 **in progress** | not started |
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Source written: 13.85M lines, down from 17.37M (−20.3%), in 30,698 files, down from 175,188 (−82.5%). Not built yet.** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $48.22**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $48.23**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -72,6 +72,14 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 | 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | ⏹ stopped at 05:37 UTC by an AWS Spot interruption after about 5 h; no verdict | | | |
 | 10 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict | 2:02:16 | 15,818 s | 257.7 GB |
 
+## Step 5: building the smallest proof
+
+The minified source (13,850,849 lines in 30,698 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since 06:19:37 UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.
+
+🔵 **compiling** · `████████▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░` **8,015** of 36,425 Lake jobs (22.0%) · ❌ errors: **0**
+
+Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.
+
 ## Research on the export
 
 Six tests that only an exact export plus several independent kernels make possible. They run on the same machine, alongside the race, at no extra cost. None of them checks the mathematics: they are about the proof as an artifact, and about the checkers.
@@ -91,11 +99,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $48.22 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $48.23 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0620.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0621.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -116,8 +124,8 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 47, 8 Lean processes running |
-| Memory | 7 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 79, 11 Lean processes running |
+| Memory | 8 GB used of 776 GB |
 | Disk | 267 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |

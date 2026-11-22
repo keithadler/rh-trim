@@ -210,6 +210,19 @@ if st['export'] == 'done':
             lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
     lines.append('')
 
+# ---------- step 5: the minified build
+mb = T.get('minbuild')
+if mb:
+    frac = mb['done'] / mb['total'] if mb['total'] else 0
+    state = ('✅ **built**' if 'exit status 0' in mb['result'] else '⚠️ **stopped**: ' + mb['result']) if mb['result'] else '🔵 **compiling**'
+    lines += ['## Step 5: building the smallest proof', '',
+     'The minified source (13,850,849 lines in 30,698 files, down from 17,374,242 lines in 175,188: see '
+     '[docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since '
+     f"{mb['started']} UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.", '',
+     f"{state} · `{bar(frac, 40)}` **{mb['done']:,}** of {mb['total']:,} Lake jobs ({100 * frac:.1f}%) · ❌ errors: **{mb['errors']}**", '',
+     'Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. '
+     'An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.', '']
+
 # ---------- research on the export (tests run alongside the race)
 RESEARCH = [
  ('1', 'Mutation test the kernels', 'Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding.',
