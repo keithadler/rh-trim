@@ -2,9 +2,9 @@
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
-**The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.
+**The race is on:** all 8 kernels are checking the 61.6 GB export at the same time, tenet-hs (Haskell) and Lean's own kernel among them.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-22 00:35 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-22 00:39 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $1.91 so far |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $2.01 so far |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting | not started |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $39.25**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $39.34**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -57,18 +57,18 @@ Exported from the unmodified build with `lean4export` 3.1.0 (Lean 4.33.1), in th
 
 ## Step 3: the kernel race, Haskell vs Lean
 
-Each checker reads the same 61.6 GB export and checks every declaration from scratch, one checker at a time so none slows another. Wall time is real time; CPU about equal to wall time means one core.
+Each checker reads the same 61.6 GB export and checks every declaration from scratch. Lean's kernel started alone at 23:22 UTC; at 00:38 the other seven were started alongside it, because each uses one core (Tenet uses many) and the machine has 192 vCPUs, so running them one at a time left it idle at the same hourly cost. Each runs in its own memory-capped sandbox. Running together can slow each a little (shared memory bandwidth); if two kernels finish close together, they will be re-timed alone.
 
-| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory | 💵 Cost |
-|:---:|---|---|:---:|---:|---:|---:|---:|
-| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 1h 13m so far | 4,402 s | 70 GB now | $1.91 so far |
-| 2 | Lean paranoid | the same kernel with extra checks | ⏳ queued | | | | |
-| 3 | nanoda | independent kernel in Rust | ⏳ queued | | | | |
-| 4 | con-leche | independent checker | ⏳ queued | | | | |
-| 5 | con-ron | independent checker | ⏳ queued | | | | |
-| 6 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | ⏳ queued | | | | |
-| 7 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | ⏳ queued | | | | |
-| 8 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏳ queued | | | | |
+| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |
+|:---:|---|---|:---:|---:|---:|---:|
+| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 1h 16m so far | 4,577 s (~1 cores) | 70 GB now |
+| 2 | Lean paranoid | the same kernel with extra checks | 🔵 **checking** | 0h 00m so far | 34 s (~1 cores) | 2 GB now |
+| 3 | nanoda | independent kernel in Rust | 🔵 **checking** | 0h 00m so far | 34 s (~1 cores) | 2 GB now |
+| 4 | con-leche | independent checker | 🔵 **checking** | 0h 00m so far | 34 s (~1 cores) | 6 GB now |
+| 5 | con-ron | independent checker | 🔵 **checking** | 0h 00m so far | 34 s (~1 cores) | 10 GB now |
+| 6 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | 🔵 **checking** | 0h 00m so far | 1,571 s (~45 cores) | 25 GB now |
+| 7 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | 🔵 **checking** | 0h 00m so far | 34 s (~1 cores) | 0 GB now |
+| 8 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏳ queued | | | |
 
 ## Step 1: the build ✅ done
 
@@ -76,11 +76,11 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $39.25 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $39.34 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0035.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0039.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -101,8 +101,8 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
-| Memory | 76 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 16, 0 Lean processes running |
+| Memory | 123 GB used of 776 GB |
 | Disk | 431 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
@@ -122,6 +122,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 - **21:30:** the export file was growing toward the disk's limit (51 GB free, about 0.66 GB a minute). The disk was grown from 200 GB to 600 GB while running; nothing stopped.
 - **23:10: export finished.** 1,468,414 declarations, 61.6 GB, exit 0, in 2 h 17 m. Only Lean's three standard axioms appear.
 - **23:22: the kernel race started** with Lean's kernel.
+- **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.
 
 </details>
 

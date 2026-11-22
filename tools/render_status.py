@@ -120,7 +120,7 @@ lines = [
  '> **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel '
  "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
  (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' and not ok
-  else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else ('**The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.' if st['race'] == 'now' else ''))), '',
+  else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else ('**The race is on:** all 8 kernels are checking the 61.6 GB export at the same time, tenet-hs (Haskell) and Lean\'s own kernel among them.' if st['race'] == 'now' else ''))), '',
  f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
  '| The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |',
  '|---|---|',
@@ -141,7 +141,7 @@ def wall_h(w):
     return sec / 3600
 T_BUILD_END = datetime.datetime(2026, 11, 21, 20, 52)
 T_RACE_START = datetime.datetime(2026, 11, 21, 23, 22)
-race_h = sum(wall_h(c[2]) for c in race_rows if len(c) >= 6) + ((T.get('checker') or {}).get('elapsed_s', 0) / 3600)
+race_h = (now - T_RACE_START).total_seconds() / 3600
 COST = {'build': BUILD_COST if ok else cost,
         'export': ((T_RACE_START if st['export'] == 'done' else now) - T_BUILD_END).total_seconds() / 3600 * PRICE if ok else None,
         'race': race_h * PRICE if st['race'] != 'next' else None}
@@ -179,21 +179,26 @@ KERNELS = [
  ('tenet-jvm', '**tenet-jvm**', 'written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm))'),
 ]
 done_rows = {c[0]: c for c in race_rows if len(c) >= 6}
-cur = T.get('checker') or {}
+running = {c['name']: c for c in (T.get('checkers') or [])}
 if st['export'] == 'done':
     lines += ['## Step 3: the kernel race, Haskell vs Lean', '',
-     'Each checker reads the same 61.6 GB export and checks every declaration from scratch, one checker at a time '
-     'so none slows another. Wall time is real time; CPU about equal to wall time means one core.', '',
-     '| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory | 💵 Cost |', '|:---:|---|---|:---:|---:|---:|---:|---:|']
+     'Each checker reads the same 61.6 GB export and checks every declaration from scratch. Lean\'s kernel started '
+     'alone at 23:22 UTC; at 00:38 the other seven were started alongside it, because each uses one core (Tenet uses '
+     'many) and the machine has 192 vCPUs, so running them one at a time left it idle at the same hourly cost. Each '
+     'runs in its own memory-capped sandbox. Running together can slow each a little (shared memory bandwidth); if '
+     'two kernels finish close together, they will be re-timed alone.', '',
+     '| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |', '|:---:|---|---|:---:|---:|---:|---:|']
     for n_, (key, name, what) in enumerate(KERNELS, 1):
         if key in done_rows:
             c = done_rows[key]
             verdict = '✅ accepts' if c[1] == '0' else f'❌ exit {c[1]}'
-            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB | ${wall_h(c[2]) * PRICE:.2f} |')
-        elif cur.get('name') == key:
-            lines.append(f"| {n_} | {name} | {what} | 🔵 **checking** | {fmt_d(cur['elapsed_s'] / 60)} so far | {cur['cpu_s']:,} s | {cur['rss_gb']:.0f} GB now | ${cur['elapsed_s'] / 3600 * PRICE:.2f} so far |")
+            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
+        elif key in running:
+            cur = running[key]
+            cores = cur['cpu_s'] / cur['elapsed_s'] if cur['elapsed_s'] else 0
+            lines.append(f"| {n_} | {name} | {what} | 🔵 **checking** | {fmt_d(cur['elapsed_s'] / 60)} so far | {cur['cpu_s']:,} s (~{cores:.0f} cores) | {cur['rss_gb']:.0f} GB now |")
         else:
-            lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | | |')
+            lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
     lines.append('')
 
 lines += [
@@ -240,7 +245,8 @@ lines += [
  "- **20:52:38: build finished.** `Build completed successfully (183893 jobs)`: all 175,187 proof files, 0 errors, no `sorry`, 6 h 56 m of compiling since the last restart. The export (step 2) started at 20:53.",
  "- **21:30:** the export file was growing toward the disk's limit (51 GB free, about 0.66 GB a minute). The disk was grown from 200 GB to 600 GB while running; nothing stopped.",
  "- **23:10: export finished.** 1,468,414 declarations, 61.6 GB, exit 0, in 2 h 17 m. Only Lean's three standard axioms appear.",
- "- **23:22: the kernel race started** with Lean's kernel.", '',
+ "- **23:22: the kernel race started** with Lean's kernel.",
+ "- **00:38:** switched to a parallel race. Each checker uses one core, so the other seven now run alongside Lean's kernel instead of after it, each in its own memory-capped sandbox. Same hourly cost, results hours sooner.", '',
  '</details>', '',
  'Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
