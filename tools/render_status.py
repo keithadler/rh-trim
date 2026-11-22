@@ -194,7 +194,7 @@ if st['export'] == 'done':
         if key in done_rows:
             c = done_rows[key]
             declined = 'declined' in (race.get('log', '') + '') and key.startswith(('con-leche', 'con-ron')) and c[1] == '2'
-            verdict = '✅ accepts' if c[1] == '0' else ('⚪ declined: doesn't support reflexive inductive types' if declined else f'❌ exit {c[1]}')
+            verdict = '✅ accepts' if c[1] == '0' else ('⚪ declined: no support for reflexive inductive types' if declined else f'❌ exit {c[1]}')
             lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
         elif key in running:
             cur = running[key]
