@@ -118,6 +118,29 @@ python3 tools/trim_imports.py STEP1/src LIB_DUMPS...
 python3 tools/merge_files.py STEP1/src OUT/src && python3 tools/trim_imports.py OUT/src LIB_DUMPS...
 ```
 
+## Next track: searching for a shorter route
+
+Everything above removes what the proof doesn't need. The next question is whether the proof needs to go the
+way it goes: is there a **shorter route to the same five theorems**, using pieces the proof already contains
+or that Mathlib already has? Each step below can be measured from the export before anything is rewritten.
+
+1. **Cheapest twin, not first twin.** Where several theorems prove the same statement, keep the one whose proof
+   needs the least (smallest dependency closure), not just the earliest one. Its alternatives, and whatever only
+   they use, can then go.
+2. **Side routes to the key claim.** Seven theorems conclude `EveryCharacter`; the proof uses a chain of five, and
+   two (`plugAll`, `everyE₂`) are side routes it doesn't take. Export them and measure what each needs: if a side
+   route is cheaper than the chain, rewire the proof through it.
+3. **Cheaper proofs of the heavy steps.** The dominator tree names the lemmas that own most of the proof
+   (`everyCharacter_of_row` 77%, the literature step 67%, the theta-integral step 43%). For each, look for another
+   lemma in the proof or in Mathlib that proves the same statement, or a stronger one, with less underneath.
+4. **Generality the argument doesn't use.** p-adic Hodge theory takes about 19% of the checking time. Check whether
+   the proof uses those results in full, or only a special case that has a much shorter proof.
+5. **Compare with the paper.** Alpöge's outline names the new idea (Stepanov's method via theta lifts, positivity
+   in the explicit formula) and the published theory it rests on. Where the formalization takes a longer road than
+   the outline, that's a candidate for a shorter one.
+
+Steps 1 to 3 are mechanical and measured; steps 4 and 5 need mathematical judgment and will say so.
+
 ## Log
 
 All times UTC, 2026-11-22. Newest last.

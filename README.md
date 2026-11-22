@@ -37,6 +37,10 @@ in C#, tenet-hs in Haskell, tenet-jvm).
 Later rounds: the 63,943 repeats that still can't point to a twin, near-identical statements,
 lemmas used only once, and the 4,335 declarations that take half of the checking time.
 
+**And a search for a shorter route:** is there a shorter path to the same five theorems, through the
+proof's own unused side routes, cheaper copies of its heavy steps, Mathlib, or the paper's outline?
+The plan, step by step: [docs/MINIFY.md](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
+
 The proof has no license, so this repository publishes the method, the tools and the cut lists,
 never the proof's code. Anyone can regenerate the minified source from the public mirror
 ([command](docs/MINIFY.md#files)).
