@@ -226,7 +226,7 @@ if mb:
 # ---------- research on the export (tests run alongside the race)
 RESEARCH = [
  ('1', 'Mutation test the kernels', 'Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding.',
-  '🟢 slice 1 of 8 (`smulLA_mul\'`, 1.1M-line export): **all 6 kernels accepted the clean slice and rejected all 60 mutants**: no disagreements. The other 7 slices (up to 7.2M lines each) are running.'),
+  '🟢 **431 faults planted in 8 real slices of the proof (1.1M to 7.2M lines each), 2,583 kernel checks: all 6 kernels accepted every clean slice and rejected every fault.** No disagreements. (The last slice was cut short by a Spot interruption.)'),
  ('2', 'Where the checking time goes', 'The declarations that take most of the kernel time, from Tenet\'s per-declaration report.',
   '🟢 **0.3% of the declarations take half of the checking.** In Tenet\'s run, 4,335 declarations (of 1,468,414) took over 5 s each and add up to 128,568 CPU-seconds, 51% of its 252,006. 494 took over a minute, 22 over five minutes; the slowest, `CrystallineSemistableComparison.fc_range_le`, took 687 s. By area, p-adic Hodge theory dominates: `CrystallineSemistableComparison` 15% of the slow time and `GroundTheory.PAdicHodge` another 4%, then `GroundTheory.Arith` 7% and the étale cohomology parts. Reading the 61.6 GB file took 3,075 s of Tenet\'s 3,459 s wall time, overlapped with checking.'),
  ('3', 'Duplicate theorems', 'Theorems proved more than once with an identical statement, project vs Mathlib.',

@@ -1,153 +1,158 @@
-# rh-trim: the smallest version of the claimed Lean proof of RH
+<div align="center">
 
-On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, and of GRH for
-Dirichlet L-functions, found working with Claude and published as Lean 4 code
-([announcement](https://alpo.ge/remark.pdf)): 175,188 files and 17.4 million lines.
+# rh-trim
 
-**Our focus is the smallest proof:** the same five theorems, with everything they don't need
-removed, rebuilt and checked by independent kernels, including three written from scratch (Tenet
-in C#, tenet-hs in Haskell, tenet-jvm).
+### Checking, mapping and shrinking the claimed Lean proof of the Riemann Hypothesis
 
-## Where it stands
+![Lean 4.33.1](https://img.shields.io/badge/Lean-4.33.1-4b5cd6)
+![original build: 0 errors](https://img.shields.io/badge/original%20build-0%20errors-1f6f43)
+![Tenet: accepts](https://img.shields.io/badge/Tenet%20(C%23)-accepts%201%2C468%2C414%20decls-1f6f43)
+![axioms: 3 standard](https://img.shields.io/badge/axioms-propext%20%C2%B7%20Quot.sound%20%C2%B7%20Classical.choice-5b6378)
+![smallest proof: building](https://img.shields.io/badge/smallest%20proof-building-2b3f8f)
+
+**[Live status](BUILD-STATUS.md)** · **[The smallest proof](docs/MINIFY.md)** · **[Build it yourself](docs/BUILD-ORIGINAL.md)** · **[Proof map](docs/PROOF-MAP.md)**
+
+</div>
+
+On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, and of GRH for Dirichlet
+L-functions, found working with Claude and published as Lean 4 code
+([announcement](https://alpo.ge/remark.pdf)): **175,188 files and 17.4 million lines**, with one docstring.
+
+This repository asks three questions about it:
+
+1. **Does it check?** Build it, export it, and run independent kernels on it, including three written from
+   scratch: Tenet (C#), tenet-hs (Haskell) and tenet-jvm.
+2. **What is it made of?** Measure its structure from Lean's own export: what it uses, what it repeats, and
+   which few lemmas carry it.
+3. **How small can it be?** Cut it down to only what the five theorems need, then look for a shorter route.
+
+<p align="center"><img src="docs/img/tenet-accepts.png" width="820" alt="Tenet accepts all 1,468,414 declarations of the proof, 0 failures, in 1 hour"></p>
+
+## 🔑 What we've found
+
+| | |
+|---|---|
+| ✅ **It builds** | All 175,187 proof files compile on Lean 4.33.1: 0 errors, no `sorry`. One AWS Spot machine, about 21 hours, about $35. |
+| ✅ **Tenet accepts it** | My independent C# kernel checked all **1,468,414** declarations with **0 failures** in 1 hour. (nanoda and the latest con-leche also accept it, per [Andrew Sutherland's MIT page](https://math.mit.edu/~drew/grh/).) |
+| 🔒 **Only standard axioms** | It rests on `propext`, `Quot.sound` and `Classical.choice`, nothing added by the author. |
+| 🎯 **One claim carries it** | **99.35%** of the proof sits under a single claim, `allChi`; then a chain of four lemmas owning 77%, 67% and 43%. |
+| 📜 **The statements are small** | What the five theorems *say* rests on just **4,915** declarations, only 5 from the project. Everything else is proof. |
+| 🔁 **It repeats itself** | ~96,000 hand-named theorems restate another theorem's statement exactly. |
+| 🐢 **A few steps cost the most** | **0.3%** of declarations take **half** the checking time, most of them in p-adic Hodge theory. |
+| 🧪 **The checkers catch planted faults** | **431** single faults planted in 8 real slices of the proof, 2,583 kernel checks: every kernel rejected every one. |
+| ⚠️ **Some checkers can't run it** | con-leche and con-ron as bundled with Lean 4.36 decline a reflexive inductive type; tenet-jvm runs out of memory on a file this size (a fix is planned). |
+
+Details, method and caveats for each: [BUILD-STATUS.md](BUILD-STATUS.md#research-on-the-export).
+An interactive map of the proof's structure is linked from there.
+
+## ✂️ The smallest proof
+
+<p align="center"><img src="docs/img/smallest-proof.png" width="820" alt="From the published proof to the minimum proof"></p>
+
+**Goal:** the same five theorems, with everything they don't need removed, rebuilt, and checked by Tenet,
+then the other kernels.
+
+```mermaid
+flowchart LR
+  A["Original<br>17.4M lines<br>175,188 files"] --> B["Exact cut<br>from Lean's export"]
+  B --> C["Merge repeated<br>theorems"]
+  C --> D["Trim imports"]
+  D --> E["Build"]
+  E -->|errors| F["Put failing<br>files back"]
+  F --> E
+  E -->|clean| G["Merge small files"]
+  G --> H["Tenet check"]
+  classDef done fill:#1f6f43,stroke:#8fe3b0,color:#fff
+  classDef now fill:#2b3f8f,stroke:#8fa6ff,color:#fff,stroke-width:3px
+  classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc
+  class A,B,C,D done
+  class E,F now
+  class G,H next
+```
 
 | | Files | Lines | Status |
 |---|---:|---:|---|
-| The original | 175,188 | 17,374,242 | ✅ built on AWS: 0 errors, no `sorry` ([how](docs/BUILD-ORIGINAL.md)) |
-| What the theorems use | 1,468,414 declarations (with Mathlib) | | ✅ exported; only Lean's 3 standard axioms |
-| **The minified proof** (round 2) | **32,034** (−81.7%) | **15,445,263** (−11.1%) | 🔵 **building** now ([how, and the log](docs/MINIFY.md)) |
+| Original | 175,188 | 17,374,242 | ✅ built |
+| **Smallest proof, round 3** | 172,254 | **15,565,484** | 🔵 **building now** |
 
-**Kernel checks so far:** Tenet accepts the whole original proof (1,468,414 declarations, 0 failed,
-1 h). Live results and the research on the proof's structure: [BUILD-STATUS.md](BUILD-STATUS.md).
+**Where it stands:** rounds 1 and 2 cut things the build turned out to need. Lean's export lists what a
+*finished* proof uses, but tactics like `simp [foo]` name lemmas that may never appear in the result. Round 3
+keeps everything the kept code mentions, so it is bigger than the first estimates (which reached 20%). The
+number that counts is the one that builds; small files get merged after that (175,188 files down to about
+32,000). Every step, number and failure is logged in **[docs/MINIFY.md](docs/MINIFY.md#log)**.
 
-**How the minified proof is made** ([details](docs/MINIFY.md)):
+**Next, a search for a shorter route:** the cheapest copy of each repeated lemma, the proof's own unused side
+routes to its key claim, cheaper proofs of its heavy steps, and the generality it never uses.
+[The plan](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
 
-1. **Exact cut.** The original's export is Lean's own record of what the five theorems use. Every
-   source declaration not in it is cut, except instances and attributed declarations, which steer
-   how Lean builds proofs.
-2. **Merged repeats.** 64,046 theorems repeat another theorem's statement exactly; each now points to
-   one copy instead of carrying its own proof, and what only those proofs used is cut too.
-3. **Empty files dropped**, with their imports passed on.
+## 🏗️ Build the original yourself
 
-**Next, to make it smaller still:**
-
-- ✅ **Redundant imports removed** (935,081 import lines) and ✅ **small files merged** (161,543 files
-  into 30,698), both without changing what any file sees.
-- Then the **build**, the export of the minified proof, and **Tenet's check**, then the other kernels.
-
-Later rounds: the 63,943 repeats that still can't point to a twin, near-identical statements,
-lemmas used only once, and the 4,335 declarations that take half of the checking time.
-
-**And a search for a shorter route:** is there a shorter path to the same five theorems, through the
-proof's own unused side routes, cheaper copies of its heavy steps, Mathlib, or the paper's outline?
-The plan, step by step: [docs/MINIFY.md](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
-
-The proof has no license, so this repository publishes the method, the tools and the cut lists,
-never the proof's code. Anyone can regenerate the minified source from the public mirror
-([command](docs/MINIFY.md#files)).
-
-<details><summary><b>History: the first, source-level reduction was wrong</b></summary>
-
-The first reduction came from reading source text, and building it on AWS showed it missed real
-dependencies (dangling `open … in` prefixes, Mathlib-class instances, global theorems mistaken for
-local names, dot notation). Fixed, that trace could only safely cut about 9%. So the original was
-built instead, and its export now gives the exact list. `make-fork.sh` below reproduces that early
-reduction byte for byte, but **it does not build**; don't spend machine time on it.
-
-</details>
-
-## Get it
+<p align="center"><img src="docs/img/build-run.png" width="820" alt="The original build: 21 hours, four Spot interruptions, nothing lost"></p>
 
 ```bash
 git clone https://github.com/keithadler/rh-trim && cd rh-trim
 ```
 
 ```bash
-./make-fork.sh ../rh-reduced
+./build-original.sh ~/rh-build
 ```
 
-This clones the public byte-exact mirror
-[Deicyde/riemann-hypothesis](https://github.com/Deicyde/riemann-hypothesis) at a pinned
-commit. It applies the reduction (text edits only), and checks the result byte for byte
-against a published fingerprint. That takes about 2 minutes plus the 1.7 GB clone. Nothing
-is compiled or run.
-
-**To build the original proof yourself,** follow [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).
-One script, `build-original.sh`, did it for us on one AWS Spot `m6a.48xlarge`: about 21 hours and
-about $35, all 175,187 files, 0 errors. Build only on a throwaway machine, because compiling Lean
-runs code. (The reduced version's guide, [docs/BUILD.md](docs/BUILD.md), builds a reduction we
-know drops real dependencies; it is kept for the record.)
-
-To help build the *original*, join the distributed replay at
+One script, on a throwaway Ubuntu machine: installs Lean, clones the proof at a pinned commit and compiles it
+with the network cut off. About 21 hours and $35 on an AWS Spot `m6a.48xlarge`. Step-by-step guide:
+[docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md). To help build it with others, see the distributed replay at
 [rohanarun/alpoge-rh-replay](https://github.com/rohanarun/alpoge-rh-replay).
 
-## How much smaller, and why (superseded: see [docs/MINIFY.md](docs/MINIFY.md))
-
-| | Original | Reduced | Kept |
-|---|---|---|---|
-| Lean files | 175,188 | 137,020 | 78% |
-| Lines | 17.5 million | 12.0 million | 68% |
-| Declarations | 1,137,512 | 631,251 | 55% |
-
-- **A dependency trace** follows every name the five main theorems use, starting from
-  `Main.lean`. 45% of declarations are never reached by anything the proof needs, and they
-  are cut.
-- **Empty files are dropped.** Files left with nothing needed go away, and imports are rewired
-  so every remaining file still sees every remaining file it saw before.
-- **No surviving line of proof is changed.** The only additions are 38 docstrings on the key
-  chain, each marked "(Added in this fork; not in the original.)".
-
-**Caveat:** the trace reads source text. It can't see lemmas `simp` uses without naming them,
-or notation, so the first build may report a few missing pieces. Each error names the piece.
-Method, limits and mistakes made along the way: [docs/PRUNING.md](docs/PRUNING.md).
-Per-library numbers: [docs/NUMBERS.md](docs/NUMBERS.md).
-
-## What the proof looks like inside
+## 🗺️ What the proof looks like inside
 
 ```
-five theorems ← short textbook arguments over Mathlib ← ONE KEY CLAIM ← Galois representations ← theta lifts
+five theorems ← short arguments over Mathlib ← ONE KEY CLAIM ← Galois representations ← theta lifts
 ```
 
-- **The key claim:** no Dirichlet L-function vanishes right of `Re s = 1/2`. RH and the GRH
-  statements follow from it by the functional equation, in a few short files.
-- **The front end is clean.** In the original, those front-end files compile on Lean 4.33.1,
-  and lean-linter 0.5.4 finds nothing in them (18 checks).
-- **Where the key claim comes from:** it is assembled from Galois representations attached to
-  polarized cuspidal representations. The project derives those from **theta lifts**, rather
-  than from the geometry of Shimura varieties.
-- **Nothing from the literature is assumed:** the 162 formal statements of published results
-  are proved inside the project. See [docs/LITERATURE.md](docs/LITERATURE.md).
-- **Seven theorems conclude the key claim.** Five form the one chain the proof uses; two are
-  unused side routes.
+- **The key claim:** no Dirichlet L-function vanishes right of `Re s = 1/2`. RH and the GRH statements follow
+  from it by the functional equation, in a few short files.
+- **Where it comes from:** Galois representations attached to polarized cuspidal representations, derived from
+  **theta lifts** rather than the geometry of Shimura varieties.
+- **Nothing from the literature is assumed:** its 162 formal statements of published results are proved inside
+  the project ([list](docs/LITERATURE.md)).
+- **Seven theorems conclude the key claim:** five form the chain the proof uses; two are side routes it doesn't.
 
-Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md).
+Layer by layer, with files: [docs/PROOF-MAP.md](docs/PROOF-MAP.md). The [Tau Ceti roadmap](https://github.com/TauCetiProject/TauCetiRoadmap/pull/2954)
+turns the proof into 41 human-sized targets; [our measured weights for each](docs/TAUCETI-WEIGHTS.md).
 
-## What this repository is not
+## 🚫 What this repository is not
 
-- **It is not the proof's code.** The original was published without a license, so no Lean
-  source from it is redistributed here. `make-fork.sh` makes your copy locally, from the public
-  mirror.
-- **It is not a verification.** Nothing here says whether the mathematics is right. The
-  mirror's team is judging the original with Lean's kernel and four outside checkers.
+- **Not the proof's code.** It was published without a license, so no Lean source from it is here. The tools
+  regenerate everything from the public mirror.
+- **Not a verdict on the mathematics.** Kernels accepting a proof says the code checks; it doesn't replace
+  mathematicians reading the math.
 
-## Contents
+## 📁 Contents
 
 | Path | What it is |
 |---|---|
-| `make-fork.sh` | rebuilds the reduced version from the mirror and checks its fingerprint |
-| `build-linux.sh` | builds it on a Linux cloud machine, network cut off, timestamped log |
-| `tools/progress.sh`, `tools/missing.py` | build rate and time left; missing names mapped to the original |
-| `data/kept-files.txt.gz` | the 137,019 modules the trace keeps |
-| `data/cuts.json.gz` | the byte ranges of the 216,245 declarations cut from those modules |
-| `data/expected-tree.txt` | the fingerprint (sha256 over every path and file) of the result |
-| `data/replay-map.tsv.gz` | every module of the [distributed replay](https://github.com/rohanarun/alpoge-rh-replay), by its ID, with its status here: dropped, trimmed, changed, identical, and whether its compiled file is reusable |
-| `tools/reach.py` | the dependency trace (about 17 minutes over the whole proof) |
-| `tools/prune.py`, `check_fork.py`, `trim_main.py`, `add_docs.py` | the steps `make-fork.sh` runs |
-| `tools/tree_hash.py`, `libstats.py`, `closure.py`, `org_stats.py` | fingerprint, counts, import closures, code statistics |
-| `tools/sandbox-macos.sb` | a macOS sandbox profile for building safely |
-| `docs/` | build guide, proof map, literature list, method, checking guide, numbers |
-| `.github/ISSUE_TEMPLATE/build-report.yml` | the build-report form |
+| [`BUILD-STATUS.md`](BUILD-STATUS.md) | the live page: builds, the kernel race, research results, incident log |
+| [`docs/MINIFY.md`](docs/MINIFY.md) | the smallest proof: method, numbers, log, and the shorter-route plan |
+| [`docs/BUILD-ORIGINAL.md`](docs/BUILD-ORIGINAL.md), `build-original.sh` | build the original on one cloud machine |
+| [`docs/TAUCETI-WEIGHTS.md`](docs/TAUCETI-WEIGHTS.md) | how much of the proof each Tau Ceti sub-roadmap reaches |
+| [`docs/PROOF-MAP.md`](docs/PROOF-MAP.md), [`docs/LITERATURE.md`](docs/LITERATURE.md) | the proof's layers, and the published results it proves |
+| `data/min/` | the smallest proof's cut lists, merged theorems and added imports |
+| `tools/xidx.c`, `tools/xan.c` | index the 61.6 GB export in one pass; trusted base, duplicates, hubs, dominator tree |
+| `tools/mutate.py`, `tools/run-mutants.sh` | plant faults in proof slices and race every kernel on them |
+| `tools/reach.py`, `prune.py`, `swapcross.py`, `finalize_cuts.py`, `trim_imports.py`, `merge_files.py` | the minification pipeline |
+| `tools/render_status.py` | draws the live page |
+
+<details><summary><b>History: the first, source-level reduction (it was wrong)</b></summary>
+
+The first reduction (`make-fork.sh`, `build-linux.sh`, [docs/BUILD.md](docs/BUILD.md)) came from reading source
+text: it kept 137,020 files and 12.0 million lines. Building it on AWS showed it missed real dependencies:
+dangling `open … in` prefixes, Mathlib-class instances, global theorems mistaken for local names, dot notation.
+Fixed, that trace could only safely cut about 9%. So the original was built instead, and its export now gives
+the exact list. `make-fork.sh` still reproduces that early reduction byte for byte, but **it does not build**.
+Method and mistakes: [docs/PRUNING.md](docs/PRUNING.md).
+
+</details>
 
 ## License
 
-The tools, data and documentation in this repository are Apache-2.0. That license covers this
-repository's own files only, not the proof, whose author has not licensed it.
+The tools, data and documentation here are Apache-2.0. That covers this repository's own files only, not the
+proof, whose author has not licensed it.
