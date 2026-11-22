@@ -322,11 +322,12 @@ def readme_counter():
       '<sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one\'s build said was missing, '
       'so the percentage can only go down from here. Updated every 2 minutes from the build machine. '
       '<a href="docs/MINIFY.md#log">Log of every round</a></sub>', '', '</div>', '<!-- STATUS:END -->']
-    rp = os.path.join(repo, 'README.md'); t = open(rp, encoding='utf-8').read()
-    if '<!-- STATUS:BEGIN -->' in t:
-        a = t.index('<!-- STATUS:BEGIN -->'); b = t.index('<!-- STATUS:END -->') + len('<!-- STATUS:END -->')
-        t = t[:a] + '\n'.join(block) + t[b:]
-        open(rp, 'w', encoding='utf-8').write(t)
+    for rel, link in (('README.md', 'docs/MINIFY.md#log'), ('docs/MINIFY.md', '#log')):
+        rp = os.path.join(repo, rel); t = open(rp, encoding='utf-8').read()
+        if '<!-- STATUS:BEGIN -->' in t:
+            a = t.index('<!-- STATUS:BEGIN -->'); b = t.index('<!-- STATUS:END -->') + len('<!-- STATUS:END -->')
+            t = t[:a] + '\n'.join(block).replace('href="docs/MINIFY.md#log"', f'href="{link}"') + t[b:]
+            open(rp, 'w', encoding='utf-8').write(t)
 readme_counter()
 
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')
