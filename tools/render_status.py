@@ -300,4 +300,33 @@ lines += [
  '</details>', '',
  'Rate and finish come from the last hour of the timestamped build log. Build it yourself: [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md).']
 open(os.path.join(repo, 'BUILD-STATUS.md'), 'w').write('\n'.join(lines) + '\n')
+
+# ---------- the live counter at the top of README.md (between the STATUS markers)
+def readme_counter():
+    mb = T.get('minbuild') or {}
+    if not mb.get('lines'): return
+    ORIG_L, ORIG_F = 17374242, 175188
+    L, F = mb['lines'], mb['files']
+    bf, sf = mb.get('built_files', 0), mb.get('src_files', 1) or 1
+    clean = mb.get('result') and 'exit status 0' in mb['result'] and mb.get('errors', 1) == 0
+    state = '✅ BUILT' if clean else ('🔁 REPAIRING' if mb.get('errors') else '🔵 BUILDING')
+    cell = lambda label, big, small: f'<td align="center" width="25%"><sub><b>{label}</b></sub><h2>{big}</h2><sub>{small}</sub></td>'
+    block = ['<!-- STATUS:BEGIN -->', '<div align="center">', '',
+      f'**The smallest proof, live** · round {mb.get("round", "?")} · {state} · updated {now:%H:%M} UTC {now:%b %d}', '',
+      '<table><tr>',
+      cell('SMALLER', f'{100 * (1 - L / ORIG_L):.1f}%', 'in lines, so far'),
+      cell('LINES', f'{L / 1e6:.2f}M', f'was {ORIG_L / 1e6:.2f}M'),
+      cell('FILES', f'{F:,}', f'was {ORIG_F:,} · merging after a clean build cuts this to ~32,000'),
+      cell('THIS ROUND', f'{100 * bf / sf:.0f}% built', f'{bf:,} of {sf:,} files · {mb.get("errors", 0)} errors to repair'),
+      '</tr></table>', '',
+      '<sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one\'s build said was missing, '
+      'so the percentage can only go down from here. Updated every 2 minutes from the build machine. '
+      '<a href="docs/MINIFY.md#log">Log of every round</a></sub>', '', '</div>', '<!-- STATUS:END -->']
+    rp = os.path.join(repo, 'README.md'); t = open(rp, encoding='utf-8').read()
+    if '<!-- STATUS:BEGIN -->' in t:
+        a = t.index('<!-- STATUS:BEGIN -->'); b = t.index('<!-- STATUS:END -->') + len('<!-- STATUS:END -->')
+        t = t[:a] + '\n'.join(block) + t[b:]
+        open(rp, 'w', encoding='utf-8').write(t)
+readme_counter()
+
 print(f'{built} built, {pct:.1f}%, rate {rate:.0f}/min, finish {eta:%H:%M} UTC' if eta else f'{built} built')
