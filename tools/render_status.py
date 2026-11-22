@@ -130,13 +130,31 @@ lines = [
  '| Build it yourself | [docs/BUILD-ORIGINAL.md](docs/BUILD-ORIGINAL.md): one script, about 21 hours and $35 on one AWS Spot machine |',
  '',
  '## The plan', '', *mer, '',
- '| | Step | What happens | Status |', '|:---:|---|---|---|']
+ '| | Step | What happens | Status | 💵 Cost |', '|:---:|---|---|---|---:|']
+def wall_h(w):
+    try:
+        parts = [float(x) for x in w.split(':')]
+    except ValueError:
+        return 0.0
+    sec = 0.0
+    for x in parts: sec = sec * 60 + x
+    return sec / 3600
+T_BUILD_END = datetime.datetime(2026, 11, 21, 20, 52)
+T_RACE_START = datetime.datetime(2026, 11, 21, 23, 22)
+race_h = sum(wall_h(c[2]) for c in race_rows if len(c) >= 6) + ((T.get('checker') or {}).get('elapsed_s', 0) / 3600)
+COST = {'build': BUILD_COST if ok else cost,
+        'export': ((T_RACE_START if st['export'] == 'done' else now) - T_BUILD_END).total_seconds() / 3600 * PRICE if ok else None,
+        'race': race_h * PRICE if st['race'] != 'next' else None}
+def cost_cell(k):
+    c = COST.get(k)
+    if c is None: return 'not started' if k in COST else 'not started'
+    return f'${c:.2f}' + (' so far' if st[k] == 'now' else '')
 for k, n, name, what in STEPS:
     s_ = ICON[st[k]]
     if k in ('export', 'race') and st[k] == 'next' and eta:
         s_ = f'⏳ starts about **{eta:%H:%M} UTC**, when the build finishes'
-    lines.append(f'| **{n}** | **{name}** | {what} | {s_} |')
-lines += ['', 'Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.', '']
+    lines.append(f'| **{n}** | **{name}** | {what} | {s_} | {cost_cell(k)} |')
+lines += ['', f'**Total so far: ${cost:.2f}**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.', '', 'Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.', '']
 
 import re as _re
 if st['export'] == 'done':
@@ -166,16 +184,16 @@ if st['export'] == 'done':
     lines += ['## Step 3: the kernel race, Haskell vs Lean', '',
      'Each checker reads the same 61.6 GB export and checks every declaration from scratch, one checker at a time '
      'so none slows another. Wall time is real time; CPU about equal to wall time means one core.', '',
-     '| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |', '|:---:|---|---|:---:|---:|---:|---:|']
+     '| # | Checker | What it is | Verdict | Wall time | CPU | Peak memory | 💵 Cost |', '|:---:|---|---|:---:|---:|---:|---:|---:|']
     for n_, (key, name, what) in enumerate(KERNELS, 1):
         if key in done_rows:
             c = done_rows[key]
             verdict = '✅ accepts' if c[1] == '0' else f'❌ exit {c[1]}'
-            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB |')
+            lines.append(f'| {n_} | {name} | {what} | {verdict} | {c[2]} | {float(c[3]):,.0f} s | {c[5]} GB | ${wall_h(c[2]) * PRICE:.2f} |')
         elif cur.get('name') == key:
-            lines.append(f"| {n_} | {name} | {what} | 🔵 **checking** | {fmt_d(cur['elapsed_s'] / 60)} so far | {cur['cpu_s']:,} s | {cur['rss_gb']:.0f} GB now |")
+            lines.append(f"| {n_} | {name} | {what} | 🔵 **checking** | {fmt_d(cur['elapsed_s'] / 60)} so far | {cur['cpu_s']:,} s | {cur['rss_gb']:.0f} GB now | ${cur['elapsed_s'] / 3600 * PRICE:.2f} so far |")
         else:
-            lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
+            lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | | |')
     lines.append('')
 
 lines += [
