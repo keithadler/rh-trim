@@ -39,7 +39,7 @@ flowchart LR
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Round 2 building: 15.45M lines (−11.1%) in 32,034 files (−81.7%).** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $48.92**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $48.93**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -76,14 +76,14 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 The minified source, round 2 (15,445,263 lines in 32,034 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since 06:19:37 UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.
 
-🔵 **compiling** · `█████████████████████████████ ░░░░░░░░░░` **10,943** of 15,033 Lake jobs (72.8%) · ❌ errors: **256**
+🔵 **compiling** · `█████████████████████████████▎░░░░░░░░░░` **11,114** of 15,149 Lake jobs (73.4%) · ❌ errors: **295**
 
 | Round | Started (UTC) | Lines | Files | Errors | What changed |
 |---|---|---:|---:|---:|---|
 | round 1 | 06:19 | 13,850,849 | 30,698 | 5 | exact cut from the export; stopped: kept instances lost their dependencies |
 | round 2 | 06:27 | 15,445,263 | 32,034 | 298 | keep what kept instances depend on; stopped: tactics name unused lemmas |
 | round 3 | 06:36 | 15,565,484 | 172,254 | 171 | keep everything kept code mentions; built unmerged |
-| round 4 | 06:42 | 15,567,987 | 172,254 | 201 | restore names the parser misread; automatic repair from here |
+| round 4 | 06:42 | 15,567,987 | 172,254 | 233 | restore names the parser misread; automatic repair from here |
 
 Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.
 
@@ -106,7 +106,7 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $48.92 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $48.93 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
@@ -131,8 +131,8 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 201, 33 Lean processes running |
-| Memory | 36 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 201, 34 Lean processes running |
+| Memory | 29 GB used of 776 GB |
 | Disk | 262 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |

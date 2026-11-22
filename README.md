@@ -23,7 +23,7 @@
 <td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>10.4%</h2><sub>in lines, so far</sub></td>
 <td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.57M</h2><sub>was 17.37M</sub></td>
 <td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after merging. Building unmerged (172,254) first, so each error points at an original file</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>1,033 of 172,254 files · 256 errors to repair</sub></td>
+<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>1,184 of 172,254 files · 295 errors to repair</sub></td>
 <td align="center" width="20%"><sub><b>TIME</b></sub><h2>0h 28m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 4 rounds</sub></td>
 </tr></table>
 
