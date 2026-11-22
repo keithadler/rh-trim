@@ -4,7 +4,7 @@
 
 **The race is on:** 8 kernels check the 61.6 GB export one at a time. tenet-hs (Haskell) runs seventh.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-21 23:55 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 10 minutes · last update **2026-11-22 00:05 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -59,7 +59,7 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 | # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |
 |:---:|---|---|:---:|---:|---:|---:|
-| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 0h 33m so far | 1,982 s | 70 GB now |
+| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 0h 43m so far | 2,587 s | 70 GB now |
 | 2 | Lean paranoid | the same kernel with extra checks | ⏳ queued | | | |
 | 3 | nanoda | independent kernel in Rust | ⏳ queued | | | |
 | 4 | con-leche | independent checker | ⏳ queued | | | |
@@ -74,11 +74,11 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $38.20 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $38.47 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261121-2355.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0005.svg)
 
 <details><summary><b>By library</b></summary>
 
