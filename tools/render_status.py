@@ -99,7 +99,7 @@ STEPS = [
  ('export', '2', 'Exact reduced form', 'Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself.'),
  ('race', '3', 'Haskell vs Lean', "Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race."),
  ('axioms', '4', 'Axioms', 'List exactly which axioms the five theorems rest on.'),
- ('minify', '5', 'The smallest proof', 'Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Source written: 13.85M lines, down from 17.37M (−20.3%), in 30,698 files, down from 175,188 (−82.5%). Not built yet.** [Details](docs/MINIFY.md)'),
+ ('minify', '5', 'The smallest proof', 'Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Round 2 building: 15.45M lines (−11.1%) in 32,034 files (−81.7%).** [Details](docs/MINIFY.md)'),
  ('publish', '6', 'Publish', 'Post the times, the verdicts and the exact sizes here.'),
 ]
 MER = {'done': 'done', 'now': 'now', 'next': 'next', 'stop': 'stop'}
@@ -216,7 +216,7 @@ if mb:
     frac = mb['done'] / mb['total'] if mb['total'] else 0
     state = ('✅ **built**' if 'exit status 0' in mb['result'] else '⚠️ **stopped**: ' + mb['result']) if mb['result'] else '🔵 **compiling**'
     lines += ['## Step 5: building the smallest proof', '',
-     'The minified source (13,850,849 lines in 30,698 files, down from 17,374,242 lines in 175,188: see '
+     'The minified source, round 2 (15,445,263 lines in 32,034 files, down from 17,374,242 lines in 175,188: see '
      '[docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since '
      f"{mb['started']} UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.", '',
      f"{state} · `{bar(frac, 40)}` **{mb['done']:,}** of {mb['total']:,} Lake jobs ({100 * frac:.1f}%) · ❌ errors: **{mb['errors']}**", '',

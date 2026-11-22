@@ -14,7 +14,7 @@ in C#, tenet-hs in Haskell, tenet-jvm).
 |---|---:|---:|---|
 | The original | 175,188 | 17,374,242 | ✅ built on AWS: 0 errors, no `sorry` ([how](docs/BUILD-ORIGINAL.md)) |
 | What the theorems use | 1,468,414 declarations (with Mathlib) | | ✅ exported; only Lean's 3 standard axioms |
-| **The minified proof** | **30,698** (−82.5%) | **13,850,849** (−20.3%) | 🔵 source written, **not built yet** ([how](docs/MINIFY.md)) |
+| **The minified proof** (round 2) | **32,034** (−81.7%) | **15,445,263** (−11.1%) | 🔵 **building** now ([how, and the log](docs/MINIFY.md)) |
 
 **Kernel checks so far:** Tenet accepts the whole original proof (1,468,414 declarations, 0 failed,
 1 h). Live results and the research on the proof's structure: [BUILD-STATUS.md](BUILD-STATUS.md).

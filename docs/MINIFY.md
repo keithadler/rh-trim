@@ -3,7 +3,7 @@
 Step 5 of the plan: cut the claimed Lean proof of the Riemann Hypothesis down to what its five main
 theorems actually need, rebuild it, and check it again.
 
-**Status: round 2 of the source is being written; round 1 failed in its first minute of building, for a reason now fixed** (see the [log](#log)). Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
+**Status: round 2 is building** (started 06:27 UTC, 2026-11-22; see the [log](#log)). Round 1 failed in its first minute, for a reason now fixed. Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
 compiles and Tenet accepts its export. The proof's own code is published without a license, so this
 repository holds the method, the tools and the cut lists, not the minified source. Anyone can
 regenerate it from the public mirror with the files in [`data/min`](../data/min).
@@ -130,4 +130,8 @@ All times UTC, 2026-11-22. Newest last.
   137,000 declarations (1,001,299 kept instead of 864,558), so this round will be bigger than round 1's
   numbers above. It's the safe version, built first so there is a version sure to compile. A later round will
   try cutting the instances the proof never uses, and their dependencies, and let the build say if any were needed.
+- **06:27** Round 2 source written and its build started: **15,445,263 lines (−11.1%) in 32,034 files (−81.7%)**.
+  1,001,299 of 1,137,512 source declarations kept; 64,611 repeated theorems point to one copy; 527,297 redundant
+  import lines removed, then 155,333 files merged into 16,315 bundles. (The table above still shows round 1's
+  numbers, which didn't build; it will show the version that builds.)
 
