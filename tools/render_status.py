@@ -220,6 +220,13 @@ if mb:
      '[docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since '
      f"{mb['started']} UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.", '',
      f"{state} · `{bar(frac, 40)}` **{mb['done']:,}** of {mb['total']:,} Lake jobs ({100 * frac:.1f}%) · ❌ errors: **{mb['errors']}**", '',
+     '| Round | Started (UTC) | Lines | Files | Errors | What changed |', '|---|---|---:|---:|---:|---|',
+     '| round 1 | 06:19 | 13,850,849 | 30,698 | 5 | exact cut from the export; stopped: kept instances lost their dependencies |'] + [
+     f"| {r['label']} | {r['start'][:5]} | {r['lines']:,} | {r['files']:,} | {r['errors']} | "
+     + ({'round 2': 'keep what kept instances depend on; stopped: tactics name unused lemmas',
+         'round 3': 'keep everything kept code mentions; built unmerged',
+         'round 4': 'restore names the parser misread; automatic repair from here'}.get(r['label'], 'automatic repair of the previous round')) + ' |'
+     for r in mb.get('rounds', [])] + ['',
      'Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. '
      'An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.', '']
 
@@ -310,7 +317,12 @@ def readme_counter():
     bf, sf = mb.get('built_files', 0), mb.get('src_files', 1) or 1
     clean = mb.get('result') and 'exit status 0' in mb['result'] and mb.get('errors', 1) == 0
     state = '✅ BUILT' if clean else ('🔁 REPAIRING' if mb.get('errors') else '🔵 BUILDING')
-    cell = lambda label, big, small: f'<td align="center" width="25%"><sub><b>{label}</b></sub><h2>{big}</h2><sub>{small}</sub></td>'
+    cell = lambda label, big, small: f'<td align="center" width="20%"><sub><b>{label}</b></sub><h2>{big}</h2><sub>{small}</sub></td>'
+    T0 = datetime.datetime(2026, 11, 22, 6, 19, 37)                      # the first minified build
+    t_end = datetime.datetime.utcfromtimestamp(mb['log_mtime']) if clean and mb.get('log_mtime') else now
+    el = (t_end - T0).total_seconds() / 60
+    elapsed = f'{int(el // 60)}h {int(el % 60):02d}m'
+    nrounds = len(mb.get('rounds', [])) + 1
     block = ['<!-- STATUS:BEGIN -->', '<div align="center">', '',
       f'**The smallest proof, live** · round {mb.get("round", "?")} · {state} · updated {now:%H:%M} UTC {now:%b %d}', '',
       '<table><tr>',
@@ -318,6 +330,7 @@ def readme_counter():
       cell('LINES', f'{L / 1e6:.2f}M', f'was {ORIG_L / 1e6:.2f}M'),
       cell('FILES', f'{F:,}', f'was {ORIG_F:,} · merging after a clean build cuts this to ~32,000'),
       cell('THIS ROUND', f'{100 * bf / sf:.0f}% built', f'{bf:,} of {sf:,} files · {mb.get("errors", 0)} errors to repair'),
+      cell('TIME', elapsed, f'{"to a clean build" if clean else "and counting"} · since the first build, 06:19 UTC Nov 22 · {nrounds} rounds'),
       '</tr></table>', '',
       '<sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one\'s build said was missing, '
       'so the percentage can only go down from here. Updated every 2 minutes from the build machine. '
