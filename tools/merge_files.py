@@ -18,6 +18,7 @@ import os, re, sys, collections
 src, out = sys.argv[1], sys.argv[2]
 MAX_FILES = int(sys.argv[3]) if len(sys.argv) > 3 else 25
 MAX_LINES = int(sys.argv[4]) if len(sys.argv) > 4 else 4000
+NOMERGE = set(l.strip() for l in open(sys.argv[5]) if l.strip()) if len(sys.argv) > 5 else set()
 KEEP_ALONE = {'Main', 'Statements', 'Challenge'}
 
 texts, imports, header_end = {}, {}, {}
@@ -49,7 +50,7 @@ privre = re.compile(r'^(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?private\s+(?:nonc
 privs = {m: set(privre.findall(t)) for m, t in texts.items()}
 
 def eligible(m):
-    return m not in KEEP_ALONE and m.count('.') >= 2 and '#exit' not in texts[m]   # never at a library's top level
+    return m not in KEEP_ALONE and m not in NOMERGE and m.count('.') >= 2 and '#exit' not in texts[m]   # never at a library's top level
 
 # depth in the import graph: files at the same depth can't reach each other through any path,
 # so a bundle of same-folder, same-depth files can never close an import cycle
@@ -161,4 +162,5 @@ for m in mods:
         if j not in imps: imps.append(j)
     body = '\n'.join(texts[m].split('\n')[header_end[m]:])
     write(m, '\n'.join('import ' + i for i in imps) + '\n\n' + body)
+open(out.rstrip('/') + '.bundles.tsv', 'w').write(''.join(f'{n}\t{m}\n' for n, ms in named for m in ms))
 print(f'files {len(mods)} -> {len(mods) - len(merged) + len(named)} ({len(named)} bundles hold {len(merged)} files)', file=sys.stderr)
