@@ -4,7 +4,7 @@
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 06:44 UTC**
+🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-22 06:45 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -76,7 +76,7 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 The minified source, round 2 (15,445,263 lines in 32,034 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since 06:19:37 UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.
 
-🔵 **compiling** · `███████████████████████████████▏░░░░░░░░` **10,139** of 13,007 Lake jobs (78.0%) · ❌ errors: **124**
+🔵 **compiling** · `██████████████████████████████▌░░░░░░░░░` **10,292** of 13,470 Lake jobs (76.4%) · ❌ errors: **171**
 
 Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.
 
@@ -103,7 +103,7 @@ Six tests that only an exact export plus several independent kernels make possib
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0644.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0645.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -124,9 +124,9 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 156, 30 Lean processes running |
-| Memory | 28 GB used of 776 GB |
-| Disk | 263 GB free of 623 GB |
+| CPUs | 192 vCPUs (96 cores), load 175, 40 Lean processes running |
+| Memory | 31 GB used of 776 GB |
+| Disk | 262 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
