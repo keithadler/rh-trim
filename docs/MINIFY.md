@@ -1,4 +1,4 @@
-# The minified proof
+# The smallest proof
 
 <!-- STATUS:BEGIN -->
 <div align="center">
@@ -18,139 +18,81 @@
 </div>
 <!-- STATUS:END -->
 
-Step 5 of the plan: cut the claimed Lean proof of the Riemann Hypothesis down to what its five main
-theorems actually need, rebuild it, and check it again.
+The goal: the same five theorems as the claimed Lean proof of the Riemann Hypothesis, with everything they
+don't need removed, rebuilt with 0 errors, and checked by independent kernels (Tenet first, then the others).
 
-**Status: building, with automatic repair rounds** (see the [log](#log)). Each round fixes what the previous one's build reported; it stops when a round builds with 0 errors. Nothing here is confirmed until it compiles and Tenet accepts its export. Nothing here is confirmed until it
-compiles and Tenet accepts its export. The proof's own code is published without a license, so this
-repository holds the method, the tools and the cut lists, not the minified source. Anyone can
-regenerate it from the public mirror with the files in [`data/min`](../data/min).
+**Status:** the minified source is building in automatic repair rounds (round 25 as of 16:38 UTC, 2026-11-22).
+Nothing below is confirmed until a round builds with 0 errors. The proof has no license, so this repository
+publishes the method, the tools and the cut lists, never the proof's code.
 
-## The numbers
+## Where it stands
 
-| | Original | Minified | Change |
+| | Original | Now | Change |
 |---|---:|---:|---:|
-| **Lines** (everything) | 17,374,242 | **13,850,849** | **−20.3%** |
-| **Files** | 175,188 | **30,698** | **−82.5%** |
-| Declarations in the source | 1,060,833 | **823,687** | −22.4% |
-| Import lines | 909,823 | **71,440** | −92.1% |
-| Declarations the kernel needs (from the export, with Mathlib) | 1,468,414 | **1,441,861** | −1.8% |
-| Expression nodes the kernel checks | 100% | **97.2%** | −2.8% |
+| **Lines** | 17,374,242 | **15,879,883** | **−8.6%** |
+| Lines of proof content (not imports, not blank) | 14,621,954 | 13,675,749 | −6.5% |
+| Import lines | 909,823 | 387,727 | −57% |
+| Files | 175,188 | 172,315 (about 32,000 after merging, once it builds) | −1.7% |
 
-The minified source's other lines (12,189,756, not blank, not imports) include about 330,000 lines of
-`section` / `end` wrappers added when files were merged (step 8); the proof content itself is
-11.86 million lines, down from 14.62 million (−18.9%).
+**What the 8.6% is**, all of it dead code; no mathematics was simplified:
 
-| Step | Lines after | Files after |
-|---|---:|---:|
-| Original | 17,374,242 | 175,188 |
-| Exact cut, merged repeats, empty files dropped (steps 1 to 6) | 14,888,615 | 161,543 |
-| Redundant imports removed (step 7) | 13,841,616 | 161,543 |
-| Small files merged, then imports trimmed again (step 8) | **13,850,849** | **30,698** |
+| Removed | Lines (approx.) |
+|---|---:|
+| ~90,700 unused declarations: 59,712 theorems and lemmas, 29,806 definitions, 610 abbreviations, 553 structures, 9 inductive types, 3 classes | 951,000 |
+| 2,873 files that held nothing the proof needs | 183,000 |
+| Redundant imports (another import already brings them in) | 522,000 |
+| 43,070 repeated theorems now point to an identical twin instead of carrying their own proof | small |
 
-## How it was cut
+The categories overlap slightly (dropped files had imports too).
 
-1. **The exact list of what the proof uses.** The original was built and its five main theorems
-   exported with `lean4export`. The export is Lean's own record of every declaration the theorems
-   depend on, so nothing in it is guessed. The earlier source-level trace overestimated what could be
-   cut (it missed real dependencies); this replaces it.
-2. **Cut every source declaration that isn't in that list**, except instances and declarations with
-   attributes (`@[simp]` and the like). Those steer how Lean builds proofs even when they never appear
-   in a finished proof, so they all stay.
-3. **Name check.** The source parser sometimes misreads a namespace. Any cut whose name, with an
-   outer namespace added or removed, is a used name was restored (343 of them).
-4. **Merge repeated theorems.** 96,661 project theorems repeat another theorem's statement exactly
-   (equal up to the names of bound variables). For each group, one copy is chosen (the one earliest in
-   the build order) and every other copy's proof is replaced by `by apply @_root_.<chosen> <;> assumption`.
-   The theorem keeps its name and statement, so nothing that uses it changes. When the chosen copy isn't
-   visible from a file, it is left alone (an earlier version added an import instead; see the log for why that broke
-   other files). 43,266 proofs are replaced this way.
-5. **Cut again.** Once those proofs are gone, whatever only they used is dead too: 26,553 more
-   declarations.
-6. **Drop empty files.** A file whose every declaration is cut, and which defines no notation, syntax,
-   tactic, attribute, instance or export, is dropped; files that imported it import what it imported.
-7. **Remove redundant imports.** An import is dropped when another import of the same file already brings
-   it in, directly or not. Every file still sees exactly the same modules, so nothing about how the proof
-   compiles changes. 935,081 import lines went.
-8. **Merge small files** (the median file was 59 lines). Files in the same folder (so the same Lake library
-   and its options) **and at the same depth in the import graph** are merged into bundle modules of at most
-   25 files and 4,000 lines. Files at the same depth can't reach each other through any chain of imports,
-   so no bundle can close an import cycle. Each file's text is wrapped in its own `section … end`, so its
-   `open`, `variable`, `universe`, options and local notation stay with it; namespaces a file leaves open are
-   closed first. Two files whose `private` names clash never share a bundle, and files using `#exit` are
-   never merged. Every import of a merged file now points to its bundle. 146,388 files went into 15,543
-   bundles; then redundant imports were trimmed again.
+## What it means
 
-## What "minimal" means here, and what is left
+- **It's still about 7 times the size of Mathlib**: 15.9M lines against Mathlib's 2,293,877 lines in 8,311 files
+  (the version this proof builds on).
+- **For kernels, almost nothing changes.** A kernel checks only what the five theorems use, 1,468,414 declarations
+  in the export, and dead code was never in that set. After the merges, 99.7% of the same expression nodes still
+  need checking. Tenet checks the original in 1 hour; Lean's own kernel is single-threaded and takes many hours.
+  What minifying saves is build time and reading, not kernel time.
+- **The proof isn't big because of waste; it's big because of what it uses.** A real reduction needs a shorter
+  route through the mathematics (below).
 
-- **No dead code:** every declaration that remains is needed by the five theorems, as far as the export
-  can tell, apart from the instances and attributed declarations kept on purpose.
-- **Not the shortest possible proof.** Proofs themselves weren't shortened. 4,335 declarations take half
-  of the checking time (see [BUILD-STATUS.md](../BUILD-STATUS.md#research-on-the-export)); rewriting them
-  is a different job.
-- **Some repeats remain.** 63,943 copies had no usable twin (the chosen copy comes later in the build
-  order, or the theorem's proof isn't a plain `:=`).
-- **Wrappers:** merging files adds a `section … end` around each original file, about 330,000 lines in
-  all. They keep each file's settings to itself; they are not proof content.
+## How it's cut
 
-## What could still fail in the build
+1. **What the theorems use.** The original was built and its five main theorems exported with `lean4export`: Lean's
+   own record of every declaration their finished proofs use.
+2. **What the kept code mentions.** Tactics name lemmas a finished proof may never use (`simp [foo]` needs `foo` to
+   exist). So everything the kept code mentions in its source is kept too, and every instance and attributed
+   declaration with its dependencies.
+3. **Repeated theorems.** When several theorems have identical statements and one is already visible from another's
+   file, the second's proof becomes `by apply @_root_.<twin> <;> assumption`. Name and statement stay, so nothing that
+   uses it changes.
+4. **Empty files dropped**, and **redundant imports removed** (every file still sees exactly the same modules).
+5. **Build and repair, automatically.** Each round's errors are fed back: names the build reports missing are kept;
+   files that fail for other reasons go back to their original text. Lake rebuilds only what changed.
+6. **Merge small files** once a round builds clean: same folder, same depth in the import graph (so no import cycle
+   can form), each file wrapped in its own `section … end`.
 
-- A declaration that Lean needs only while building proofs, never in a finished one, and that isn't an
-  instance or attributed. The build names it; it goes back and the build resumes.
-- A merged proof where `apply … <;> assumption` doesn't close the goal (for example when Lean can't
-  work out an argument by unification). Those proofs go back to their originals.
-- An added import that changes how `simp` or instance search behaves in that file. Those imports go
-  back too.
-- A merged file that behaves differently inside a bundle (for example, a command that reads the module
-  name). That file goes back out of its bundle.
+## What didn't work
 
-## Files
-
-| File | What it is |
-|---|---|
-| [`data/min/kept-files.txt.gz`](../data/min/kept-files.txt.gz) | the 161,543 modules kept |
-| [`data/min/cuts.json.gz`](../data/min/cuts.json.gz) | per module, the character ranges of the original source to cut |
-| [`data/min/swaps.json.gz`](../data/min/swaps.json.gz) | per module, the proof ranges replaced and the one-line replacement |
-| [`data/min/imports.json.gz`](../data/min/imports.json.gz) | per module, the imports added for merged theorems |
-| [`data/min/merged-theorems.tsv.gz`](../data/min/merged-theorems.tsv.gz) | each merged theorem and the copy it now points to |
-| [`tools/reach.py`](../tools/reach.py) `--keep-names` | turns the export's names into the cut list |
-| [`tools/swapcross.py`](../tools/swapcross.py) | plans the merges |
-| [`tools/finalize_cuts.py`](../tools/finalize_cuts.py) | the name check and the file drops |
-| [`tools/prune.py`](../tools/prune.py) | writes the minified source from the original |
-| [`tools/trim_imports.py`](../tools/trim_imports.py) | removes imports another import already brings in |
-| [`tools/merge_files.py`](../tools/merge_files.py) | merges same-folder, same-depth files into bundles |
-| [`tools/xidx.c`](../tools/xidx.c), [`tools/xan.c`](../tools/xan.c) | index the export; `XSWAP=` recomputes what stays reachable after merges |
-
-To regenerate the minified source from the public mirror at `8b83d5e` (Mathlib's import lists come from
-`reach.py --dump-decls` run on its package; see the tools):
-
-```bash
-python3 tools/prune.py SRC <(gunzip -c data/min/kept-files.txt.gz) STEP1 <(gunzip -c data/min/cuts.json.gz) <(gunzip -c data/min/swaps.json.gz) <(gunzip -c data/min/imports.json.gz)
-```
-
-```bash
-python3 tools/trim_imports.py STEP1/src LIB_DUMPS...
-```
-
-```bash
-python3 tools/merge_files.py STEP1/src OUT/src && python3 tools/trim_imports.py OUT/src LIB_DUMPS...
-```
+- **Cutting by the export alone** (round 1, 13.85M lines, −20.3%): the export lists what finished proofs use, not
+  what tactics name, and kept instances lost their dependencies. Rounds 1 and 2 failed in minutes.
+- **Adding imports to merge more repeats** (24,021 more merges): the extra names in scope made short names in
+  untouched files ambiguous, and the repair loop stalled on the same errors for three rounds. Removed in round 25.
+  They can come back one shared module at a time, each checked for ambiguity.
+- **The very first, source-level reduction** in this repository (12.0M lines) missed real dependencies and doesn't
+  build; it's kept only as history.
 
 ## More ways to make it smaller, measured
 
-Measured from the source's reference graph and the export's name lists (2026-11-22, during a Spot interruption),
-against the round 4 baseline of 1,022,556 kept declarations. None of these is applied yet.
+None applied yet. Measured from the source's reference graph and the export:
 
-| Strategy | What it would remove | Size | Risk |
-|---|---|---:|---|
-| **Aggressive cut**: keep instances and attributed declarations only if the export uses them | 53,516 declarations | ~5% of declarations | medium: an unused instance can still steer `simp` or instance search; the build will say |
-| **Inline single-use lemmas** into the one proof that uses them | 391,912 lemmas are used by exactly one other declaration (47% of those kept) | far fewer declarations, few lines (a lemma becomes a `have` with the same statement) | low per lemma, but a big mechanical rewrite |
-| **`_alt` pairs** where the original also survives | 1,726 pairs (4,378 `_alt` declarations kept) | small | needs a look at each pair |
-| **`…Statement` wrappers** (a named proposition and a theorem proving it) | 3,197 kept | small directly; unfolding them can expose more exact repeats to merge | low |
-| **The 63,943 repeats with no usable twin** (the chosen copy comes later in the build order) | their proofs, plus what only those use | up to a few % of proof content | medium: means moving lemmas into shared files |
-
-Order of play: finish the safe build first (it's the baseline every other round is checked against), then the
-aggressive cut, then the repeats, then inlining.
+| Strategy | Size | Risk |
+|---|---|---|
+| **Aggressive cut**: keep instances and attributed declarations only if the export uses them | 53,516 declarations, ~5% | medium: an unused instance can still steer `simp` or instance search |
+| **Merges through a shared module** instead of extra imports | the 24,021 merges dropped above, plus 98,375 with no visible twin | medium |
+| **Inline single-use lemmas** | 391,912 lemmas (47% of those kept) are used by exactly one other declaration | low per lemma; far fewer declarations, few lines |
+| **`…Statement` wrappers** | 3,197 kept; unfolding them exposes more exact repeats | low |
+| **`_alt` pairs** where the original also survives | 1,726 pairs | needs a look at each |
 
 ## Next track: searching for a shorter route
 
@@ -214,57 +156,29 @@ mechanical ones.
 
 ## Log
 
-All times UTC, 2026-11-22. Newest last.
+All times UTC, 2026-11-22.
 
-- **06:19** Round 1 build started: 13,850,849 lines in 30,698 files.
-- **06:20** First errors, in `Formalism/LocalToGlobal/NumberFieldFamilies/OwnStruct.lean`: `Unknown identifier copyAt`.
-  The cause: instances and attributed declarations were kept on purpose, but what *they* depend on was not.
-  An instance the proof never uses still referred to `copyAt`, which had been cut. Build stopped by hand.
-- **06:30** Fix: keep the source-level dependencies of everything kept on purpose. That brings back about
-  137,000 declarations (1,001,299 kept instead of 864,558), so this round will be bigger than round 1's
-  numbers above. It's the safe version, built first so there is a version sure to compile. A later round will
-  try cutting the instances the proof never uses, and their dependencies, and let the build say if any were needed.
-- **06:27** Round 2 source written and its build started: **15,445,263 lines (−11.1%) in 32,034 files (−81.7%)**.
-  1,001,299 of 1,137,512 source declarations kept; 64,611 repeated theorems point to one copy; 527,297 redundant
-  import lines removed, then 155,333 files merged into 16,315 bundles. (The table above still shows round 1's
-  numbers, which didn't build; it will show the version that builds.)
-- **06:30** Round 2 stopped after 52, then 322 errors. The lesson: Lean's export lists what a *finished* proof
-  uses, but a tactic like `simp [foo]` must name `foo` even when the finished proof never uses it. So the cut
-  must also keep everything the kept code **mentions** in its source.
-- **06:36** Round 3: keeps the export's declarations plus everything their source mentions: 1,022,429 of
-  1,137,512 declarations. Built **unmerged** (172,254 files, 15,565,484 lines) so each error points at an
-  original file; small files get merged once a round builds clean.
-- **06:41** Round 3's errors were in 14 files, nearly all `Unknown identifier` for names the source parser had
-  misread (an outer namespace). Repair: keep every declaration whose name ends the same way; where nothing
-  matches, keep the file that uses it as it was.
-- **06:42** Round 4 started (15,567,987 lines). From here an automatic loop takes over: when a round's errors
-  stop growing, it repairs them and starts the next round; Lake rebuilds only the files that changed.
-- **06:50** Time is tracked from the first build (06:19): the counter at the top shows the clock, and
-  [the status page](../BUILD-STATUS.md) lists every round with its start, size and error count. When a round builds
-  with 0 errors, the clock stops there.
-- **Then, automatically: step 2, merging small files.** The clean unmerged source is kept, merged into bundles
-  (same folder, same import depth, at most 25 files), and built. A bundle that fails has its files taken back
-  out of bundling and the build resumes, until the merged version builds clean too.
-- **06:50 to 07:01** A sixth Spot interruption, 11 minutes. The machine came back by itself and the round 4 build
-  resumed where it stopped. While it was down, the other strategies were measured (see
-  [More ways to make it smaller](#more-ways-to-make-it-smaller-measured)).
-- **07:15** The repair loop now also repairs every 20 minutes while a round has errors, not only when its errors
-  stop growing: round 4 kept finding new errors as it built further, and each restart rebuilds only the files it
-  changes.
-- **07:1x to 07:22** A seventh Spot interruption. The build resumed by itself; round 4 had 5,462 files built at 07:23.
-- **07:41 to 12:28** Rounds 5 to 15, all automatic. Errors per round, roughly: 2,585 → 1,135 → 577 → … → 843 → 170.
-  By round 15: 3,561 names the build reported missing are kept, and 628 files are kept as they were. The source
-  grew only slightly (15,641,226 lines, about 10% smaller than the original). An eighth Spot interruption, around
-  11:06, was absorbed the same way.
-- **12:28** Bug found and fixed: Lean began printing diagnostics containing the text `source:`, which my tools used
-  to spot where each round starts. Round 14's repair therefore saw only its last few minutes of errors. The tools now
-  match only their own round markers (lines starting with `==`); nothing was lost, only some repairs came a round later.
-- **16:30** The repair loop got stuck: rounds 22 to 24 kept hitting the same ~140 errors. They weren't missing
-  declarations. `SecPtRed.lean`, for example, was byte-identical to the original and still failed with
-  "Ambiguous term". The cause was the **imports added for merged repeats**: an extra import brings more names into
-  scope, so a short name in an untouched file can suddenly match two declarations. Repairing names couldn't fix that.
-- **16:38** Fix: merge a repeated theorem only when its twin is already visible, never adding an import. That keeps
-  43,266 merges (of 67,287), with no imports added. The merges that needed imports carried most of the savings, so
-  round 25 is bigger: **15,878,294 lines (8.6% smaller)**. Correctness first; the import-based merges can come back
-  later, one shared module at a time, checked for ambiguity.
+- **06:19** Round 1 (exact cut from the export, 13.85M lines) fails in its first minute: a kept instance needs
+  `copyAt`, which was cut. Instances must keep their dependencies.
+- **06:27 to 06:36** Round 2 fails with hundreds of errors: tactics name lemmas that finished proofs never use. From
+  round 3 on, everything the kept code mentions is kept, and the build runs **unmerged** so each error points at an
+  original file.
+- **06:42 onward** The automatic repair loop takes over (every 20 minutes, or sooner when errors settle).
+- **07:41 to 16:28** Rounds 5 to 24. Errors per round fall from 2,585 toward a few hundred. Two bugs fixed on the way:
+  Lean diagnostics containing `source:` confused my round detection (12:28), and rounds 22 to 24 stalled on
+  ambiguity caused by added imports (16:30).
+- **16:38** Round 25: merges only to already-visible twins, no imports added. 15,879,883 lines (−8.6%). After 10
+  minutes it had 34 errors, against hundreds in the stalled rounds.
+- Spot interruptions at about 06:50, 07:15, 11:06 and 15:50, each recovered automatically.
 
+## Files
+
+| File | What it is |
+|---|---|
+| [`data/min/`](../data/min) | cut lists, merged theorems (updated as rounds progress) |
+| [`tools/reach.py`](../tools/reach.py) `--keep-names --extra-names --revert-files` | the cut list from the export, the build's reports and reverted files |
+| [`tools/swapcross.py`](../tools/swapcross.py) | plans the merges of repeated theorems (`NOIMPORT=1`: never add an import) |
+| [`tools/finalize_cuts.py`](../tools/finalize_cuts.py), [`tools/prune.py`](../tools/prune.py), [`tools/trim_imports.py`](../tools/trim_imports.py) | name check, file drops, writing the source, import trimming |
+| [`tools/repair.py`](../tools/repair.py), [`tools/auto-repair.sh`](../tools/auto-repair.sh), [`tools/min-round.sh`](../tools/min-round.sh) | the automatic repair loop |
+| [`tools/merge_files.py`](../tools/merge_files.py), [`tools/merge-phase.sh`](../tools/merge-phase.sh) | merging small files, with its own repair loop |
+| [`tools/xidx.c`](../tools/xidx.c), [`tools/xan.c`](../tools/xan.c) | index the export; dominator tree, closures, `XSWAP=` reachability after merges |

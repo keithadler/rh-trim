@@ -8,7 +8,7 @@
 ![original build: 0 errors](https://img.shields.io/badge/original%20build-0%20errors-1f6f43)
 ![Tenet: accepts](https://img.shields.io/badge/Tenet%20(C%23)-accepts%201%2C468%2C414%20decls-1f6f43)
 ![axioms: 3 standard](https://img.shields.io/badge/axioms-propext%20%C2%B7%20Quot.sound%20%C2%B7%20Classical.choice-5b6378)
-![smallest proof: building](https://img.shields.io/badge/smallest%20proof-building-2b3f8f)
+![smallest proof: -8.6%25, building](https://img.shields.io/badge/smallest%20proof-%E2%88%928.6%25%2C%20building-2b3f8f)
 
 **[Live status](BUILD-STATUS.md)** · **[The smallest proof](docs/MINIFY.md)** · **[Build it yourself](docs/BUILD-ORIGINAL.md)** · **[Proof map](docs/PROOF-MAP.md)**
 
@@ -58,6 +58,7 @@ This repository asks three questions about it:
 | 🔁 **It repeats itself** | ~96,000 hand-named theorems restate another theorem's statement exactly. |
 | 🐢 **A few steps cost the most** | **0.3%** of declarations take **half** the checking time, most of them in p-adic Hodge theory. |
 | 🧪 **The checkers catch planted faults** | **431** single faults planted in 8 real slices of the proof, 2,583 kernel checks: every kernel rejected every one. |
+| 📏 **It's huge** | 17.4M lines, about **7.6 times Mathlib** (2.3M). Even with all dead code removed it's about 7 times. |
 | ⚠️ **Some checkers can't run it** | con-leche and con-ron as bundled with Lean 4.36 decline a reflexive inductive type; tenet-jvm runs out of memory on a file this size (a fix is planned). |
 
 Details, method and caveats for each: [BUILD-STATUS.md](BUILD-STATUS.md#research-on-the-export).
@@ -67,41 +68,23 @@ An interactive map of the proof's structure is linked from there.
 
 <p align="center"><img src="docs/img/smallest-proof.png" width="820" alt="From the published proof to the minimum proof"></p>
 
-**Goal:** the same five theorems, with everything they don't need removed, rebuilt, and checked by Tenet,
-then the other kernels.
+**Goal:** the same five theorems, with everything they don't need removed, rebuilt, and checked by Tenet, then the
+other kernels. Live numbers are in the counter at the top; method, lessons and log in **[docs/MINIFY.md](docs/MINIFY.md)**.
 
-```mermaid
-flowchart LR
-  A["Original<br>17.4M lines<br>175,188 files"] --> B["Exact cut<br>from Lean's export"]
-  B --> C["Merge repeated<br>theorems"]
-  C --> D["Trim imports"]
-  D --> E["Build"]
-  E -->|errors| F["Put failing<br>files back"]
-  F --> E
-  E -->|clean| G["Merge small files"]
-  G --> H["Tenet check"]
-  classDef done fill:#1f6f43,stroke:#8fe3b0,color:#fff
-  classDef now fill:#2b3f8f,stroke:#8fa6ff,color:#fff,stroke-width:3px
-  classDef next fill:#2a2f3d,stroke:#5b6378,color:#c9cfdc
-  class A,B,C,D done
-  class E,F now
-  class G,H next
-```
+| | Lines | Files |
+|---|---:|---:|
+| Original | 17,374,242 | 175,188 |
+| **Now** (not confirmed until a round builds clean) | **15,879,883 (−8.6%)** | 172,315 (about 32,000 after merging) |
+| Mathlib, for scale | 2,293,877 | 8,311 |
 
-| | Files | Lines | Status |
-|---|---:|---:|---|
-| Original | 175,188 | 17,374,242 | ✅ built |
-| **Smallest proof** (round 4) | 172,254 | **15,567,987** | 🔵 **building, with automatic repair rounds** |
-
-**Where it stands:** rounds 1 and 2 cut things the build turned out to need. Lean's export lists what a
-*finished* proof uses, but tactics like `simp [foo]` name lemmas that may never appear in the result. Round 3
-keeps everything the kept code mentions, so it is bigger than the first estimates (which reached 20%). The
-number that counts is the one that builds; small files get merged after that (175,188 files down to about
-32,000). Every step, number and failure is logged in **[docs/MINIFY.md](docs/MINIFY.md#log)**.
-
-**Next, a search for a shorter route:** the cheapest copy of each repeated lemma, the proof's own unused side
-routes to its key claim, cheaper proofs of its heavy steps, and the generality it never uses.
-[The plan](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
+- **What the 8.6% is:** dead code. About 90,700 unused declarations (59,712 theorems, 29,806 definitions), 2,873
+  empty files, 522,000 redundant import lines, and 43,070 repeated theorems pointed at one twin. No mathematics was
+  simplified.
+- **It's still about 7 times the size of Mathlib.**
+- **For kernels, almost nothing changes:** a kernel only ever checks what the five theorems use, and dead code was
+  never in that set; 99.7% of the work remains. The proof is big because of what it uses, not because of waste.
+- **So the real target is a shorter route through the math.** The biggest single piece is one theta-correspondence
+  step that owns 38% of the proof by itself. [The map](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
 
 ## 🏗️ Build the original yourself
 
