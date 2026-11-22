@@ -76,7 +76,7 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 The minified source, round 2 (15,445,263 lines in 32,034 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, since 06:19:37 UTC on 2026-11-22. When it builds, its export is checked by Tenet first, then the other kernels.
 
-🔵 **compiling** · `██████████████████████████████▏░░░░░░░░░` **10,508** of 13,898 Lake jobs (75.6%) · ❌ errors: **196**
+🔵 **compiling** · `██████████████████████████████ ░░░░░░░░░` **10,532** of 14,014 Lake jobs (75.2%) · ❌ errors: **198**
 
 Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.
 
@@ -124,9 +124,9 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 186, 36 Lean processes running |
-| Memory | 30 GB used of 776 GB |
-| Disk | 261 GB free of 623 GB |
+| CPUs | 192 vCPUs (96 cores), load 188, 38 Lean processes running |
+| Memory | 29 GB used of 776 GB |
+| Disk | 263 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
