@@ -118,7 +118,7 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
 | CPUs | 192 vCPUs (96 cores), load 1, 0 Lean processes running |
 | Memory | 6 GB used of 776 GB |
-| Disk | 270 GB free of 623 GB |
+| Disk | 269 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
 
