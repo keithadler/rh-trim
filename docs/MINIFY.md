@@ -252,4 +252,11 @@ All times UTC, 2026-11-22. Newest last.
   stop growing: round 4 kept finding new errors as it built further, and each restart rebuilds only the files it
   changes.
 - **07:1x to 07:22** A seventh Spot interruption. The build resumed by itself; round 4 had 5,462 files built at 07:23.
+- **07:41 to 12:28** Rounds 5 to 15, all automatic. Errors per round, roughly: 2,585 → 1,135 → 577 → … → 843 → 170.
+  By round 15: 3,561 names the build reported missing are kept, and 628 files are kept as they were. The source
+  grew only slightly (15,641,226 lines, about 10% smaller than the original). An eighth Spot interruption, around
+  11:06, was absorbed the same way.
+- **12:28** Bug found and fixed: Lean began printing diagnostics containing the text `source:`, which my tools used
+  to spot where each round starts. Round 14's repair therefore saw only its last few minutes of errors. The tools now
+  match only their own round markers (lines starting with `==`); nothing was lost, only some repairs came a round later.
 

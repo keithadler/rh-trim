@@ -20,12 +20,12 @@ while [ $n -lt 20 ]; do
   last=-1; still=0
   while true; do
     sleep 180
-    st=$(ssh -i $K -o ConnectTimeout=20 $H 'r=$(grep -q RESULT ~/run-min.log 2>/dev/null && tail -1 ~/run-min.log); e=$(awk "/ source: /{n=0} / error: /{n++} END{print n+0}" ~/rh-build/build-min.log); echo "$e|$r"') || continue
+    st=$(ssh -i $K -o ConnectTimeout=20 $H 'r=$(grep -q RESULT ~/run-min.log 2>/dev/null && tail -1 ~/run-min.log); e=$(awk "/^== .* source: /{n=0} / error: /{n++} END{print n+0}" ~/rh-build/build-min.log); echo "$e|$r"') || continue
     e=${st%%|*}; r=${st#*|}
     if [ -n "$r" ] && [ "$e" = 0 ]; then echo "$(date -u +%H:%M) merged $n CLEAN: $r"; exit 0; fi
     if [ "$e" = "$last" ]; then still=$((still+1)); else still=0; fi; last=$e
     if [ "$e" -gt 0 ] && { [ -n "$r" ] || [ "$still" -ge 2 ]; }; then
-      out=$(ssh -i $K $H 'cd ~/research/min; awk "/ source: /{f=0} /merged [0-9]+ source:/{f=1} f && / error: /" ~/rh-build/build-min.log | grep -o "src/[^:]*\.lean" | sed "s#^src/##; s#\.lean\$##; s#/#.#g" | sort -u > failing.txt
+      out=$(ssh -i $K $H 'cd ~/research/min; awk "/^== .* source: /{f=0} /^== .*merged [0-9]+ source:/{f=1} f && / error: /" ~/rh-build/build-min.log | grep -o "src/[^:]*\.lean" | sed "s#^src/##; s#\.lean\$##; s#/#.#g" | sort -u > failing.txt
         awk -F"\t" "NR==FNR{f[\$1]=1; next} (\$1 in f){print \$2}" failing.txt bundles.tsv >> nomerge.txt; sort -u -o nomerge.txt nomerge.txt
         echo "$(wc -l < failing.txt) failing modules; $(wc -l < nomerge.txt) files now kept out of bundles"')
       echo "$(date -u +%H:%M) merged $n: $e errors. $out"; break

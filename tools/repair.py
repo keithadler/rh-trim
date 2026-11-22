@@ -8,7 +8,7 @@ usage: repair.py BUILD_LOG DECLS_DUMP EXTRA_NAMES REVERT_FILES
 import re, sys, collections
 log, dump, extra_p, revert_p = sys.argv[1:5]
 lines = open(log, errors='replace').read().split('\n')
-start = max(i for i, l in enumerate(lines) if ' source: ' in l)
+start = max(i for i, l in enumerate(lines) if l.startswith('== ') and ' source: ' in l)
 errs = [l for l in lines[start:] if ' error: ' in l and 'Lean exited' not in l]
 missing, files = set(), set(); where = collections.defaultdict(set)
 for l in errs:
