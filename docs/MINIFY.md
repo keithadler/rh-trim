@@ -136,6 +136,22 @@ python3 tools/trim_imports.py STEP1/src LIB_DUMPS...
 python3 tools/merge_files.py STEP1/src OUT/src && python3 tools/trim_imports.py OUT/src LIB_DUMPS...
 ```
 
+## More ways to make it smaller, measured
+
+Measured from the source's reference graph and the export's name lists (2026-11-22, during a Spot interruption),
+against the round 4 baseline of 1,022,556 kept declarations. None of these is applied yet.
+
+| Strategy | What it would remove | Size | Risk |
+|---|---|---:|---|
+| **Aggressive cut**: keep instances and attributed declarations only if the export uses them | 53,516 declarations | ~5% of declarations | medium: an unused instance can still steer `simp` or instance search; the build will say |
+| **Inline single-use lemmas** into the one proof that uses them | 391,912 lemmas are used by exactly one other declaration (47% of those kept) | far fewer declarations, few lines (a lemma becomes a `have` with the same statement) | low per lemma, but a big mechanical rewrite |
+| **`_alt` pairs** where the original also survives | 1,726 pairs (4,378 `_alt` declarations kept) | small | needs a look at each pair |
+| **`…Statement` wrappers** (a named proposition and a theorem proving it) | 3,197 kept | small directly; unfolding them can expose more exact repeats to merge | low |
+| **The 63,943 repeats with no usable twin** (the chosen copy comes later in the build order) | their proofs, plus what only those use | up to a few % of proof content | medium: means moving lemmas into shared files |
+
+Order of play: finish the safe build first (it's the baseline every other round is checked against), then the
+aggressive cut, then the repeats, then inlining.
+
 ## Next track: searching for a shorter route
 
 Everything above removes what the proof doesn't need. The next question is whether the proof needs to go the
@@ -192,4 +208,7 @@ All times UTC, 2026-11-22. Newest last.
 - **Then, automatically: step 2, merging small files.** The clean unmerged source is kept, merged into bundles
   (same folder, same import depth, at most 25 files), and built. A bundle that fails has its files taken back
   out of bundling and the build resumes, until the merged version builds clean too.
+- **06:50 to 07:01** A sixth Spot interruption, 11 minutes. The machine came back by itself and the round 4 build
+  resumed where it stopped. While it was down, the other strategies were measured (see
+  [More ways to make it smaller](#more-ways-to-make-it-smaller-measured)).
 
