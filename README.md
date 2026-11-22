@@ -1,43 +1,56 @@
-# rh-trim: the claimed Lean proof of RH, reduced to what it needs
+# rh-trim: the smallest version of the claimed Lean proof of RH
 
 On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, and of GRH for
-Dirichlet L-functions. He found it working with Claude, and published it only as Lean 4 code
-([announcement](https://alpo.ge/remark.pdf)): 175,188 files and 17.5 million lines.
+Dirichlet L-functions, found working with Claude and published as Lean 4 code
+([announcement](https://alpo.ge/remark.pdf)): 175,188 files and 17.4 million lines.
 
-This repository set out to build a **reduced version**: the same proof with everything it never
-uses cut out. It also documents how the proof fits together.
+**Our focus is the smallest proof:** the same five theorems, with everything they don't need
+removed, rebuilt and checked by independent kernels, including three written from scratch (Tenet
+in C#, tenet-hs in Haskell, tenet-jvm).
 
-**The goal:**
+## Where it stands
 
-1. Get the proof into its **smallest exact form**: only the declarations the five theorems
-   really use, measured from Lean's own compiled dependency record.
-2. **Check that reduced form with independent kernels.** Time tenet-hs (Haskell), Tenet (C#) and
-   tenet-jvm against Lean's own kernel on the same proof.
+| | Files | Lines | Status |
+|---|---:|---:|---|
+| The original | 175,188 | 17,374,242 | ✅ built on AWS: 0 errors, no `sorry` ([how](docs/BUILD-ORIGINAL.md)) |
+| What the theorems use | 1,468,414 declarations (with Mathlib) | | ✅ exported; only Lean's 3 standard axioms |
+| **The minified proof** | **161,543** (−7.8%) | **14,888,615** (−14.3%; −18.9% of content lines) | 🔵 source written, **not built yet** ([how](docs/MINIFY.md)) |
 
-> **Update, 2026-11-20 23:30 UTC: the first reduction was wrong, and we are now building the
-> original to measure the real one.**
->
-> The reduction here comes from reading source text. Building it on AWS exposed what that misses:
->
-> - **The first two traces were missing real dependencies.** 1,087 files failed in the first
->   7,000. The causes:
->   - prefixes like `open … in` left dangling;
->   - instances of Mathlib classes dropped;
->   - global theorems inside `⟨…⟩` mistaken for local names;
->   - dot notation (`x.foo`) not resolved.
-> - **With those fixed, the trace keeps far more:** 909,095 of 1,137,512 declarations (80%), in
->   159,906 of 175,188 files (91%). The "about a third smaller" figure below came from the
->   buggy traces. **The safe source-level reduction saves only about 9%.**
->
-> **What's happening now:** the same AWS machine is building the **original** proof
-> ([live status](BUILD-STATUS.md), updated every 10 minutes). When it finishes, Lean's own
-> compiled files record exactly which declarations each proof uses. Tracing the five theorems
-> through that record gives the **exact** reduced version, with no guessing. That version will
-> replace the numbers below. Then Tenet (C#), tenet-hs (Haskell) and tenet-jvm will check the
-> build as independent kernels, with their times compared.
->
-> `make-fork.sh` still reproduces the earlier reduction byte for byte, but that reduction **does
-> not build**. Don't spend machine time on it.
+**Kernel checks so far:** Tenet accepts the whole original proof (1,468,414 declarations, 0 failed,
+1 h). Live results and the research on the proof's structure: [BUILD-STATUS.md](BUILD-STATUS.md).
+
+**How the minified proof is made** ([details](docs/MINIFY.md)):
+
+1. **Exact cut.** The original's export is Lean's own record of what the five theorems use. Every
+   source declaration not in it is cut, except instances and attributed declarations, which steer
+   how Lean builds proofs.
+2. **Merged repeats.** 64,046 theorems repeat another theorem's statement exactly; each now points to
+   one copy instead of carrying its own proof, and what only those proofs used is cut too.
+3. **Empty files dropped**, with their imports passed on.
+
+**Next, to make it smaller still:**
+
+- **Redundant imports removed**: an import another import already brings in (running now).
+- **Small files merged** into modules of about 25 files each, folder by folder (the median file is
+  59 lines).
+- Then the **build**, the export of the minified proof, and **Tenet's check**, then the other kernels.
+
+Later rounds: the 63,943 repeats that still can't point to a twin, near-identical statements,
+lemmas used only once, and the 4,335 declarations that take half of the checking time.
+
+The proof has no license, so this repository publishes the method, the tools and the cut lists,
+never the proof's code. Anyone can regenerate the minified source from the public mirror
+([command](docs/MINIFY.md#files)).
+
+<details><summary><b>History: the first, source-level reduction was wrong</b></summary>
+
+The first reduction came from reading source text, and building it on AWS showed it missed real
+dependencies (dangling `open … in` prefixes, Mathlib-class instances, global theorems mistaken for
+local names, dot notation). Fixed, that trace could only safely cut about 9%. So the original was
+built instead, and its export now gives the exact list. `make-fork.sh` below reproduces that early
+reduction byte for byte, but **it does not build**; don't spend machine time on it.
+
+</details>
 
 ## Get it
 
@@ -64,7 +77,7 @@ know drops real dependencies; it is kept for the record.)
 To help build the *original*, join the distributed replay at
 [rohanarun/alpoge-rh-replay](https://github.com/rohanarun/alpoge-rh-replay).
 
-## How much smaller, and why (superseded: see the update above)
+## How much smaller, and why (superseded: see [docs/MINIFY.md](docs/MINIFY.md))
 
 | | Original | Reduced | Kept |
 |---|---|---|---|
