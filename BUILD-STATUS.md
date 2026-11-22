@@ -4,7 +4,7 @@
 
 **✅ Tenet (C#, written from scratch) accepts the whole proof:** 1,468,414 declarations, 0 failed, 1 h 0 m. Still checking: Lean's kernel, paranoid mode, nanoda and **tenet-hs (Haskell)**.
 
-🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 05:30 UTC**
+🔵 **Step 3 of 6: Haskell vs Lean race running** · updated every 2 minutes · last update **2026-11-22 05:33 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $9.59 so far |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | 🔵 **in progress** | $9.65 so far |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | ⏳ waiting | not started |
 | **5** | **The smallest proof** | Cut the source down to only the declarations in the export, rebuild that, and check it again with every kernel. The result is the smallest version of the proof that still compiles. | ⏳ waiting | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $46.92**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $46.98**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -61,15 +61,15 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 
 | # | Checker | What it is | Verdict | Wall time | CPU | Peak memory |
 |:---:|---|---|:---:|---:|---:|---:|
-| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 6h 08m so far | 21,414 s (~1 cores) | 70 GB now |
-| 2 | Lean paranoid | the same kernel with extra checks | 🔵 **checking** | 4h 52m so far | 16,874 s (~1 cores) | 87 GB now |
-| 3 | nanoda | independent kernel in Rust | 🔵 **checking** | 4h 52m so far | 16,861 s (~1 cores) | 62 GB now |
+| 1 | Lean's kernel | Lean 4.36's own type checker, the reference | 🔵 **checking** | 6h 10m so far | 21,537 s (~1 cores) | 70 GB now |
+| 2 | Lean paranoid | the same kernel with extra checks | 🔵 **checking** | 4h 54m so far | 16,996 s (~1 cores) | 87 GB now |
+| 3 | nanoda | independent kernel in Rust | 🔵 **checking** | 4h 54m so far | 16,984 s (~1 cores) | 62 GB now |
 | 4 | con-leche | independent checker, formally verified mode | ⚪ declined: no support for reflexive inductive types | 6:07.52 | 328 s | 37.1 GB |
 | 5 | con-ron | independent checker, formally verified mode | ⚪ declined: no support for reflexive inductive types | 5:14.61 | 248 s | 53.1 GB |
 | 6 | con-leche, trusted mode | every check the official kernel does, outside its formal theorem | ⚪ declined: no support for reflexive inductive types | 6:48.95 | 356 s | 37.1 GB |
 | 7 | con-ron, trusted mode | the same, for con-ron | ⚪ declined: no support for reflexive inductive types | 4:45.75 | 253 s | 53.1 GB |
 | 8 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | ✅ accepts | 1:00:27 | 252,006 s | 236.1 GB |
-| 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | 🔵 **checking** | 4h 52m so far | 16,908 s (~1 cores) | 41 GB now |
+| 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | 🔵 **checking** | 4h 54m so far | 17,031 s (~1 cores) | 46 GB now |
 | 10 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict | 2:02:16 | 15,818 s | 257.7 GB |
 
 ## Research on the export
@@ -79,7 +79,7 @@ Six tests that only an exact export plus several independent kernels make possib
 | # | Test | What it shows | Status |
 |:---:|---|---|---|
 | 1 | **Mutation test the kernels** | Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding. | 🟢 slice 1 of 8 (`smulLA_mul'`, 1.1M-line export): **all 6 kernels accepted the clean slice and rejected all 60 mutants**: no disagreements. The other 7 slices (up to 7.2M lines each) are running. |
-| 2 | **Where the checking time goes** | The declarations that take most of the kernel time, from Tenet's per-declaration report. | ⏳ when Tenet finishes (it slowed from about 900 to 17 declarations a second in one stretch, so a small set dominates) |
+| 2 | **Where the checking time goes** | The declarations that take most of the kernel time, from Tenet's per-declaration report. | 🟢 **0.3% of the declarations take half of the checking.** In Tenet's run, 4,335 declarations (of 1,468,414) took over 5 s each and add up to 128,568 CPU-seconds, 51% of its 252,006. 494 took over a minute, 22 over five minutes; the slowest, `CrystallineSemistableComparison.fc_range_le`, took 687 s. By area, p-adic Hodge theory dominates: `CrystallineSemistableComparison` 15% of the slow time and `GroundTheory.PAdicHodge` another 4%, then `GroundTheory.Arith` 7% and the étale cohomology parts. Reading the 61.6 GB file took 3,075 s of Tenet's 3,459 s wall time, overlapped with checking. |
 | 3 | **Duplicate theorems** | Theorems proved more than once with an identical statement, project vs Mathlib. | 🟢 **96,761 hand-named theorems repeat another theorem's statement exactly** (69,144 groups; equal up to bound-variable names; Lean's auto-generated helpers left out). Many are two proofs of the same named `Statement` proposition. For scale: 1,075,024 theorems are the project's own. |
 | 4 | **The trusted base** | What a person must read to trust the five STATEMENTS, as opposed to the 1.47M declarations of proof. | 🟢 first result: `riemannHypothesis` is stated with Mathlib's own definition only. `LFunction_eq_zero_re_of_isPrimitive` goes through a project-defined wrapper, `PrimitiveDirichletLZerosOnLine`, the kind of place a wrong definition could hide (Comparator's statement check covers it). Full count: the five statements rest on **4,915 declarations**, only **5** of them from the project (four statement wrappers and one helper); the other 4,910 are Mathlib and Lean. |
 | 5 | **The spine and the hubs** | The chain of declarations every dependency path must pass through (a dominator tree), and the most-used lemmas. | 🟢 **99.35% of the proof sits under one claim, `allChi`** (`UpperTheory.FinalTheorems.everyCharacter`). Below it: `everyCharacter_of_row` owns 77%, `every_character_of_literature_of_vWin` 67%, `every_character_of_theta_integrals_local_matching` 43%: the same chain traced by hand earlier, now measured. Top hub: `Formalism.BasicNotions.D7`, used directly by 155,523 declarations. Of the 1,468,414 declarations, 1,258,876 (86%) are the project's, holding 97% of the expression nodes. |
@@ -91,11 +91,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $46.92 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $46.98 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261122-0530.svg)
+![Proof files compiled over time](docs/status/chart-20261122-0533.svg)
 
 <details><summary><b>By library</b></summary>
 
@@ -116,8 +116,8 @@ Spent so far keeps counting while the machine runs steps 2 to 4.
 | | |
 |---|---|
 | Instance | AWS `m6a.48xlarge` Spot, Ohio, about $1.56/hour |
-| CPUs | 192 vCPUs (96 cores), load 25, 0 Lean processes running |
-| Memory | 305 GB used of 776 GB |
+| CPUs | 192 vCPUs (96 cores), load 31, 0 Lean processes running |
+| Memory | 322 GB used of 776 GB |
 | Disk | 271 GB free of 623 GB |
 | Sandbox | bubblewrap: no network, everything read-only except the build folder |
 | Safety net | the disk survives termination, and is snapshotted every 2 hours |
