@@ -186,4 +186,10 @@ All times UTC, 2026-11-22. Newest last.
   matches, keep the file that uses it as it was.
 - **06:42** Round 4 started (15,567,987 lines). From here an automatic loop takes over: when a round's errors
   stop growing, it repairs them and starts the next round; Lake rebuilds only the files that changed.
+- **06:50** Time is tracked from the first build (06:19): the counter at the top shows the clock, and
+  [the status page](../BUILD-STATUS.md) lists every round with its start, size and error count. When a round builds
+  with 0 errors, the clock stops there.
+- **Then, automatically: step 2, merging small files.** The clean unmerged source is kept, merged into bundles
+  (same folder, same import depth, at most 25 files), and built. A bundle that fails has its files taken back
+  out of bundling and the build resumes, until the merged version builds clean too.
 

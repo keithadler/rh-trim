@@ -225,7 +225,7 @@ if mb:
      f"| {r['label']} | {r['start'][:5]} | {r['lines']:,} | {r['files']:,} | {r['errors']} | "
      + ({'round 2': 'keep what kept instances depend on; stopped: tactics name unused lemmas',
          'round 3': 'keep everything kept code mentions; built unmerged',
-         'round 4': 'restore names the parser misread; automatic repair from here'}.get(r['label'], 'automatic repair of the previous round')) + ' |'
+         'round 4': 'restore names the parser misread; automatic repair from here'}.get(r['label'], 'small files merged into bundles; any bundle that fails is taken apart' if r['label'].startswith('merged') else 'automatic repair of the previous round')) + ' |'
      for r in mb.get('rounds', [])] + ['',
      'Lake counts jobs, not files: the job total includes the already-built Mathlib and grows as Lake discovers work. '
      'An error here most likely means a declaration needed only while building a proof was cut; it goes back and the build resumes.', '']
