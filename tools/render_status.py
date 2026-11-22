@@ -121,7 +121,7 @@ lines = [
  "written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.", '',
  (f'**Next up: the Haskell run** (step 3) starts by itself about **{eta:%H:%M} UTC**, as soon as the build finishes.' if eta and st['race'] == 'next' and not ok
   else ('**Next up: the Haskell run** (step 3) starts by itself as soon as the export is written.' if st['race'] == 'next' else ('**The race is on:** all 8 kernels are checking the 61.6 GB export at the same time, tenet-hs (Haskell) and Lean\'s own kernel among them.' if st['race'] == 'now' else ''))), '',
- f'{head} · updated every 10 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
+ f'{head} · updated every 2 minutes · last update **{now:%Y-%m-%d %H:%M} UTC**', '',
  '| The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |',
  '|---|---|',
  '| Source | byte-exact mirror [Deicyde/riemann-hypothesis](https://github.com/Deicyde/riemann-hypothesis) at `8b83d5e`, Lean 4.33.1, Mathlib v4.33.1 |',
