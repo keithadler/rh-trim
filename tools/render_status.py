@@ -204,6 +204,28 @@ if st['export'] == 'done':
             lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
     lines.append('')
 
+# ---------- research on the export (tests run alongside the race)
+RESEARCH = [
+ ('1', 'Mutation test the kernels', 'Plant one fault at a time in a proof term and give every mutant to all six kernels. All should reject; any disagreement between kernels is a finding.',
+  '🔵 harness built and tested: on a small proof, all 6 kernels accepted the clean file and rejected all 20 mutants. Next: real slices of the RH proof.'),
+ ('2', 'Where the checking time goes', 'The declarations that take most of the kernel time, from Tenet\'s per-declaration report.',
+  '⏳ when Tenet finishes (it slowed from about 900 to 17 declarations a second in one stretch, so a small set dominates)'),
+ ('3', 'Duplicate theorems', 'Theorems proved more than once with an identical statement, project vs Mathlib.',
+  '🔵 indexing the 61.6 GB export (one pass, in C)'),
+ ('4', 'The trusted base', 'What a person must read to trust the five STATEMENTS, as opposed to the 1.47M declarations of proof.',
+  '🟢 first result: `riemannHypothesis` is stated with Mathlib\'s own definition only. `LFunction_eq_zero_re_of_isPrimitive` goes through a project-defined wrapper, `PrimitiveDirichletLZerosOnLine`, the kind of place a wrong definition could hide (Comparator\'s statement check covers it). Full count: after indexing.'),
+ ('5', 'The spine and the hubs', 'The chain of declarations every dependency path must pass through (a dominator tree), and the most-used lemmas.',
+  '🔵 analysis written and tested; runs when the index is done'),
+ ('6', 'Haskell vs Lean per slice', 'tenet-hs and Lean\'s kernel timed on the same slices, matched by size, for a fair speed comparison.',
+  '⏳ uses the mutation slices'),
+]
+lines += ['## Research on the export', '',
+ 'Six tests that only an exact export plus several independent kernels make possible. They run on the same machine, alongside the race, at no extra cost. '
+ 'None of them checks the mathematics: they are about the proof as an artifact, and about the checkers.', '',
+ '| # | Test | What it shows | Status |', '|:---:|---|---|---|']
+lines += [f'| {a} | **{b}** | {c} | {d_} |' for a, b, c, d_ in RESEARCH]
+lines += ['']
+
 lines += [
 ] + ([
  '## Step 1: the build ✅ done', '',
