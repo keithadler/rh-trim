@@ -210,6 +210,35 @@ if st['export'] == 'done':
             lines.append(f'| {n_} | {name} | {what} | ⏳ queued | | | |')
     lines.append('')
 
+# ---------- the second machine's race (rh-kernels), read from /tmp/rh-tele2.txt
+try:
+    t2 = open('/tmp/rh-tele2.txt', encoding='utf-8').read()
+except OSError:
+    t2 = ''
+if t2.strip():
+    tsv, _, ps = t2.partition('===')
+    done2 = [r.split('\t') for r in tsv.strip().split('\n')[1:] if r.strip()]
+    run2 = []
+    for line in ps.strip().split('\n'):
+        f = line.split(None, 2)
+        if len(f) == 3:
+            nm = 'Lean paranoid' if 'paranoid' in f[2] else ("Lean's kernel" if 'leanchecker' in f[2] else ('tenet-hs (Haskell)' if 'tenet-hs' in f[2] else ('tenet-jvm (fixed)' if 'java' in f[2] else f[2][:30])))
+            run2.append((nm, int(f[0]), int(f[1])))
+    label = {'lean-kernel': "Lean's kernel", 'lean-kernel-paranoid': 'Lean paranoid', 'nanoda-32threads': 'nanoda, 32 threads',
+             'tenet-hs': 'tenet-hs (Haskell)', 'tenet-jvm-compact': 'tenet-jvm, memory rework', 'tenet-jvm-compact-2': 'tenet-jvm, diagnostics run',
+             'tenet-jvm-compact-3': 'tenet-jvm (fixed)'}
+    lines += ['## Kernel race on the original proof: second machine, live', '',
+              'A second AWS machine (`r7a.12xlarge`, 48 vCPU, 369 GB) checks the same 61.6 GB export of the original proof. '
+              'Wall time is real time on a shared machine.', '',
+              '| Checker | Verdict | Wall time | CPU | Peak memory |', '|---|:---:|---:|---:|---:|']
+    for c in done2:
+        if len(c) < 5: continue
+        v = '✅ accepts' if c[1] == '0' else ('⏹ stopped by hand' if c[1] == '143' else ('❌ out of memory' if c[1] == '3' else f'exit {c[1]}'))
+        lines.append(f"| {label.get(c[0], c[0])} | {v} | {c[2]} | {float(c[3] or 0):,.0f} s | {c[4]} GB |")
+    for nm, et, rss in run2:
+        lines.append(f"| {nm} | 🔵 checking | {fmt_d(et / 60)} so far | | {rss / 1048576:.0f} GB now |")
+    lines.append('')
+
 # ---------- step 5: the minified build
 mb = T.get('minbuild')
 if mb:

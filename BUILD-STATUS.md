@@ -4,7 +4,7 @@
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-23 01:26 UTC**
+🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-23 01:29 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $40.68 |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $40.74 |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | 🔵 **in progress** | not started |
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Building in automatic repair rounds; live numbers in the counter at the top of the README.** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $78.01**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $78.07**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -71,6 +71,20 @@ Each checker reads the same 61.6 GB export and checks every declaration from scr
 | 8 | **Tenet** | written from scratch in C# ([repo](https://github.com/keithadler/tenet)) | ✅ accepts | 1:00:27 | 252,006 s | 236.1 GB |
 | 9 | **tenet-hs** | written from scratch in **Haskell** ([repo](https://github.com/keithadler/tenet-hs)) | ⏹ stopped at 05:37 UTC by an AWS Spot interruption after about 5 h; no verdict | | | |
 | 10 | **tenet-jvm** | written from scratch for the JVM ([repo](https://github.com/keithadler/tenet-jvm)) | ⏸ stopped: stuck about 90 min reading one declaration while memory grew; not a verdict | 2:02:16 | 15,818 s | 257.7 GB |
+
+## Kernel race on the original proof: second machine, live
+
+A second AWS machine (`r7a.12xlarge`, 48 vCPU, 369 GB) checks the same 61.6 GB export of the original proof. Wall time is real time on a shared machine.
+
+| Checker | Verdict | Wall time | CPU | Peak memory |
+|---|:---:|---:|---:|---:|
+| tenet-jvm, memory rework | ❌ out of memory | 49:13.83 | 28,276 s | 123.2 GB |
+| nanoda, 32 threads | ✅ accepts | 2:42:37 | 31,404 s | 79.4 GB |
+| tenet-jvm, diagnostics run | ⏹ stopped by hand | 39:32.67 | 15,124 s | 123.1 GB |
+| Lean's kernel | 🔵 checking | 4h 42m so far | | 67 GB now |
+| tenet-hs (Haskell) | 🔵 checking | 4h 42m so far | | 64 GB now |
+| Lean paranoid | 🔵 checking | 4h 42m so far | | 83 GB now |
+| tenet-jvm (fixed) | 🔵 checking | 0h 31m so far | | 16 GB now |
 
 ## Step 5: building the smallest proof
 
@@ -148,11 +162,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $78.01 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $78.07 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261123-0126.svg)
+![Proof files compiled over time](docs/status/chart-20261123-0129.svg)
 
 <details><summary><b>By library</b></summary>
 
