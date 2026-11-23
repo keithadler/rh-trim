@@ -51,18 +51,29 @@ This repository asks three questions about it:
 | | |
 |---|---|
 | ✅ **It builds** | All 175,187 proof files compile on Lean 4.33.1: 0 errors, no `sorry`. One AWS Spot machine, about 21 hours, about $35. |
-| ✅ **Tenet accepts it** | My independent C# kernel checked all **1,468,414** declarations with **0 failures** in 1 hour. (nanoda and the latest con-leche also accept it, per [Andrew Sutherland's MIT page](https://math.mit.edu/~drew/grh/).) |
+| ✅ **Independent kernels accept it** | **Tenet** (my C# kernel): all **1,468,414** declarations, **0 failures**, in 1 hour. **nanoda**: accepts, 2 h 42 m on 32 threads. Lean's kernel, paranoid mode, tenet-hs and a fixed tenet-jvm are still checking ([live](BUILD-STATUS.md)). The latest con-leche also accepts it, per [Andrew Sutherland's MIT page](https://math.mit.edu/~drew/grh/). |
 | 🔒 **Only standard axioms** | It rests on `propext`, `Quot.sound` and `Classical.choice`, nothing added by the author. |
+| 🧱 **Most of it is foundations, not the new idea** | The final argument needs just **6.6%** of the proof; the other **~93%** supplies its inputs. That is largely established theory Mathlib doesn't have (p-adic Hodge theory, étale cohomology, automorphic forms, resolution of singularities, 162 published theorems), built from scratch in the project's own vocabulary, plus one theta-correspondence step that owns **38%** by itself and is likely where the new idea lives. |
 | 🎯 **One claim carries it** | **99.35%** of the proof sits under a single claim, `allChi`; then a chain of four lemmas owning 77%, 67% and 43%. |
 | 📜 **The statements are small** | What the five theorems *say* rests on just **4,915** declarations, only 5 from the project. Everything else is proof. |
 | 🔁 **It repeats itself** | ~96,000 hand-named theorems restate another theorem's statement exactly. |
 | 🐢 **A few steps cost the most** | **0.3%** of declarations take **half** the checking time, most of them in p-adic Hodge theory. |
 | 🧪 **The checkers catch planted faults** | **431** single faults planted in 8 real slices of the proof, 2,583 kernel checks: every kernel rejected every one. |
 | 📏 **It's huge** | 17.4M lines, about **7.6 times Mathlib** (2.3M). Even with all dead code removed it's about 7 times. |
-| ⚠️ **Some checkers can't run it** | con-leche and con-ron as bundled with Lean 4.36 decline a reflexive inductive type; tenet-jvm runs out of memory on a file this size (a fix is planned). |
+| ⚠️ **Some checkers struggled** | con-leche and con-ron as bundled with Lean 4.36 decline a reflexive inductive type. tenet-jvm hung on one small theorem until a fix (cache definitional-equality failures) let it through in 373 ms; the fixed version is checking the whole proof now. |
 
 Details, method and caveats for each: [BUILD-STATUS.md](BUILD-STATUS.md#research-on-the-export).
 An interactive map of the proof's structure is linked from there.
+
+## ⛏️ What could be mined from it
+
+<p align="center"><img src="docs/img/what-to-mine.png" width="820" alt="Where the proof's weight sits, and what could be mined from it"></p>
+
+The proof is big because of what it uses, and much of what it uses is mathematics Lean's library never had, now
+machine-checked: a starting point for library work (with the author's permission, since the code is unlicensed, or as
+a rewrite), 162 literature results as precise statements, and the 41 targets of the
+[Tau Ceti roadmap](https://github.com/TauCetiProject/TauCetiRoadmap/pull/2954). The shares above are measured; which
+parts are "new" and which are "known" is a reading of names and the paper's outline, not a measurement.
 
 ## ✂️ The smallest proof
 
