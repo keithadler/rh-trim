@@ -17,14 +17,14 @@
 <!-- STATUS:BEGIN -->
 <div align="center">
 
-**The smallest proof, live** · round 54 · 🔁 REPAIRING · updated 05:32 UTC Nov 23
+**The smallest proof, live** · round 54 · 🔁 REPAIRING · updated 05:42 UTC Nov 23
 
 <table><tr>
 <td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>8.3%</h2><sub>in lines, so far</sub></td>
 <td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.94M</h2><sub>was 17.37M</sub></td>
 <td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after small files are merged</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>2% built</h2><sub>3,297 of 172,470 files · 64 errors to repair</sub></td>
-<td align="center" width="20%"><sub><b>TIME</b></sub><h2>23h 12m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 55 rounds</sub></td>
+<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>2% built</h2><sub>3,610 of 172,470 files · 78 errors to repair</sub></td>
+<td align="center" width="20%"><sub><b>TIME</b></sub><h2>23h 23m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 55 rounds</sub></td>
 </tr></table>
 
 <sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one's build said was missing, so the percentage can only go down from here. Updated every 2 minutes from the build machine. <a href="docs/MINIFY.md#log">Log of every round</a></sub>
@@ -95,13 +95,13 @@ same 61.6 GB file exported from the proof.
 |---|---|---|
 | **Tenet** | C# (mine) | ✅ accepts all 1,468,414 · 1 hour |
 | **nanoda** | Rust | ✅ accepts · 2:42:37 on 32 threads |
-| **Lean's kernel** | C++ | 🔵 8h 46m in · whole file loaded, checking (no progress readout) |
-| **Lean paranoid** | C++ | 🔵 8h 46m in · whole file loaded, checking (no progress readout) |
-| **tenet-hs** | Haskell (mine) | 🔵 8h 46m in · 53.4% through the file |
-| **tenet-jvm** | Java (mine) | 🔵 4h 35m in · 1,268,042 of 1,468,414 declarations (86%) |
+| **Lean's kernel** | C++ | 🔵 8h 56m in · whole file loaded, checking (no progress readout) |
+| **Lean paranoid** | C++ | 🔵 8h 56m in · whole file loaded, checking (no progress readout) |
+| **tenet-hs** | Haskell (mine) | 🔵 8h 56m in · 53.4% through the file |
+| **tenet-jvm** | Java (mine) | 🔵 4h 45m in · 1,319,195 of 1,468,414 declarations (90%) |
 | con-leche, con-ron (Lean 4.36 bundle) | Lean | ⚪ decline: no support for one kind of type the proof uses |
 
-<sub>Live, updated every few minutes · last update 05:32 UTC Nov 23</sub>
+<sub>Live, updated every few minutes · last update 05:42 UTC Nov 23</sub>
 <!-- KERNELS:END -->
 
 <p align="center"><img src="docs/img/tenet-accepts.png" width="760" alt="Tenet accepts all 1,468,414 declarations of the proof, 0 failures, in 1 hour"></p>
