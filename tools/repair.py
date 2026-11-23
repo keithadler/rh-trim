@@ -52,21 +52,31 @@ def visible_to(cands, files_):
     v = {c for c in cands if modof.get(c) in vis}
     return v or cands
 
+def strictly_visible(cands, files_):
+    vis = set()
+    for f in files_: vis |= closure(f)
+    return {c for c in cands if modof.get(c) in vis}
+
 add = set(); unmatched = []
 for x in missing:
     parts = x.split('.')
-    hit = by2.get('.'.join(parts[-2:]), set()) if len(parts) > 1 else set()
-    if not hit: hit = by1.get(parts[-1], set()) if len(by1.get(parts[-1], ())) <= 20 else set()
-    # `foo.mpr`, `cpCutoff.choose`, `Struct.field`: the missing thing is the stem, the last part is how it's used
-    if not hit and len(parts) > 1:
-        stem = parts[:-1]
-        hit = by2.get('.'.join(stem[-2:]), set()) if len(stem) > 1 else set()
-        if not hit: hit = by1.get(stem[-1], set()) if len(by1.get(stem[-1], ())) <= 20 else set()
-    # `h.mul` on a type that unfolds to a core one (And, Function, ...): keep the `.mul` lemmas the file can see
-    if not hit and len(parts) == 2 and parts[0] in ('And', 'Or', 'Function', 'Exists', 'Iff', 'Eq', 'Not', 'Prod', 'Subtype', 'Set', 'Nat', 'Int'):
-        vis = visible_to(by1.get(parts[1], set()), where[x])
-        if 0 < len(vis) <= 60 and vis != by1.get(parts[1], set()) or 0 < len(vis) <= 12: hit = vis
-    if hit: add |= visible_to(hit, where[x])
+    # try, in order: last two parts, last part, then the stem (`foo.mpr`, `Struct.field`: the last part is how
+    # it is used), counting only copies the failing file can see in the original
+    keys = []
+    if len(parts) > 1: keys.append((by2, '.'.join(parts[-2:])))
+    keys.append((by1, parts[-1]))
+    if len(parts) > 2: keys.append((by2, '.'.join(parts[-3:-1])))
+    if len(parts) > 1: keys.append((by1, parts[-2]))
+    vis_hit = set()
+    # first: a declaration of that name in the failing file itself (cut, while an `attribute` line or a
+    # projection in the same file still uses it)
+    for tbl, k in keys:
+        own = {c for c in tbl.get(k, set()) if modof.get(c) in where[x]}
+        if own: vis_hit = own; break
+    for tbl, k in ([] if vis_hit else keys):
+        v = strictly_visible(tbl.get(k, set()), where[x])
+        if 0 < len(v) <= 20: vis_hit = v; break
+    if vis_hit: add |= vis_hit
     else: unmatched.append(x); files |= where[x]     # can't find it: keep the file that uses it as it was
 # an `open` of a namespace whose every declaration was cut fails, and takes every other name on that line with it:
 # keep the smallest declaration in each such namespace (written relative to the file, so match it anywhere)
