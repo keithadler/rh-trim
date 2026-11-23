@@ -57,6 +57,15 @@ for x in missing:
     parts = x.split('.')
     hit = by2.get('.'.join(parts[-2:]), set()) if len(parts) > 1 else set()
     if not hit: hit = by1.get(parts[-1], set()) if len(by1.get(parts[-1], ())) <= 20 else set()
+    # `foo.mpr`, `cpCutoff.choose`, `Struct.field`: the missing thing is the stem, the last part is how it's used
+    if not hit and len(parts) > 1:
+        stem = parts[:-1]
+        hit = by2.get('.'.join(stem[-2:]), set()) if len(stem) > 1 else set()
+        if not hit: hit = by1.get(stem[-1], set()) if len(by1.get(stem[-1], ())) <= 20 else set()
+    # `h.mul` on a type that unfolds to a core one (And, Function, ...): keep the `.mul` lemmas the file can see
+    if not hit and len(parts) == 2 and parts[0] in ('And', 'Or', 'Function', 'Exists', 'Iff', 'Eq', 'Not', 'Prod', 'Subtype', 'Set', 'Nat', 'Int'):
+        vis = visible_to(by1.get(parts[1], set()), where[x])
+        if 0 < len(vis) <= 60 and vis != by1.get(parts[1], set()) or 0 < len(vis) <= 12: hit = vis
     if hit: add |= visible_to(hit, where[x])
     else: unmatched.append(x); files |= where[x]     # can't find it: keep the file that uses it as it was
 # an `open` of a namespace whose every declaration was cut fails, and takes every other name on that line with it:

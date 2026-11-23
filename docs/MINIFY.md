@@ -191,3 +191,7 @@ All times UTC, 2026-11-22.
 - The repair loop now stops by itself when a round has nothing new to keep, instead of repeating; and it copies only
   the current round's part of the build log (the full log passed 1.5 GB).
 
+- **Nov 23, 08:48** Round 61 stopped itself: **53 errors left**, from thousands, but nothing new to keep. The leftovers
+  were names used with a suffix, like `foo_iff.mpr`, `cpCutoff.choose` or `TensorDS.nH`, where the missing thing is
+  `foo_iff` and the last part is only how it is used; and `h.mul` on something that now reads as a plain `And`. The
+  repair now looks up the stem as well: 142 more declarations kept. **08:58** round 62 building.
