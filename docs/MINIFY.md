@@ -182,3 +182,12 @@ All times UTC, 2026-11-22.
 | [`tools/repair.py`](../tools/repair.py), [`tools/auto-repair.sh`](../tools/auto-repair.sh), [`tools/min-round.sh`](../tools/min-round.sh) | the automatic repair loop |
 | [`tools/merge_files.py`](../tools/merge_files.py), [`tools/merge-phase.sh`](../tools/merge-phase.sh) | merging small files, with its own repair loop |
 | [`tools/xidx.c`](../tools/xidx.c), [`tools/xan.c`](../tools/xan.c) | index the export; dominator tree, closures, `XSWAP=` reachability after merges |
+- **23:16 to 00:52** Rounds 39 to 44. Two more causes found and fixed, each of which made rounds repeat the same
+  errors: (1) cutting every declaration of a namespace breaks any `open` of it, and the failed `open` takes every
+  other name on that line down too; the repair now keeps one declaration of such a namespace, chosen from what the
+  failing file actually imports. (2) A parser bug: declarations written with universe parameters on the name
+  (`theorem foo.{u, v} : …`, 558 of them) were recorded as `foo.` and so looked unused. Fixed; the source's reference
+  graph is being rebuilt from scratch so references to them connect again.
+- The repair loop now stops by itself when a round has nothing new to keep, instead of repeating; and it copies only
+  the current round's part of the build log (the full log passed 1.5 GB).
+
