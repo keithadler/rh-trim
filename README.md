@@ -4,11 +4,11 @@
 
 ### Checking, mapping and shrinking the claimed Lean proof of the Riemann Hypothesis
 
-![Lean 4.33.1](https://img.shields.io/badge/Lean-4.33.1-4b5cd6)
 ![original build: 0 errors](https://img.shields.io/badge/original%20build-0%20errors-1f6f43)
-![Tenet: accepts](https://img.shields.io/badge/Tenet%20(C%23)-accepts%201%2C468%2C414%20decls-1f6f43)
-![axioms: 3 standard](https://img.shields.io/badge/axioms-propext%20%C2%B7%20Quot.sound%20%C2%B7%20Classical.choice-5b6378)
-![smallest proof: -8.6%25, building](https://img.shields.io/badge/smallest%20proof-%E2%88%928.6%25%2C%20building-2b3f8f)
+![Tenet: accepts](https://img.shields.io/badge/Tenet%20(C%23)-accepts-1f6f43)
+![nanoda: accepts](https://img.shields.io/badge/nanoda-accepts-1f6f43)
+![axioms: 3 standard](https://img.shields.io/badge/axioms-3%20standard-5b6378)
+![smallest proof: building](https://img.shields.io/badge/smallest%20proof-building-2b3f8f)
 
 **[Live status](BUILD-STATUS.md)** · **[The smallest proof](docs/MINIFY.md)** · **[Build it yourself](docs/BUILD-ORIGINAL.md)** · **[Proof map](docs/PROOF-MAP.md)**
 
@@ -32,70 +32,117 @@
 </div>
 <!-- STATUS:END -->
 
-On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, and of GRH for Dirichlet
-L-functions, found working with Claude and published as Lean 4 code
-([announcement](https://alpo.ge/remark.pdf)): **175,188 files and 17.4 million lines**, with one docstring.
+## In plain English
 
-This repository asks three questions about it:
+On 2026-11-20 Levent Alpöge announced a proof of the Riemann Hypothesis, found working with Claude and published
+as a computer-checkable proof in the Lean language ([announcement](https://alpo.ge/remark.pdf)). It is enormous:
+**175,188 files and 17.4 million lines**, about 7 times the size of Lean's entire math library, with one comment-style
+docstring in all of it.
 
-1. **Does it check?** Build it, export it, and run independent kernels on it, including three written from
-   scratch: Tenet (C#), tenet-hs (Haskell) and tenet-jvm.
-2. **What is it made of?** Measure its structure from Lean's own export: what it uses, what it repeats, and
-   which few lemmas carry it.
-3. **How small can it be?** Cut it down to only what the five theorems need, then look for a shorter route.
+We built it, asked several independent checking programs to verify it, measured what it is made of, and are cutting it
+down to the smallest version that still checks. Here is what we know so far.
 
-<p align="center"><img src="docs/img/tenet-accepts.png" width="820" alt="Tenet accepts all 1,468,414 declarations of the proof, 0 failures, in 1 hour"></p>
+## Three questions, three answers
 
-## 🔑 What we've found
+<table>
+<tr><td width="33%" valign="top">
 
-| | |
-|---|---|
-| ✅ **It builds** | All 175,187 proof files compile on Lean 4.33.1: 0 errors, no `sorry`. One AWS Spot machine, about 21 hours, about $35. |
-| ✅ **Independent kernels accept it** | **Tenet** (my C# kernel): all **1,468,414** declarations, **0 failures**, in 1 hour. **nanoda**: accepts, 2 h 42 m on 32 threads. Lean's kernel, paranoid mode, tenet-hs and a fixed tenet-jvm are still checking ([live](BUILD-STATUS.md)). The latest con-leche also accepts it, per [Andrew Sutherland's MIT page](https://math.mit.edu/~drew/grh/). |
-| 🔒 **Only standard axioms** | It rests on `propext`, `Quot.sound` and `Classical.choice`, nothing added by the author. |
-| 🧱 **Most of it is foundations, not the new idea** | The final argument needs just **6.6%** of the proof; the other **~93%** supplies its inputs. That is largely established theory Mathlib doesn't have (p-adic Hodge theory, étale cohomology, automorphic forms, resolution of singularities, 162 published theorems), built from scratch in the project's own vocabulary, plus one theta-correspondence step that owns **38%** by itself and is likely where the new idea lives. |
-| 🎯 **One claim carries it** | **99.35%** of the proof sits under a single claim, `allChi`; then a chain of four lemmas owning 77%, 67% and 43%. |
-| 📜 **The statements are small** | What the five theorems *say* rests on just **4,915** declarations, only 5 from the project. Everything else is proof. |
-| 🔁 **It repeats itself** | ~96,000 hand-named theorems restate another theorem's statement exactly. |
-| 🐢 **A few steps cost the most** | **0.3%** of declarations take **half** the checking time, most of them in p-adic Hodge theory. |
-| 🧪 **The checkers catch planted faults** | **431** single faults planted in 8 real slices of the proof, 2,583 kernel checks: every kernel rejected every one. |
-| 📏 **It's huge** | 17.4M lines, about **7.6 times Mathlib** (2.3M). Even with all dead code removed it's about 7 times. |
-| ⚠️ **Some checkers struggled** | con-leche and con-ron as bundled with Lean 4.36 decline a reflexive inductive type. tenet-jvm hung on one small theorem until a fix (cache definitional-equality failures) let it through in 373 ms; the fixed version is checking the whole proof now. |
+### ✅ Does it check?
 
-Details, method and caveats for each: [BUILD-STATUS.md](BUILD-STATUS.md#research-on-the-export).
-An interactive map of the proof's structure is linked from there.
+**Yes, so far.** It compiles with 0 errors.
+Two independent checkers have accepted all
+**1,468,414** of its building blocks:
+**Tenet** (in 1 hour) and **nanoda**.
+Four more are still running. It relies only on
+Lean's 3 standard axioms.
 
-## ⛏️ What could be mined from it
+[Scoreboard ↓](#the-checker-scoreboard)
+
+</td><td width="33%" valign="top">
+
+### 🧱 What is it made of?
+
+**Mostly foundations.** The final argument needs
+only **6.6%** of the proof. The rest builds the
+tools it needs, much of it established math that
+Lean's library never had. One step alone owns
+**38%**, and is likely where the new idea lives.
+
+[The map ↓](#what-it-is-made-of)
+
+</td><td width="33%" valign="top">
+
+### ✂️ How small can it be?
+
+**About 8% smaller so far,** all dead code,
+and still being confirmed by building it. Real
+savings need a shorter route through the math,
+and the 38% step is the place to look.
+
+[The smallest proof ↓](#the-smallest-proof)
+
+</td></tr>
+</table>
+
+## The checker scoreboard
+
+A **checker** (or kernel) is a small program that re-verifies every step of a finished proof. Several independent
+ones, written by different people in different languages, make a hidden bug much less likely. All of them check the
+same 61.6 GB file exported from the proof.
+
+| Checker | Written in | Result |
+|---|---|---|
+| **Tenet** | C# (mine) | ✅ accepts all 1,468,414 · 1 hour |
+| **nanoda** | Rust | ✅ accepts · 2 h 42 m on 32 threads |
+| Lean's own kernel | C++ | 🔵 still checking (single-threaded) |
+| Lean, paranoid mode | C++ | 🔵 still checking |
+| **tenet-hs** | Haskell (mine) | 🔵 still checking |
+| **tenet-jvm** | Java (mine) | 🔵 checking, after a fix for one theorem it used to hang on |
+| con-leche, con-ron (Lean 4.36 bundle) | Lean | ⚪ decline: no support for one kind of type the proof uses |
+
+<p align="center"><img src="docs/img/tenet-accepts.png" width="760" alt="Tenet accepts all 1,468,414 declarations of the proof, 0 failures, in 1 hour"></p>
+
+We also planted **431 deliberate mistakes** in pieces of the proof: every checker caught every one.
+Live times and memory: [BUILD-STATUS.md](BUILD-STATUS.md).
+
+## What it is made of
 
 <p align="center"><img src="docs/img/what-to-mine.png" width="820" alt="Where the proof's weight sits, and what could be mined from it"></p>
 
-The proof is big because of what it uses, and much of what it uses is mathematics Lean's library never had, now
-machine-checked: a starting point for library work (with the author's permission, since the code is unlicensed, or as
-a rewrite), 162 literature results as precise statements, and the 41 targets of the
-[Tau Ceti roadmap](https://github.com/TauCetiProject/TauCetiRoadmap/pull/2954). The shares above are measured; which
-parts are "new" and which are "known" is a reading of names and the paper's outline, not a measurement.
+- **One claim carries everything:** 99.35% of the proof sits under a single statement, `allChi`.
+- **The statements are small:** what the five main theorems *say* rests on just 4,915 building blocks.
+- **The cost is lopsided:** 0.3% of the building blocks take half of all checking time.
+- **It repeats itself:** about 96,000 theorems restate another theorem word for word.
+- **What could be mined from it:** checked versions of established theory Lean's library lacks, 162 published results
+  as precise statements, and 41 targets mapped by the [Tau Ceti roadmap](https://github.com/TauCetiProject/TauCetiRoadmap/pull/2954)
+  ([our weights for each](docs/TAUCETI-WEIGHTS.md)). The code is unlicensed, so reuse needs the author's permission or a rewrite.
 
-## ✂️ The smallest proof
+Which parts are "new" and which "known" is our reading of names and the paper's outline; the percentages are measured.
 
-<p align="center"><img src="docs/img/smallest-proof.png" width="820" alt="From the published proof to the minimum proof"></p>
-
-**Goal:** the same five theorems, with everything they don't need removed, rebuilt, and checked by Tenet, then the
-other kernels. Live numbers are in the counter at the top; method, lessons and log in **[docs/MINIFY.md](docs/MINIFY.md)**.
+## The smallest proof
 
 | | Lines | Files |
 |---|---:|---:|
 | Original | 17,374,242 | 175,188 |
-| **Now** (not confirmed until a round builds clean) | **15,879,883 (−8.6%)** | 172,315 (about 32,000 after merging) |
-| Mathlib, for scale | 2,293,877 | 8,311 |
+| **Smallest so far** (live numbers in the counter at the top) | about 8% fewer | about 32,000 once small files are merged |
+| Lean's math library, for scale | 2,293,877 | 8,311 |
 
-- **What the 8.6% is:** dead code. About 90,700 unused declarations (59,712 theorems, 29,806 definitions), 2,873
-  empty files, 522,000 redundant import lines, and 43,070 repeated theorems pointed at one twin. No mathematics was
-  simplified.
-- **It's still about 7 times the size of Mathlib.**
-- **For kernels, almost nothing changes:** a kernel only ever checks what the five theorems use, and dead code was
-  never in that set; 99.7% of the work remains. The proof is big because of what it uses, not because of waste.
-- **So the real target is a shorter route through the math.** The biggest single piece is one theta-correspondence
-  step that owns 38% of the proof by itself. [The map](docs/MINIFY.md#next-track-searching-for-a-shorter-route).
+- **What gets removed:** building blocks nothing in the proof uses, files left empty, repeated theorems pointed at one
+  copy, and redundant imports. No mathematics is simplified.
+- **How:** an automatic loop builds it, reads the errors, puts back what was needed, and builds again, until a round
+  builds with 0 errors. Every round is logged in [docs/MINIFY.md](docs/MINIFY.md#log).
+- **Why only ~8%:** checkers only ever look at what the theorems use, so dead code was never the real weight. The proof
+  is big because of what it *uses*.
+
+## Words used here
+
+| Word | Meaning |
+|---|---|
+| **Declaration** | one building block of the proof: a definition or a theorem |
+| **Export** | one file listing every declaration the five main theorems use, written by Lean itself |
+| **Kernel / checker** | a small program that re-checks every declaration from scratch |
+| **Owns alone** | the share of the proof you can only reach through that one step: remove it and that share goes with it |
+| **Axiom** | something assumed rather than proved; this proof uses only Lean's three standard ones |
 
 ## 🏗️ Build the original yourself
 
@@ -138,7 +185,7 @@ turns the proof into 41 human-sized targets; [our measured weights for each](doc
 - **Not a verdict on the mathematics.** Kernels accepting a proof says the code checks; it doesn't replace
   mathematicians reading the math.
 
-## 📁 Contents
+<details><summary><b>📁 Everything in this repository</b></summary>
 
 | Path | What it is |
 |---|---|
@@ -161,6 +208,8 @@ dangling `open … in` prefixes, Mathlib-class instances, global theorems mistak
 Fixed, that trace could only safely cut about 9%. So the original was built instead, and its export now gives
 the exact list. `make-fork.sh` still reproduces that early reduction byte for byte, but **it does not build**.
 Method and mistakes: [docs/PRUNING.md](docs/PRUNING.md).
+
+</details>
 
 </details>
 
