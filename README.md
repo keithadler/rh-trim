@@ -18,14 +18,14 @@
 <!-- STATUS:BEGIN -->
 <div align="center">
 
-**The smallest proof, live** · round 63 · 🔁 REPAIRING · updated 09:46 UTC Nov 23
+**The smallest proof, live** · round 63 · 🔁 REPAIRING · updated 09:57 UTC Nov 23
 
 <table><tr>
 <td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>8.2%</h2><sub>in lines, so far</sub></td>
 <td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.95M</h2><sub>was 17.37M</sub></td>
 <td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after small files are merged</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>2,293 of 172,493 files · 28 errors to repair</sub></td>
-<td align="center" width="20%"><sub><b>TIME</b></sub><h2>27h 26m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 64 rounds</sub></td>
+<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>2% built</h2><sub>2,616 of 172,493 files · 28 errors to repair</sub></td>
+<td align="center" width="20%"><sub><b>TIME</b></sub><h2>27h 37m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 64 rounds</sub></td>
 </tr></table>
 
 <sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one's build said was missing, so the percentage can only go down from here. Updated every 2 minutes from the build machine. <a href="docs/MINIFY.md#log">Log of every round</a></sub>
