@@ -83,7 +83,7 @@ for fid, p in enumerate(paths):
                 for w in rest.replace('in', ' ').split():
                     if w[0].isalpha() or w[0] == '_': opens.add(w)
         else:
-            kw, nm = m.group(1), m.group(2)
+            kw, nm = m.group(1), m.group(2).rstrip('.')   # `foo.{u, v}`: the universe list is not part of the name
             ns = '.'.join(x for x in stack if x)
             if kw == 'instance' and (not nm or nm.startswith('[') or nm in ('(', ':')):
                 nm = f'_inst_{fid}_{pos}'
@@ -312,10 +312,34 @@ if EXACT:
         n = l.rstrip('\n')
         if n.startswith('_private.') and '.0.' in n: n = n.split('.0.', 1)[1]
         keepn.add(n)
+    AGGR = '--aggressive' in sys.argv     # keep instances and attributed declarations only if the export uses them
     for i, nm in enumerate(decl_name):
-        if nm in keepn or decl_inst[i] or decl_attr[i]:
+        if nm in keepn or (not AGGR and (decl_inst[i] or decl_attr[i])):
             seen[i] = 1
     for f in range(len(files)): fseen[f] = 1      # keep every file this round; cut only declarations
+    XTRA = next((a[len('--extra-names='):] for a in sys.argv if a.startswith('--extra-names=')), None)
+    if XTRA:     # names the build reported missing, as the source parser spells them
+        xn = set(l.strip() for l in open(XTRA) if l.strip()); hit = 0
+        for i, nm in enumerate(decl_name):
+            if nm in xn: seen[i] = 1; hit += 1
+        print(f"  exact: {hit} declarations restored because the build reported them missing", file=sys.stderr, flush=True)
+    REVERT = next((a[len('--revert-files='):] for a in sys.argv if a.startswith('--revert-files=')), None)
+    if REVERT:   # files the build showed must stay as they were: keep every declaration in them
+        rv = set(l.strip() for l in open(REVERT) if l.strip())
+        fidx = {f: k for k, f in enumerate(files)}
+        for f in rv:
+            for i in file_decls.get(fidx.get(f, -1), []): seen[i] = 1
+        print(f"  exact: {len(rv)} files kept as they were", file=sys.stderr, flush=True)
+    # What is kept on purpose (instances, attributed declarations) must keep its own dependencies too:
+    # trace them through the source-level reference graph.
+    # Everything kept must keep what its source mentions (tactic arguments name declarations that a finished
+    # proof may never use), and so must the instances and attributed declarations kept on purpose.
+    extra = [i for i in range(len(decl_name)) if seen[i]]
+    for i in extra: seen[i] = 0
+    before = sum(seen)
+    _fc = file_closure
+    n_extra = len(extra); run(list(extra))
+    print(f"  exact: {n_extra} kept declarations pull in {sum(seen) - before - n_extra} more through their source", file=sys.stderr, flush=True)
     print(f"  exact: {sum(seen)} of {len(decl_name)} source declarations kept", file=sys.stderr, flush=True)
 else:
     run(list(roots_ids))
