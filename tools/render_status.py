@@ -274,6 +274,7 @@ mb = T.get('minbuild')
 if mb:
     frac = mb['done'] / mb['total'] if mb['total'] else 0
     state = ('✅ **built**' if 'exit status 0' in mb['result'] else '⚠️ **stopped**: ' + mb['result']) if mb['result'] else '🔵 **compiling**'
+    if T.get('machine1_offline'): state = '⏸️ **paused**: the build machine is waiting for AWS Spot capacity'
     lines += ['## Step 5: building the smallest proof', '',
      f"The minified source, round {mb.get('round', '?')} ({mb.get('lines', 0):,} lines in {mb.get('files', 0):,} files, down from 17,374,242 lines in 175,188: see "
      '[docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, in automatic repair rounds since '
@@ -380,6 +381,7 @@ def readme_counter():
     bf, sf = mb.get('built_files', 0), mb.get('src_files', 1) or 1
     clean = mb.get('result') and 'exit status 0' in mb['result'] and mb.get('errors', 1) == 0
     state = '✅ BUILT' if clean else ('🔁 REPAIRING' if mb.get('errors') else '🔵 BUILDING')
+    if T.get('machine1_offline'): state = '⏸️ PAUSED: the build machine is waiting for AWS Spot capacity (numbers are its last reading)'
     cell = lambda label, big, small: f'<td align="center" width="20%"><sub><b>{label}</b></sub><h2>{big}</h2><sub>{small}</sub></td>'
     T0 = datetime.datetime(2026, 11, 22, 6, 19, 37)                      # the first minified build
     t_end = datetime.datetime.utcfromtimestamp(mb['log_mtime']) if clean and mb.get('log_mtime') else now
