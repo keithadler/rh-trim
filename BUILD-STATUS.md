@@ -4,7 +4,7 @@
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-23 17:21 UTC**
+🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-23 17:43 UTC**
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|
@@ -34,12 +34,12 @@ flowchart LR
 |:---:|---|---|---|---:|
 | **1** | **Build the original** | Compile all 175,187 proof files, exactly as published. **100.0%** so far. | ✅ done | $33.43 |
 | **2** | **Exact reduced form** | Export the five main theorems with `lean4export`. The export holds exactly what the proof uses, measured by Lean itself. | ✅ done | $3.90 |
-| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $65.52 |
+| **3** | **Haskell vs Lean** | Check that export with **tenet-hs** (Haskell) and with Lean's own kernel, timed, peak memory recorded. Tenet (C#), tenet-jvm, Lean's paranoid mode, nanoda, con-leche and con-ron run in the same race. | ✅ done | $66.07 |
 | **4** | **Axioms** | List exactly which axioms the five theorems rest on. | 🔵 **in progress** | not started |
 | **5** | **The smallest proof** | Cut the source to only what the export says the theorems use, merge repeated theorems, rebuild, and check it with Tenet, then the other kernels. **Building in automatic repair rounds; live numbers in the counter at the top of the README.** [Details](docs/MINIFY.md) | 🔵 **in progress** | not started |
 | **6** | **Publish** | Post the times, the verdicts and the exact sizes here. | ⏳ waiting | not started |
 
-**Total so far: $102.85**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
+**Total so far: $103.40**, at the Spot rate of about $1.56 an hour. The disk (now 600 GB) and its snapshots add about $2 a day.
 
 Steps 2 to 4 are queued on the machine and start by themselves when the build succeeds. Step 5 follows from their output.
 
@@ -82,15 +82,15 @@ A second AWS machine (`r7a.12xlarge`, 48 vCPU, 369 GB) checks the same 61.6 GB e
 | nanoda, 32 threads | ✅ accepts | 2:42:37 | 31,404 s | 79.4 GB |
 | tenet-jvm, diagnostics run | ⏹ stopped by hand | 39:32.67 | 15,124 s | 123.1 GB |
 | tenet-jvm (fixed) | ✅ accepts | 6:05:15 | 26,202 s | 96.4 GB |
-| Lean's kernel | 🔵 checking: whole file loaded, checking (no progress readout) | 1h 23m so far | | 38 GB now |
-| Lean paranoid | 🔵 checking: whole file loaded, checking (no progress readout) | 1h 23m so far | | 46 GB now |
-| tenet-hs (Haskell) | 🔵 checking: 13.7% through the file | 1h 23m so far | | 24 GB now |
+| Lean's kernel | 🔵 checking: whole file loaded, checking (no progress readout) | 1h 44m so far | | 47 GB now |
+| Lean paranoid | 🔵 checking: whole file loaded, checking (no progress readout) | 1h 44m so far | | 56 GB now |
+| tenet-hs (Haskell) | 🔵 checking: 16.9% through the file | 1h 44m so far | | 29 GB now |
 
 ## Step 5: building the smallest proof
 
 The minified source, round 66 (15,948,571 lines in 172,493 files, down from 17,374,242 lines in 175,188: see [docs/MINIFY.md](docs/MINIFY.md)) is compiling on the same machine, network cut off, in automatic repair rounds since 06:19:37 UTC on 2026-11-22. When a round builds clean, its export is checked by Tenet first, then the other kernels.
 
-🔵 **compiling** · `████████▎░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░` **13,362** of 63,947 Lake jobs (20.9%) · ❌ errors: **18**
+⏸️ **paused**: the build machine is waiting for AWS Spot capacity · `████████▎░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░` **13,362** of 63,947 Lake jobs (20.9%) · ❌ errors: **18**
 
 | Round | Started (UTC) | Lines | Files | Errors | What changed |
 |---|---|---:|---:|---:|---|
@@ -181,11 +181,11 @@ Six tests that only an exact export plus several independent kernels make possib
 
 | ⏱ Compiling time | 🏁 Finished (UTC) | 💵 Build cost | 💵 Spent so far | ❌ Errors | 🚫 sorry |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| about 21 h | 2026-11-21 20:52 | $33.43 | $102.85 | 0 | 0 |
+| about 21 h | 2026-11-21 20:52 | $33.43 | $103.40 | 0 | 0 |
 
 Spent so far keeps counting while the machine runs steps 2 to 4.
 
-![Proof files compiled over time](docs/status/chart-20261123-1721.svg)
+![Proof files compiled over time](docs/status/chart-20261123-1743.svg)
 
 <details><summary><b>By library</b></summary>
 
