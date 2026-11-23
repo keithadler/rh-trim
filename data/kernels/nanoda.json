@@ -1,0 +1,1 @@
+{"export_file_path":"/home/ubuntu/results/rh-main.ndjson","permitted_axioms":["propext","Quot.sound","Classical.choice","Lean.trustCompiler"],"unpermitted_axiom_hard_error":false,"nat_extension":true,"string_extension":true,"print_success_message":true,"num_threads":32}

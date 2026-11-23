@@ -1,0 +1,33 @@
+== 20:46:06 race on the original export (machine rh-kernels, r7a.12xlarge: 48 vCPU, 369 GB)
+== 20:46:06 check: lean-kernel
+== 20:46:06 check: lean-kernel-paranoid
+== 20:46:06 check: tenet-hs
+== 20:46:06 check: nanoda-32threads
+== 21:41:52 check: tenet-jvm-compact (branch jvm-compact-memory f210e4d, -Xmx120g)
+== 22:31:06 done: tenet-jvm-compact exit 3 wall 49:13.83 cpu 28276.25s peak 123.2 GB
+... 209920 items, at THM Formalism.MainNotions.FormalGroupSystem.Pf.sx_dual._proof_1_5
+... 210944 items, at THM Formalism.MainNotions.FormalGroupSystem.Pf.ea_card_img._simp_1_1
+ERROR java.lang.OutOfMemoryError: GC overhead limit exceeded
+== 23:28:43 done: nanoda-32threads exit 0 wall 2:42:37 cpu 31403.96s peak 79.4 GB
+Checked 1484729 declarations with no typechecker errors, 1 pretty printer errors: [
+    "Unable to print axioms",
+]
+== 23:47:18 check: tenet-jvm-compact-2 (branch jvm-compact-memory 6c2fb27, --verbose, -Xmx120g)
+== 00:26:51 done: tenet-jvm-compact-2 exit 143 wall 39:32.67 cpu 15123.73s peak 123.1 GB
+  still checking THM Formalism.MainNotions.DIV.Lemmas.OrbitEntryBounds.addition_bound_holds after 1528 s, heap 103815 MB
+  still checking THM Formalism.MainNotions.DIV.Lemmas.OrbitEntryBounds.addition_bound_holds after 1583 s, heap 103974 MB
+  still checking THM Formalism.MainNotions.DIV.Lemmas.OrbitEntryBounds.addition_bound_holds after 1627 s, heap 104027 MB
+== 00:57:07 check: tenet-jvm-compact-3 (branch jvm-compact-memory 53cf8a4, --verbose, -Xmx120g)
+== 07:02:23 done: tenet-jvm-compact-3 exit 0 wall 6:05:15 cpu 26201.54s peak 96.4 GB
+checked 1484729 constants ({AXIOM=3, DEF=214238, THM=1246109, OPAQUE=91, QUOT=4}) and 7969 inductive blocks in 21911.32s
+axioms declared: propext, Quot.sound, Classical.choice
+all declarations verified
+== 08:14:16 machine restarted; unfinished kernels start over
+== 13:20:12 machine restarted; unfinished kernels start over
+== 13:41:22 machine restarted; unfinished kernels start over
+== 14:11:59 machine restarted; unfinished kernels start over
+== 14:36:00 machine restarted; unfinished kernels start over
+== 14:41:15 machine restarted; unfinished kernels start over
+== 14:59:10 machine restarted; unfinished kernels start over
+== 15:28:51 machine restarted; unfinished kernels start over
+== 15:58:35 machine restarted; unfinished kernels start over

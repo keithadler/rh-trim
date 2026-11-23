@@ -1,10 +1,10 @@
-# Live: checking the claimed Lean proof of the Riemann Hypothesis
+# Final: checking the claimed Lean proof of the Riemann Hypothesis
 
 > **The goal:** find the exact, smallest form of the proof, then see whether **tenet-hs**, a Lean kernel written from scratch in Haskell, accepts it, and whether it is faster than Lean's own kernel.
 
 
 
-🔵 **Step 4 of 6: listing axioms** · updated every 2 minutes · last update **2026-11-23 20:47 UTC**
+⏹️ **Final: project wrapped up 2026-11-23 21:00 UTC.** Nothing here updates any more; the machines are deleted.
 
 | The proof | Levent Alpöge, working with Claude ([remark.pdf](https://alpo.ge/remark.pdf)), announced 2026-11-20 |
 |---|---|

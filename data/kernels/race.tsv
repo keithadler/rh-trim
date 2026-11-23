@@ -1,0 +1,5 @@
+checker	exit	wall	user_s	peak_rss_GB
+tenet-jvm-compact	3	49:13.83	28276.25	123.2
+nanoda-32threads	0	2:42:37	31403.96	79.4
+tenet-jvm-compact-2	143	39:32.67	15123.73	123.1
+tenet-jvm-compact-3	0	6:05:15	26201.54	96.4

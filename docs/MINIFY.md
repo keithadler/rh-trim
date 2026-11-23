@@ -3,17 +3,17 @@
 <!-- STATUS:BEGIN -->
 <div align="center">
 
-**The smallest proof, live** · round 71 · 🔁 REPAIRING · updated 20:47 UTC Nov 23
+**The smallest proof: stopped, unfinished** · project wrapped up 2026-11-23 21:00 UTC
 
 <table><tr>
-<td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>8.2%</h2><sub>in lines, so far</sub></td>
-<td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.95M</h2><sub>was 17.37M</sub></td>
-<td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after small files are merged</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>1,592 of 172,500 files · 76 errors to repair</sub></td>
-<td align="center" width="20%"><sub><b>TIME</b></sub><h2>38h 27m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 69 rounds</sub></td>
+<td align="center" width="25%"><sub><b>SMALLER</b></sub><h2>~8%</h2><sub>in lines, <b>not confirmed</b></sub></td>
+<td align="center" width="25%"><sub><b>LINES</b></sub><h2>15.95M</h2><sub>was 17.37M</sub></td>
+<td align="center" width="25%"><sub><b>BEST ROUND</b></sub><h2>17 errors</h2><sub>round 66 · it never reached 0</sub></td>
+<td align="center" width="25%"><sub><b>TIME</b></sub><h2>38h 27m</h2><sub>71 rounds, 06:19 UTC Nov 22 to 20:46 UTC Nov 23</sub></td>
 </tr></table>
 
-<sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one's build said was missing, so the percentage can only go down from here. Updated every 2 minutes from the build machine. <a href="#log">Log of every round</a></sub>
+<sub>The cut source never built with 0 errors, so the ~8% is an upper bound on what dead-code removal gives, not a result.
+The method, tools and cut lists are here to pick it up again. <a href="#log">Log of every round</a></sub>
 
 </div>
 <!-- STATUS:END -->
@@ -21,8 +21,9 @@
 The goal: the same five theorems as the claimed Lean proof of the Riemann Hypothesis, with everything they
 don't need removed, rebuilt with 0 errors, and checked by independent kernels (Tenet first, then the others).
 
-**Status:** the minified source is building in automatic repair rounds (round 25 as of 16:38 UTC, 2026-11-22).
-Nothing below is confirmed until a round builds with 0 errors. The proof has no license, so this repository
+**Status: stopped, unfinished (2026-11-23).** 71 automatic repair rounds cut the source to 15.95M lines (about 8% fewer),
+but no round built with 0 errors: the best was round 66 with 17, and later rounds bounced between 21 and 93 as each
+fix exposed new breakage. So nothing below is confirmed. The proof has no license, so this repository
 publishes the method, the tools and the cut lists, never the proof's code.
 
 ## Where it stands
@@ -195,3 +196,8 @@ All times UTC, 2026-11-22.
   were names used with a suffix, like `foo_iff.mpr`, `cpCutoff.choose` or `TensorDS.nH`, where the missing thing is
   `foo_iff` and the last part is only how it is used; and `h.mul` on something that now reads as a plain `And`. The
   repair now looks up the stem as well: 142 more declarations kept. **08:58** round 62 building.
+- **Nov 23, 17:18 to 20:46** Rounds 66 to 71, on a build machine that kept losing its AWS Spot capacity. Errors per
+  round: 17, 93, 68, 21, 62, 76. The repair now matches only names the failing file can see, its own declarations
+  first, but the count stopped falling: each round's fixes uncovered about as many new errors.
+- **Nov 23, 21:00** Wrapped up. The machines, disks and snapshots are deleted. To pick it up again: build the original
+  ([BUILD-ORIGINAL.md](BUILD-ORIGINAL.md)), then run the cut lists in `data/min/` through `tools/` as described above.

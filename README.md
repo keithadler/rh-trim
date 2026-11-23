@@ -9,26 +9,26 @@
 ![nanoda: accepts](https://img.shields.io/badge/nanoda-accepts-1f6f43)
 ![tenet-jvm: accepts](https://img.shields.io/badge/tenet--jvm-accepts-1f6f43)
 ![axioms: 3 standard](https://img.shields.io/badge/axioms-3%20standard-5b6378)
-![smallest proof: building](https://img.shields.io/badge/smallest%20proof-building-2b3f8f)
+![smallest proof: unfinished](https://img.shields.io/badge/smallest%20proof-unfinished-7a6a2a)
 
-**[Live status](BUILD-STATUS.md)** · **[The smallest proof](docs/MINIFY.md)** · **[Build it yourself](docs/BUILD-ORIGINAL.md)** · **[Proof map](docs/PROOF-MAP.md)**
+**[Final status](BUILD-STATUS.md)** · **[The smallest proof](docs/MINIFY.md)** · **[Build it yourself](docs/BUILD-ORIGINAL.md)** · **[Proof map](docs/PROOF-MAP.md)**
 
 </div>
 
 <!-- STATUS:BEGIN -->
 <div align="center">
 
-**The smallest proof, live** · round 71 · 🔁 REPAIRING · updated 20:47 UTC Nov 23
+**The smallest proof: stopped, unfinished** · project wrapped up 2026-11-23 21:00 UTC
 
 <table><tr>
-<td align="center" width="20%"><sub><b>SMALLER</b></sub><h2>8.2%</h2><sub>in lines, so far</sub></td>
-<td align="center" width="20%"><sub><b>LINES</b></sub><h2>15.95M</h2><sub>was 17.37M</sub></td>
-<td align="center" width="20%"><sub><b>FILES</b></sub><h2>~32,000</h2><sub>was 175,188 · after small files are merged</sub></td>
-<td align="center" width="20%"><sub><b>THIS ROUND</b></sub><h2>1% built</h2><sub>1,592 of 172,500 files · 76 errors to repair</sub></td>
-<td align="center" width="20%"><sub><b>TIME</b></sub><h2>38h 27m</h2><sub>and counting · since the first build, 06:19 UTC Nov 22 · 69 rounds</sub></td>
+<td align="center" width="25%"><sub><b>SMALLER</b></sub><h2>~8%</h2><sub>in lines, <b>not confirmed</b></sub></td>
+<td align="center" width="25%"><sub><b>LINES</b></sub><h2>15.95M</h2><sub>was 17.37M</sub></td>
+<td align="center" width="25%"><sub><b>BEST ROUND</b></sub><h2>17 errors</h2><sub>round 66 · it never reached 0</sub></td>
+<td align="center" width="25%"><sub><b>TIME</b></sub><h2>38h 27m</h2><sub>71 rounds, 06:19 UTC Nov 22 to 20:46 UTC Nov 23</sub></td>
 </tr></table>
 
-<sub>Not confirmed until a round builds with 0 errors. Each round keeps what the last one's build said was missing, so the percentage can only go down from here. Updated every 2 minutes from the build machine. <a href="docs/MINIFY.md#log">Log of every round</a></sub>
+<sub>The cut source never built with 0 errors, so the ~8% is an upper bound on what dead-code removal gives, not a result.
+The method, tools and cut lists are here to pick it up again. <a href="docs/MINIFY.md#log">Log of every round</a></sub>
 
 </div>
 <!-- STATUS:END -->
@@ -40,8 +40,8 @@ as a computer-checkable proof in the Lean language ([announcement](https://alpo.
 **175,188 files and 17.4 million lines**, about 7 times the size of Lean's entire math library, with a single docstring
 in all of it.
 
-We built it, asked several independent checking programs to verify it, measured what it is made of, and are cutting it
-down to the smallest version that still checks. Here is what we know so far.
+We built it, asked several independent checking programs to verify it, measured what it is made of, and tried to cut it
+down to the smallest version that still checks. **The project is wrapped up (2026-11-23)**; here is what we found.
 
 ## Three questions, three answers
 
@@ -54,7 +54,7 @@ down to the smallest version that still checks. Here is what we know so far.
 Three independent checkers have accepted all
 **1,468,414** of its building blocks:
 **Tenet** (1 hour), **nanoda** and **tenet-jvm**.
-Three more are still running. It relies only on
+Lean's own kernel, paranoid mode and tenet-hs were stopped unfinished. It relies only on
 Lean's 3 standard axioms.
 
 [Scoreboard ↓](#the-checker-scoreboard)
@@ -75,10 +75,10 @@ Lean's library never had. One step alone owns
 
 ### ✂️ How small can it be?
 
-**About 8% smaller so far,** all dead code,
-and still being confirmed by building it. Real
-savings need a shorter route through the math,
-and the 38% step is the place to look.
+**About 8% at most, from dead code,**
+and never confirmed: no cut version built with
+0 errors. Real savings need a shorter route
+through the math, and the 38% step is the place to look.
 
 [The smallest proof ↓](#the-smallest-proof)
 
@@ -96,19 +96,19 @@ same 61.6 GB file exported from the proof.
 |---|---|---|
 | **Tenet** | C# (mine) | ✅ accepts all 1,468,414 · 1 hour |
 | **nanoda** | Rust | ✅ accepts · 2:42:37 on 32 threads |
-| **Lean's kernel** | C++ | 🔵 4h 48m in · whole file loaded, checking (no progress readout) |
-| **Lean paranoid** | C++ | 🔵 4h 48m in · whole file loaded, checking (no progress readout) |
-| **tenet-hs** | Haskell (mine) | 🔵 4h 48m in · 43.7% through the file |
-| **tenet-jvm** | Java (mine) | ✅ accepts · 6:05:15 |
+| **tenet-jvm** | Java (mine) | ✅ accepts · 6:05:15 (after a memory fix, now on its main branch) |
+| **Lean's kernel** | C++ | ⏹️ not finished: started over 9 times (8 Spot interruptions, 1 move to an on-demand machine), stopped 4 h 50 m into its last run (file loaded, checking) |
+| **Lean paranoid** | C++ | ⏹️ not finished: same as Lean's kernel |
+| **tenet-hs** | Haskell (mine) | ⏹️ not finished: 44% through reading the file when stopped |
 | con-leche, con-ron (Lean 4.36 bundle) | Lean | ⚪ decline: no support for one kind of type the proof uses |
 
-<sub>Live, updated every few minutes · last update 20:47 UTC Nov 23</sub>
+<sub>Final. Project wrapped up 2026-11-23 21:00 UTC; the machines are deleted.</sub>
 <!-- KERNELS:END -->
 
 <p align="center"><img src="docs/img/tenet-accepts.png" width="760" alt="Tenet accepts all 1,468,414 declarations of the proof, 0 failures, in 1 hour"></p>
 
 We also planted **431 deliberate mistakes** in pieces of the proof: every checker caught every one.
-Live times and memory: [BUILD-STATUS.md](BUILD-STATUS.md).
+Times and memory: [BUILD-STATUS.md](BUILD-STATUS.md).
 
 ## What it is made of
 
@@ -129,7 +129,7 @@ Which parts are "new" and which "known" is our reading of names and the paper's 
 | | Lines | Files |
 |---|---:|---:|
 | Original | 17,374,242 | 175,188 |
-| **Smallest so far** (live numbers in the counter at the top) | about 8% fewer | about 32,000 once small files are merged |
+| **Cut version** (never built clean; best round had 17 errors) | 15,954,961 (about 8% fewer) | 172,500 |
 | Lean's math library, for scale | 2,293,877 | 8,311 |
 
 - **What gets removed:** building blocks nothing in the proof uses, files left empty, repeated theorems pointed at one
@@ -194,7 +194,7 @@ turns the proof into 41 human-sized targets; [our measured weights for each](doc
 
 | Path | What it is |
 |---|---|
-| [`BUILD-STATUS.md`](BUILD-STATUS.md) | the live page: builds, the kernel race, research results, incident log |
+| [`BUILD-STATUS.md`](BUILD-STATUS.md) | the final status page: builds, the kernel race, research results, incident log |
 | [`docs/MINIFY.md`](docs/MINIFY.md) | the smallest proof: method, numbers, log, and the shorter-route plan |
 | [`docs/BUILD-ORIGINAL.md`](docs/BUILD-ORIGINAL.md), `build-original.sh` | build the original on one cloud machine |
 | [`docs/TAUCETI-WEIGHTS.md`](docs/TAUCETI-WEIGHTS.md) | how much of the proof each Tau Ceti sub-roadmap reaches |
@@ -203,7 +203,7 @@ turns the proof into 41 human-sized targets; [our measured weights for each](doc
 | `tools/xidx.c`, `tools/xan.c` | index the 61.6 GB export in one pass; trusted base, duplicates, hubs, dominator tree |
 | `tools/mutate.py`, `tools/run-mutants.sh` | plant faults in proof slices and race every kernel on them |
 | `tools/reach.py`, `prune.py`, `swapcross.py`, `finalize_cuts.py`, `trim_imports.py`, `merge_files.py` | the minification pipeline |
-| `tools/render_status.py` | draws the live page |
+| `tools/render_status.py` | drew the status page |
 
 <details><summary><b>History: the first, source-level reduction (it was wrong)</b></summary>
 

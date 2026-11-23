@@ -1,0 +1,6 @@
+> THM LFunction_eq_zero_re_of_isPrimitive
+< 0 ms, heap 53434 MB: THM LFunction_eq_zero_re_of_isPrimitive
+lean 4.33.1, export format 3.1.0, 1080769494 lines
+checked 1484729 constants ({AXIOM=3, DEF=214238, THM=1246109, OPAQUE=91, QUOT=4}) and 7969 inductive blocks in 21911.32s
+axioms declared: propext, Quot.sound, Classical.choice
+all declarations verified
