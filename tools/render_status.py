@@ -216,7 +216,13 @@ try:
 except OSError:
     t2 = ''
 if t2.strip():
-    tsv, _, ps = t2.partition('===')
+    parts2 = t2.split('===')
+    tsv, ps = parts2[0], (parts2[1] if len(parts2) > 1 else '')
+    posmap = {}
+    for line in (parts2[2] if len(parts2) > 2 else '').strip().split('\n'):
+        f = line.split()
+        if len(f) == 3 and f[1].isdigit(): posmap[f[0]] = max(posmap.get(f[0], 0), int(f[1]) / int(f[2]))
+    jvm_count = int((parts2[3] if len(parts2) > 3 else '0').strip() or 0)
     done2 = [r.split('\t') for r in tsv.strip().split('\n')[1:] if r.strip()]
     run2 = []
     for line in ps.strip().split('\n'):
@@ -235,9 +241,33 @@ if t2.strip():
         if len(c) < 5: continue
         v = '✅ accepts' if c[1] == '0' else ('⏹ stopped by hand' if c[1] == '143' else ('❌ out of memory' if c[1] == '3' else f'exit {c[1]}'))
         lines.append(f"| {label.get(c[0], c[0])} | {v} | {c[2]} | {float(c[3] or 0):,.0f} s | {c[4]} GB |")
+    def progress(nm):
+        if 'tenet-jvm' in nm: return f"{jvm_count:,} of 1,468,414 declarations ({100 * jvm_count / 1468414:.0f}%)"
+        if 'tenet-hs' in nm and posmap.get('tenet-hs-bin'): return f"{100 * posmap['tenet-hs-bin']:.1f}% through the file"
+        if 'Lean' in nm: return 'whole file loaded, checking (no progress readout)'
+        return ''
     for nm, et, rss in run2:
-        lines.append(f"| {nm} | 🔵 checking | {fmt_d(et / 60)} so far | | {rss / 1048576:.0f} GB now |")
+        lines.append(f"| {nm} | 🔵 checking: {progress(nm)} | {fmt_d(et / 60)} so far | | {rss / 1048576:.0f} GB now |")
     lines.append('')
+    # the scoreboard at the top of README.md
+    board = ['<!-- KERNELS:BEGIN -->', '| Checker | Written in | Result |', '|---|---|---|',
+             '| **Tenet** | C# (mine) | ✅ accepts all 1,468,414 · 1 hour |']
+    acc = {c[0]: c for c in done2 if len(c) >= 5}
+    if 'nanoda-32threads' in acc and acc['nanoda-32threads'][1] == '0':
+        board.append(f"| **nanoda** | Rust | ✅ accepts · {acc['nanoda-32threads'][2]} on 32 threads |")
+    lang = {"Lean's kernel": "C++", 'Lean paranoid': 'C++', 'tenet-hs (Haskell)': 'Haskell (mine)', 'tenet-jvm (fixed)': 'Java (mine)'}
+    for key, nm in (('lean-kernel', "Lean's kernel"), ('lean-kernel-paranoid', 'Lean paranoid'), ('tenet-hs', 'tenet-hs (Haskell)'), ('tenet-jvm-compact-3', 'tenet-jvm (fixed)')):
+        if key in acc:
+            c = acc[key]; board.append(f"| **{nm.split(' (')[0]}** | {lang[nm]} | {'✅ accepts · ' + c[2] if c[1] == '0' else '❌ exit ' + c[1]} |")
+        else:
+            r = next((x for x in run2 if x[0] == nm), None)
+            board.append(f"| **{nm.split(' (')[0]}** | {lang[nm]} | 🔵 " + (f"{fmt_d(r[1] / 60)} in · {progress(nm)}" if r else 'waiting') + ' |')
+    board += ['| con-leche, con-ron (Lean 4.36 bundle) | Lean | ⚪ decline: no support for one kind of type the proof uses |',
+              '', f'<sub>Live, updated every few minutes · last update {now:%H:%M} UTC {now:%b %d}</sub>', '<!-- KERNELS:END -->']
+    rp = os.path.join(repo, 'README.md'); rt = open(rp, encoding='utf-8').read()
+    if '<!-- KERNELS:BEGIN -->' in rt:
+        a = rt.index('<!-- KERNELS:BEGIN -->'); b = rt.index('<!-- KERNELS:END -->') + len('<!-- KERNELS:END -->')
+        open(rp, 'w', encoding='utf-8').write(rt[:a] + '\n'.join(board) + rt[b:])
 
 # ---------- step 5: the minified build
 mb = T.get('minbuild')
