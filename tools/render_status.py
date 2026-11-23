@@ -361,7 +361,7 @@ def readme_counter():
       cell('SMALLER', f'{100 * (1 - L / ORIG_L):.1f}%', 'in lines, so far'),
       cell('LINES', f'{L / 1e6:.2f}M', f'was {ORIG_L / 1e6:.2f}M'),
       (cell('FILES', f'{F:,}', f'was {ORIG_F:,}') if F < 100000 else
-       cell('FILES', '~32,000', f'was {ORIG_F:,} · after merging. Building unmerged ({F:,}) first, so each error points at an original file')),
+       cell('FILES', '~32,000', f'was {ORIG_F:,} · after small files are merged')),
       cell('THIS ROUND', f'{100 * bf / sf:.0f}% built', f'{bf:,} of {sf:,} files · {mb.get("errors", 0)} errors to repair'),
       cell('TIME', elapsed, f'{"to a clean build" if clean else "and counting"} · since the first build, 06:19 UTC Nov 22 · {nrounds} rounds'),
       '</tr></table>', '',
